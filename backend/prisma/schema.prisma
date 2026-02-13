@@ -164,8 +164,6 @@ model ProductTag {
 }
 
 
-model TestMigration {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
+model Test {
+  id Int @id @default(autoincrement())
 }
