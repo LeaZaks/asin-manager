@@ -1,0 +1,171 @@
+// This is your Prisma schema file.
+// DB: Supabase (PostgreSQL)
+// Schema derived strictly from: "אפיון מודול ניהול ועיבוד ASINs – V1"
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Products – מאגר המוצרים הראשי, שדות מ-Keepa CSV
+// שדות טכניים: created_at, updated_at (נדרשים לתפעול)
+// ─────────────────────────────────────────────────────────────────────────────
+model Product {
+  asin                    String    @id @db.VarChar(10)
+
+  // Keepa fields
+  sales_rank_current      Int?
+  sales_rank_avg_90d      Int?
+  sales_rank_drop_90d     Float?
+  bought_past_month       Int?
+  rating                  Float?
+  rating_count            Int?
+  rating_count_drop_90d   Float?
+  buybox_price            Float?
+  buybox_price_avg_90d    Float?
+  buybox_price_drop_90d   Float?
+  buybox_price_lowest     Float?
+  buybox_price_highest    Float?
+  buybox_stock            Int?
+  amazon_share_180d       Float?
+  buybox_winner_count_90d Int?
+  referral_fee            Float?
+  offer_count_total       Int?
+  new_offer_count_current Int?
+  new_offer_count_avg_90d Float?
+  category_root           String?
+  category_sub            String?
+  category_tree           String?
+  brand                   String?
+  release_date            String?
+  package_dimension_cm3   Float?
+  package_weight_g        Float?
+  package_quantity        Int?
+  is_hazmat               Boolean?
+  is_heat_sensitive       Boolean?
+
+  // שדות טכניים
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @updatedAt
+
+  // Relations
+  sellerStatus            SellerStatus?
+  evaluation              ProductEvaluation?
+  productTags             ProductTag[]
+
+  @@map("products")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SellerStatus – תוצאת בדיקת הרשאת מכירה מ-Amazon API
+// ─────────────────────────────────────────────────────────────────────────────
+model SellerStatus {
+  asin        String           @id @db.VarChar(10)
+  status      SellerStatusEnum @default(unknown)
+  checked_at  DateTime?
+
+  product     Product @relation(fields: [asin], references: [asin], onDelete: Cascade)
+
+  @@map("seller_status")
+}
+
+enum SellerStatusEnum {
+  allowed
+  gated
+  requires_invoice
+  restricted
+  unknown
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ImportFiles – היסטוריית קבצי ייבוא
+// ─────────────────────────────────────────────────────────────────────────────
+model ImportFile {
+  id                Int       @id @default(autoincrement())
+  file_name         String
+  source            ImportSource
+  file              Bytes?    // הקובץ עצמו כערך בינארי
+  uploaded_at       DateTime  @default(now())
+  total_rows        Int       @default(0)
+  inserted_rows     Int       @default(0)
+  updated_rows      Int       @default(0)
+  failed_rows       Int       @default(0)
+  error_file_path   String?
+
+  @@map("import_files")
+}
+
+enum ImportSource {
+  keepa
+  manual
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ProductEvaluations – דירוג פוטנציאל מוצר (ידני-אנליטי)
+// ─────────────────────────────────────────────────────────────────────────────
+model ProductEvaluation {
+  asin        String  @id @db.VarChar(10)
+  score       Int     // 1-5 (דירוג פוטנציאל)
+  note        String? // הערה חופשית
+
+  // שדה טכני
+  updated_at  DateTime @updatedAt
+
+  product     Product @relation(fields: [asin], references: [asin], onDelete: Cascade)
+
+  @@map("product_evaluations")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tags – רשימת תגיות מרכזית
+// שדה טכני: created_at
+// ─────────────────────────────────────────────────────────────────────────────
+model Tag {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  type        TagType
+  color       String?  // צבע תצוגה ב-UI (אופציונלי)
+
+  // שדה טכני
+  created_at  DateTime @default(now())
+
+  productTags ProductTag[]
+
+  @@map("tags")
+}
+
+enum TagType {
+  warning
+  note
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ProductTags – קשר רבים-לרבים בין Products ל-Tags
+// שדה טכני: created_at
+// ─────────────────────────────────────────────────────────────────────────────
+model ProductTag {
+  id         Int      @id @default(autoincrement())
+  asin       String   @db.VarChar(10)
+  tag_id     Int
+
+  // שדה טכני
+  created_at DateTime @default(now())
+
+  product    Product @relation(fields: [asin], references: [asin], onDelete: Cascade)
+  tag        Tag     @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+
+  @@unique([asin, tag_id])
+  @@map("product_tags")
+}
+
+
+model TestMigration {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+}

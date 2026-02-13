@@ -1,0 +1,262 @@
+import { useState, useRef } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { productsApi, importApi, tagsApi } from "../api";
+import type { Product, Tag } from "../types";
+import { ScoreDisplay } from "../components/ScoreDisplay";
+import { ScoreEditor } from "../components/ScoreEditor";
+import { TagChips } from "../components/TagChips";
+import { ImportSummaryModal } from "../components/ImportSummaryModal";
+
+const STATUS_OPTIONS = ["", "allowed", "gated", "requires_invoice", "restricted", "unknown"];
+const SORT_FIELDS = [
+  { value: "created_at", label: "Date Added" },
+  { value: "asin", label: "ASIN" },
+  { value: "brand", label: "Brand" },
+  { value: "sales_rank_current", label: "Sales Rank" },
+  { value: "buybox_price", label: "Buy Box Price" },
+  { value: "rating", label: "Rating" },
+];
+
+export function ProductsPage() {
+  const qc = useQueryClient();
+
+  // Filters
+  const [search, setSearch] = useState("");
+  const [brand, setBrand] = useState("");
+  const [status, setStatus] = useState("");
+  const [sortBy, setSortBy] = useState("created_at");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [page, setPage] = useState(1);
+
+  // Selection
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  // Import state
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [manualAsin, setManualAsin] = useState("");
+  const [importResult, setImportResult] = useState<null | object>(null);
+  const [importError, setImportError] = useState("");
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["products", { page, search, brand, status, sortBy, sortOrder }],
+    queryFn: () => productsApi.list({ page, limit: 100, search, brand, status, sortBy, sortOrder }),
+  });
+
+  const { data: allTags = [] } = useQuery<Tag[]>({
+    queryKey: ["tags"],
+    queryFn: tagsApi.list,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (asins: string[]) => productsApi.deleteMany(asins),
+    onSuccess: () => {
+      setSelected(new Set());
+      qc.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+
+  const csvMutation = useMutation({
+    mutationFn: (file: File) => importApi.uploadCSV(file),
+    onSuccess: (data) => {
+      setImportResult(data);
+      qc.invalidateQueries({ queryKey: ["products"] });
+    },
+    onError: (err: Error) => setImportError(err.message),
+  });
+
+  const manualMutation = useMutation({
+    mutationFn: () => importApi.addManual(manualAsin.trim()),
+    onSuccess: () => {
+      setManualAsin("");
+      qc.invalidateQueries({ queryKey: ["products"] });
+    },
+    onError: (err: Error) => setImportError(err.message),
+  });
+
+  function toggleSelect(asin: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(asin)) next.delete(asin); else next.add(asin);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    if (!data) return;
+    if (selected.size === data.items.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(data.items.map((p) => p.asin)));
+    }
+  }
+
+  function handleSort(field: string) {
+    if (sortBy === field) {
+      setSortOrder((o) => (o === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(field);
+      setSortOrder("desc");
+    }
+  }
+
+  const sortIcon = (field: string) => {
+    if (sortBy !== field) return " ↕";
+    return sortOrder === "asc" ? " ↑" : " ↓";
+  };
+
+  return (
+    <div>
+      <div className="page-header">
+        <h1 className="page-title">Products</h1>
+        <div className="flex gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              setImportError("");
+              const f = e.target.files?.[0];
+              if (f) csvMutation.mutate(f);
+              e.target.value = "";
+            }}
+          />
+          <button className="btn btn-secondary" onClick={() => fileInputRef.current?.click()} disabled={csvMutation.isPending}>
+            {csvMutation.isPending ? <><span className="spinner" /> Importing...</> : "📤 Import CSV"}
+          </button>
+        </div>
+      </div>
+
+      {/* Manual ASIN input */}
+      <div className="card mb-4">
+        <div className="card-title">Add Single ASIN</div>
+        <div className="flex gap-2" style={{ maxWidth: 400 }}>
+          <input
+            className="input"
+            placeholder="Enter ASIN (e.g. B08N5LNQCX)"
+            value={manualAsin}
+            onChange={(e) => setManualAsin(e.target.value.toUpperCase())}
+            onKeyDown={(e) => e.key === "Enter" && manualAsin.trim().length === 10 && manualMutation.mutate()}
+            maxLength={10}
+          />
+          <button
+            className="btn btn-primary"
+            onClick={() => manualMutation.mutate()}
+            disabled={manualAsin.trim().length !== 10 || manualMutation.isPending}
+          >
+            {manualMutation.isPending ? <span className="spinner" /> : "Add"}
+          </button>
+        </div>
+        {importError && <p className="error-text">{importError}</p>}
+        {manualMutation.isSuccess && <p className="success-text">✓ ASIN added</p>}
+      </div>
+
+      {/* Filters */}
+      <div className="filters-row">
+        <input className="input" placeholder="🔍 Search ASIN or Brand..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} />
+        <input className="input" placeholder="Filter by brand..." value={brand} onChange={(e) => { setBrand(e.target.value); setPage(1); }} />
+        <select className="select" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
+          {STATUS_OPTIONS.map((s) => (
+            <option key={s} value={s}>{s || "All Statuses"}</option>
+          ))}
+        </select>
+        <select className="select" value={sortBy} onChange={(e) => { setSortBy(e.target.value); setPage(1); }}>
+          {SORT_FIELDS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
+        </select>
+        <button className="btn btn-secondary" onClick={() => setSortOrder((o) => o === "asc" ? "desc" : "asc")}>
+          {sortOrder === "asc" ? "↑ Asc" : "↓ Desc"}
+        </button>
+        {selected.size > 0 && (
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              if (confirm(`Delete ${selected.size} selected ASINs?`)) {
+                deleteMutation.mutate(Array.from(selected));
+              }
+            }}
+            disabled={deleteMutation.isPending}
+          >
+            🗑 Delete {selected.size} selected
+          </button>
+        )}
+      </div>
+
+      {/* Table */}
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" className="checkbox" onChange={toggleSelectAll} checked={!!data && selected.size === data.items.length && data.items.length > 0} /></th>
+              <th onClick={() => handleSort("asin")}>ASIN{sortIcon("asin")}</th>
+              <th onClick={() => handleSort("brand")}>Brand{sortIcon("brand")}</th>
+              <th onClick={() => handleSort("sales_rank_current")}>Sales Rank{sortIcon("sales_rank_current")}</th>
+              <th onClick={() => handleSort("buybox_price")}>Buy Box{sortIcon("buybox_price")}</th>
+              <th onClick={() => handleSort("rating")}>Rating{sortIcon("rating")}</th>
+              <th>Status</th>
+              <th>Score</th>
+              <th>Tags</th>
+              <th>Checked At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading && (
+              <tr><td colSpan={10} style={{ textAlign: "center", padding: 40 }}><span className="spinner" /></td></tr>
+            )}
+            {data?.items.map((product: Product) => (
+              <tr key={product.asin} className={selected.has(product.asin) ? "tr-selected" : ""}>
+                <td><input type="checkbox" className="checkbox" checked={selected.has(product.asin)} onChange={() => toggleSelect(product.asin)} /></td>
+                <td><Link to={`/products/${product.asin}`} style={{ color: "#3b82f6", fontWeight: 600 }}>{product.asin}</Link></td>
+                <td>{product.brand ?? <span className="text-muted">—</span>}</td>
+                <td>{product.sales_rank_current?.toLocaleString() ?? <span className="text-muted">—</span>}</td>
+                <td>{product.buybox_price != null ? `$${product.buybox_price.toFixed(2)}` : <span className="text-muted">—</span>}</td>
+                <td>{product.rating != null ? `⭐ ${product.rating}` : <span className="text-muted">—</span>}</td>
+                <td><StatusBadge status={product.sellerStatus?.status} /></td>
+                <td>
+                  <ScoreEditor asin={product.asin} currentScore={product.evaluation?.score ?? null} />
+                </td>
+                <td>
+                  <TagChips
+                    asin={product.asin}
+                    productTags={product.productTags}
+                    allTags={allTags}
+                  />
+                </td>
+                <td>{product.sellerStatus?.checked_at ? new Date(product.sellerStatus.checked_at).toLocaleDateString() : <span className="text-muted">—</span>}</td>
+              </tr>
+            ))}
+            {data && data.items.length === 0 && (
+              <tr><td colSpan={10} style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>No products found</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination */}
+      {data && data.totalPages > 1 && (
+        <div className="pagination">
+          <span className="pagination-info">
+            {((page - 1) * 100) + 1}–{Math.min(page * 100, data.total)} of {data.total.toLocaleString()} products
+          </span>
+          <button className="btn btn-secondary" disabled={page === 1} onClick={() => setPage(p => p - 1)}>← Prev</button>
+          <span style={{ fontSize: 13 }}>Page {page} / {data.totalPages}</span>
+          <button className="btn btn-secondary" disabled={page >= data.totalPages} onClick={() => setPage(p => p + 1)}>Next →</button>
+        </div>
+      )}
+      {data && data.totalPages <= 1 && data.total > 0 && (
+        <div className="pagination">
+          <span className="pagination-info">{data.total.toLocaleString()} products</span>
+        </div>
+      )}
+
+      {importResult && (
+        <ImportSummaryModal result={importResult as Parameters<typeof ImportSummaryModal>[0]["result"]} onClose={() => setImportResult(null)} />
+      )}
+    </div>
+  );
+}
+
+function StatusBadge({ status }: { status?: string }) {
+  if (!status) return <span className="badge badge-unknown">—</span>;
+  return <span className={`badge badge-${status}`}>{status.replace("_", " ")}</span>;
+}
