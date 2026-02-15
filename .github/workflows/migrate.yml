@@ -25,7 +25,10 @@ jobs:
 
       - name: Run Prisma migrate deploy
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          cd backend
-          npx prisma migrate deploy
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DIRECT_URL: ${{ secrets.DIRECT_URL }}
+    run: |
+      cd backend
+      export DIRECT_URL="${DIRECT_URL:-$DATABASE_URL}"
+      echo "Using DIRECT_URL fallback: $([ -n "$DIRECT_URL" ] && echo set || echo missing)"
+      npx prisma migrate deploy
