@@ -59,6 +59,8 @@ export function ProductsPage() {
   const [manualAsin, setManualAsin] = useState("");
   const [importResult, setImportResult] = useState<null | object>(null);
   const [importError, setImportError] = useState("");
+  const [importJobId, setImportJobId] = useState<string | null>(null);
+  const [importProgress, setImportProgress] = useState<{ processed: number; total: number } | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["products", { page, pageSize, search, brand, status, sortBy, sortOrder }],
@@ -71,10 +73,37 @@ export function ProductsPage() {
     queryFn: tagsApi.list,
   });
 
-  // 🔥 Refetch products when entering the page (e.g., coming back from Processing)
+  // Refetch products when entering the page (e.g., coming back from Processing)
   useEffect(() => {
     qc.invalidateQueries({ queryKey: ["products"] });
-  }, []); // Only run once when component mounts
+  }, []);
+
+  // Poll import progress while a job is running
+  useEffect(() => {
+    if (!importJobId) return;
+    const interval = setInterval(async () => {
+      try {
+        const p = await importApi.getProgress(importJobId);
+        setImportProgress({ processed: p.processed, total: p.total });
+        if (p.status === "completed") {
+          clearInterval(interval);
+          setImportJobId(null);
+          if (p.summary) {
+            setImportResult({ message: "Import completed", summary: p.summary });
+          }
+          qc.invalidateQueries({ queryKey: ["products"] });
+        } else if (p.status === "failed") {
+          clearInterval(interval);
+          setImportJobId(null);
+          setImportError("Import failed unexpectedly");
+        }
+      } catch {
+        clearInterval(interval);
+        setImportJobId(null);
+      }
+    }, 500);
+    return () => clearInterval(interval);
+  }, [importJobId]);
 
   const deleteMutation = useMutation({
     mutationFn: (asins: string[]) => productsApi.deleteMany(asins),
@@ -87,8 +116,9 @@ export function ProductsPage() {
   const csvMutation = useMutation({
     mutationFn: (file: File) => importApi.uploadCSV(file),
     onSuccess: (data) => {
-      setImportResult(data);
-      qc.invalidateQueries({ queryKey: ["products"] });
+      // Server returns immediately with jobId — start polling for real progress
+      setImportProgress({ processed: 0, total: data.total });
+      setImportJobId(data.jobId);
     },
     onError: (err: Error) => setImportError(err.message),
   });
@@ -161,8 +191,8 @@ export function ProductsPage() {
               e.target.value = "";
             }}
           />
-          <button className="btn btn-secondary" onClick={() => fileInputRef.current?.click()} disabled={csvMutation.isPending}>
-            {csvMutation.isPending ? <><span className="spinner" /> Importing...</> : "📤 Import CSV"}
+          <button className="btn btn-secondary" onClick={() => fileInputRef.current?.click()} disabled={csvMutation.isPending || !!importJobId}>
+            {(csvMutation.isPending || importJobId) ? <><span className="spinner" /> Importing...</> : "📤 Import CSV"}
           </button>
         </div>
       </div>
@@ -325,19 +355,20 @@ export function ProductsPage() {
       )}
 
       {/* Import Summary Modal - only after completion */}
-      {importResult && !csvMutation.isPending && (
-        <ImportSummaryModal 
-          result={importResult as Parameters<typeof ImportSummaryModal>[0]["result"]} 
+      {importResult && !importJobId && (
+        <ImportSummaryModal
+          result={importResult as Parameters<typeof ImportSummaryModal>[0]["result"]}
           isLoading={false}
           onClose={() => {
             setImportResult(null);
+            setImportProgress(null);
             csvMutation.reset();
-          }} 
+          }}
         />
       )}
 
-      {/* Toast during CSV import - non-blocking! */}
-      {csvMutation.isPending && (
+      {/* Toast during CSV import — shows real progress */}
+      {(csvMutation.isPending || importJobId) && (
         <div style={{
           position: 'fixed',
           bottom: 24,
@@ -358,24 +389,35 @@ export function ProductsPage() {
             <span className="spinner" style={{ width: 20, height: 20, borderWidth: 2 }} />
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '14px' }}>
-                📤 Importing CSV
+                Importing CSV
               </div>
               <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
-                Processing your file...
+                {importProgress && importProgress.total > 0
+                  ? `${importProgress.processed.toLocaleString()} / ${importProgress.total.toLocaleString()} records`
+                  : "Uploading file..."}
               </div>
             </div>
+            {importProgress && importProgress.total > 0 && (
+              <div style={{ fontSize: '13px', fontWeight: 600, color: '#3b82f6' }}>
+                {Math.round((importProgress.processed / importProgress.total) * 100)}%
+              </div>
+            )}
           </div>
-          <div style={{ 
-            height: '4px', 
-            background: '#e2e8f0', 
+          <div style={{
+            height: '4px',
+            background: '#e2e8f0',
             borderRadius: '2px',
             overflow: 'hidden'
           }}>
-            <div style={{ 
-              height: '100%', 
+            <div style={{
+              height: '100%',
               background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-              width: '100%',
-              animation: 'progress 1.5s ease-in-out infinite'
+              borderRadius: '2px',
+              transition: 'width 0.3s ease',
+              width: importProgress && importProgress.total > 0
+                ? `${Math.round((importProgress.processed / importProgress.total) * 100)}%`
+                : '100%',
+              ...((!importProgress || importProgress.total === 0) ? { animation: 'progress 1.5s ease-in-out infinite' } : {}),
             }} />
           </div>
         </div>

@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export interface ImportSummary {
   importFileId: number;
-  jobId: string; // 🔥 Added jobId
+  jobId: string;
   inserted_rows: number;
   updated_rows: number;
   failed_rows: number;
@@ -27,25 +27,37 @@ export interface ImportProgress {
   processed: number;
   startedAt: string;
   completedAt?: string;
+  summary?: {
+    importFileId: number;
+    total_rows: number;
+    inserted_rows: number;
+    updated_rows: number;
+    failed_rows: number;
+    hasErrors: boolean;
+    errors: Array<{ row: number; reason: string; rawData?: string }>;
+  };
 }
 
 const IMPORT_JOB_PREFIX = "import:job:";
 const HAZMAT_TAG_NAME = "H";
 
 export const importService = {
-  async importFromCSV(
+  /**
+   * Parses the CSV, initializes progress in Redis, kicks off background processing,
+   * and returns immediately with the jobId so the frontend can start polling.
+   */
+  async startCSVImport(
     buffer: Buffer,
     fileName: string,
     source: ImportSource = "keepa",
-  ): Promise<ImportSummary> {
+  ): Promise<{ jobId: string; totalValid: number }> {
     const jobId = uuidv4();
-    
-    // Parse CSV
-    const { valid, errors, totalRows } = parseKeepaCSV(buffer);
 
+    // Parse CSV synchronously (fast — just string parsing)
+    const { valid, errors, totalRows } = parseKeepaCSV(buffer);
     logger.info(`CSV parse: ${totalRows} total rows, ${valid.length} valid, ${errors.length} errors`);
 
-    // 🔥 Initialize progress in Redis
+    // Initialize progress in Redis
     const initialProgress: ImportProgress = {
       jobId,
       status: "processing",
@@ -55,11 +67,32 @@ export const importService = {
     };
     await redisConnection.setex(
       `${IMPORT_JOB_PREFIX}${jobId}`,
-      3600, // TTL: 1 hour
+      3600,
       JSON.stringify(initialProgress)
     );
 
-    // Create ImportFile record before processing
+    // Run actual DB work in background (don't await)
+    this.processCSVImport(jobId, buffer, fileName, source, valid, errors, totalRows).catch((err) => {
+      logger.error(`Import job ${jobId} failed:`, err);
+      this.markFailed(jobId);
+    });
+
+    return { jobId, totalValid: valid.length };
+  },
+
+  /**
+   * Background processing: upserts products, tags hazmat, saves errors, updates progress.
+   */
+  async processCSVImport(
+    jobId: string,
+    buffer: Buffer,
+    fileName: string,
+    source: ImportSource,
+    valid: Array<Record<string, unknown>>,
+    errors: Array<{ row: number; reason: string; rawData?: string }>,
+    totalRows: number,
+  ): Promise<void> {
+    // Create ImportFile record
     const importFile = await importRepository.create({
       file_name: fileName,
       source,
@@ -67,21 +100,19 @@ export const importService = {
       total_rows: totalRows,
     });
 
-    // Track upsert stats by checking which ASINs exist before upsert
     let insertedRows = 0;
     let updatedRows = 0;
 
     if (valid.length > 0) {
-      const asins = valid.map((p) => p.asin);
-      const hazmatAsins = valid.filter((p) => p.is_hazmat === true).map((p) => p.asin);
+      const asins = valid.map((p) => p.asin as string);
+      const hazmatAsins = valid.filter((p) => p.is_hazmat === true).map((p) => p.asin as string);
 
-      // Find already-existing ASINs
-      const existingProducts = await productsRepository.findMany({
-        page: 1,
-        limit: asins.length,
-        search: undefined,
+      // Find already-existing ASINs (lightweight query — only fetches matching ASIN strings)
+      const existingRecords = await prisma.product.findMany({
+        where: { asin: { in: asins } },
+        select: { asin: true },
       });
-      const existingAsins = new Set(existingProducts.items.map((p) => p.asin));
+      const existingAsins = new Set(existingRecords.map((p) => p.asin));
 
       for (const asin of asins) {
         if (existingAsins.has(asin)) {
@@ -91,16 +122,14 @@ export const importService = {
         }
       }
 
-      // Upsert in batches of 100 to avoid overwhelming DB
+      // Upsert in batches of 100
       const BATCH_SIZE = 100;
       for (let i = 0; i < valid.length; i += BATCH_SIZE) {
         const batch = valid.slice(i, i + BATCH_SIZE);
-        await productsRepository.upsertMany(batch);
-        
-        // 🔥 Update progress in Redis after each batch
+        await productsRepository.upsertMany(batch as Parameters<typeof productsRepository.upsertMany>[0]);
+
         const processed = Math.min(i + BATCH_SIZE, valid.length);
         await this.updateProgress(jobId, processed, valid.length);
-        
         logger.info(`Upserted batch ${i / BATCH_SIZE + 1}, records ${i + 1}-${i + batch.length}`);
       }
 
@@ -116,7 +145,7 @@ export const importService = {
           skipDuplicates: true,
         });
 
-        logger.info(`Assigned tag \"${HAZMAT_TAG_NAME}\" to ${hazmatAsins.length} HazMat products`);
+        logger.info(`Assigned tag "${HAZMAT_TAG_NAME}" to ${hazmatAsins.length} HazMat products`);
       }
     }
 
@@ -138,22 +167,18 @@ export const importService = {
       error_file_path: errorFilePath,
     });
 
-    // 🔥 Mark job as completed
-    await this.markCompleted(jobId);
-
-    return {
+    // Mark job as completed with summary in Redis
+    await this.markCompleted(jobId, {
       importFileId: importFile.id,
-      jobId, // 🔥 Return jobId
+      total_rows: totalRows,
       inserted_rows: insertedRows,
       updated_rows: updatedRows,
       failed_rows: errors.length,
-      total_rows: totalRows,
-      errors,
-      errorFilePath,
-    };
+      hasErrors: errors.length > 0,
+      errors: errors.slice(0, 50),
+    });
   },
 
-  // 🔥 New: Update progress
   async updateProgress(jobId: string, processed: number, total: number): Promise<void> {
     const key = `${IMPORT_JOB_PREFIX}${jobId}`;
     const raw = await redisConnection.get(key);
@@ -166,8 +191,7 @@ export const importService = {
     await redisConnection.setex(key, 3600, JSON.stringify(progress));
   },
 
-  // 🔥 New: Mark as completed
-  async markCompleted(jobId: string): Promise<void> {
+  async markCompleted(jobId: string, summary?: ImportProgress["summary"]): Promise<void> {
     const key = `${IMPORT_JOB_PREFIX}${jobId}`;
     const raw = await redisConnection.get(key);
     if (!raw) return;
@@ -175,11 +199,23 @@ export const importService = {
     const progress = JSON.parse(raw) as ImportProgress;
     progress.status = "completed";
     progress.completedAt = new Date().toISOString();
+    if (summary) progress.summary = summary;
 
     await redisConnection.setex(key, 3600, JSON.stringify(progress));
   },
 
-  // 🔥 New: Get progress
+  async markFailed(jobId: string): Promise<void> {
+    const key = `${IMPORT_JOB_PREFIX}${jobId}`;
+    const raw = await redisConnection.get(key);
+    if (!raw) return;
+
+    const progress = JSON.parse(raw) as ImportProgress;
+    progress.status = "failed";
+    progress.completedAt = new Date().toISOString();
+
+    await redisConnection.setex(key, 3600, JSON.stringify(progress));
+  },
+
   async getProgress(jobId: string): Promise<ImportProgress | null> {
     const key = `${IMPORT_JOB_PREFIX}${jobId}`;
     const raw = await redisConnection.get(key);
@@ -212,7 +248,7 @@ export const importService = {
 
       return {
         importFileId: importFile.id,
-        jobId: "", // Manual imports don't need jobId tracking
+        jobId: "",
         inserted_rows: 1,
         updated_rows: 0,
         failed_rows: 0,

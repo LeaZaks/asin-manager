@@ -38,9 +38,21 @@ export const importApi = {
   uploadCSV: (file: File) => {
     const form = new FormData();
     form.append("file", file);
-    return api.post<{
-      message: string;
-      summary: {
+    return api.post<{ jobId: string; total: number }>("/import/csv", form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then((r) => r.data);
+  },
+
+  addManual: (asin: string) =>
+    api.post<{ message: string; asin: string }>("/import/manual", { asin }).then((r) => r.data),
+
+  getProgress: (jobId: string) =>
+    api.get<{
+      jobId: string;
+      status: "processing" | "completed" | "failed";
+      total: number;
+      processed: number;
+      summary?: {
         importFileId: number;
         total_rows: number;
         inserted_rows: number;
@@ -49,13 +61,7 @@ export const importApi = {
         hasErrors: boolean;
         errors: Array<{ row: number; reason: string }>;
       };
-    }>("/import/csv", form, {
-      headers: { "Content-Type": "multipart/form-data" },
-    }).then((r) => r.data);
-  },
-
-  addManual: (asin: string) =>
-    api.post<{ message: string; asin: string }>("/import/manual", { asin }).then((r) => r.data),
+    }>(`/import/progress/${jobId}`).then((r) => r.data),
 
   getHistory: () =>
     api.get<ImportFile[]>("/import/history").then((r) => r.data),

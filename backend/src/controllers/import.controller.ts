@@ -11,25 +11,14 @@ export const importController = {
       throw new AppError(400, "File must be a .csv");
     }
 
-    const summary = await importService.importFromCSV(
+    // Start import in background and return jobId immediately
+    const { jobId, totalValid } = await importService.startCSVImport(
       req.file.buffer,
       req.file.originalname,
       "keepa",
     );
 
-    res.json({
-      message: "Import completed",
-      jobId: summary.jobId, // 🔥 Return jobId
-      summary: {
-        importFileId: summary.importFileId,
-        total_rows: summary.total_rows,
-        inserted_rows: summary.inserted_rows,
-        updated_rows: summary.updated_rows,
-        failed_rows: summary.failed_rows,
-        hasErrors: summary.errors.length > 0,
-        errors: summary.errors.slice(0, 50), // Return first 50 errors in response
-      },
-    });
+    res.json({ jobId, total: totalValid });
   },
 
   // 🔥 New: Get import progress

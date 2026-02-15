@@ -7,7 +7,8 @@ import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { ExpressAdapter } from "@bull-board/express";
 
 import { logger } from "./lib/logger";
-import { asinProcessingQueue } from "./lib/queue";
+import { asinProcessingQueue, redisConnection } from "./lib/queue";
+import { prisma } from "./lib/prisma";
 import { errorHandler } from "./middleware/errorHandler";
 
 // Routes
@@ -44,8 +45,16 @@ app.use("/api/tags", tagsRouter);
 app.use("/api/evaluations", evaluationsRouter);
 
 // ── Health check ──────────────────────────────────────────────────────────────
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+app.get("/health", async (_req, res) => {
+  const checks: Record<string, "ok" | "error"> = { db: "error", redis: "error" };
+  try { await prisma.$queryRaw`SELECT 1`; checks.db = "ok"; } catch {}
+  try { await redisConnection.ping(); checks.redis = "ok"; } catch {}
+  const allOk = Object.values(checks).every((v) => v === "ok");
+  res.status(allOk ? 200 : 503).json({
+    status: allOk ? "ok" : "degraded",
+    timestamp: new Date().toISOString(),
+    checks,
+  });
 });
 
 // ── Global error handler ──────────────────────────────────────────────────────
