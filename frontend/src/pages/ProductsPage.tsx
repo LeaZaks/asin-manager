@@ -16,9 +16,11 @@ const SORT_FIELDS = [
   { value: "sales_rank_current", label: "Sales Rank" },
   { value: "buybox_price", label: "Buy Box Price" },
   { value: "rating", label: "Rating" },
+  { value: "seller_status", label: "Status" },
+  { value: "checked_at", label: "Checked At" },
 ];
 
-const PAGE_SIZE_OPTIONS = [100, 200, 500] as const;
+const PAGE_SIZE_OPTIONS = [100, 200, 500, 1000, 2000, 5000] as const;
 
 const AMAZON_CLICKED_KEY = "clickedAmazonAsins";
 
@@ -47,6 +49,7 @@ export function ProductsPage() {
   const [status, setStatus] = useState("");
   const [sortBy, setSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [checkedAt, setCheckedAt] = useState<"" | "null" | "not_null">("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<(typeof PAGE_SIZE_OPTIONS)[number]>(100);
 
@@ -61,9 +64,8 @@ export function ProductsPage() {
   const [importError, setImportError] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["products", { page, pageSize, search, brand, status, sortBy, sortOrder }],
-    queryFn: () => productsApi.list({ page, limit: pageSize, search, brand, status, sortBy, sortOrder 
-    }),
+    queryKey: ["products", { page, pageSize, search, brand, status, checkedAt, sortBy, sortOrder }],
+    queryFn: () => productsApi.list({ page, limit: pageSize, search, brand, status, checkedAt: checkedAt || undefined, sortBy, sortOrder }),
   });
 
   const { data: allTags = [] } = useQuery<Tag[]>({
@@ -204,6 +206,11 @@ export function ProductsPage() {
             <option key={s} value={s}>{s || "All Statuses"}</option>
           ))}
         </select>
+        <select className="select" value={checkedAt} onChange={(e) => { setCheckedAt(e.target.value as "" | "null" | "not_null"); setPage(1); }}>
+          <option value="">All (Checked)</option>
+          <option value="not_null">Checked</option>
+          <option value="null">Not Checked</option>
+        </select>
         <select className="select" value={sortBy} onChange={(e) => { setSortBy(e.target.value); setPage(1); }}>
           {SORT_FIELDS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
         </select>
@@ -225,6 +232,13 @@ export function ProductsPage() {
         )}
       </div>
 
+      {/* Record count */}
+      {data && (
+        <div className="table-record-count">
+          {data.total.toLocaleString()} products
+        </div>
+      )}
+
       {/* Table */}
       <div className="table-wrapper">
         <table>
@@ -236,10 +250,10 @@ export function ProductsPage() {
               <th onClick={() => handleSort("sales_rank_current")}>Sales Rank{sortIcon("sales_rank_current")}</th>
               <th onClick={() => handleSort("buybox_price")}>Buy Box{sortIcon("buybox_price")}</th>
               <th onClick={() => handleSort("rating")}>Rating{sortIcon("rating")}</th>
-              <th>Status</th>
+              <th onClick={() => handleSort("seller_status")}>Status{sortIcon("seller_status")}</th>
               <th className="score-column">Score</th>
               <th className="tags-column">Tags</th>
-              <th>Checked At</th>
+              <th onClick={() => handleSort("checked_at")}>Checked At{sortIcon("checked_at")}</th>
             </tr>
           </thead>
           <tbody>
@@ -281,7 +295,7 @@ export function ProductsPage() {
                     allTags={allTags}
                   />
                 </td>
-                <td>{product.sellerStatus?.checked_at ? new Date(product.sellerStatus.checked_at).toLocaleDateString() : <span className="text-muted">—</span>}</td>
+                <td>{product.sellerStatus?.checked_at ? new Date(product.sellerStatus.checked_at).toLocaleString() : <span className="text-muted">—</span>}</td>
               </tr>
             ))}
             {data && data.items.length === 0 && (

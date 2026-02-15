@@ -39,6 +39,7 @@ body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Ro
 .label { font-size: 12px; font-weight: 500; color: #64748b; margin-bottom: 4px; display: block; }
 
 /* ── Table ─────────────────────────────────────────────────────────────────── */
+.table-record-count { font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 8px; }
 .table-wrapper { overflow-x: auto; border-radius: 10px; border: 1px solid #e2e8f0; }
 table { width: 100%; border-collapse: collapse; background: white; }
 thead { background: #f8fafc; }
