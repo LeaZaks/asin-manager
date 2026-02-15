@@ -1,14 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Search, X, SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
 import { productsApi, importApi, tagsApi } from "../api";
 import type { Product, Tag } from "../types";
 import { ScoreEditor } from "../components/ScoreEditor";
 import { TagChips } from "../components/TagChips";
 import { ImportSummaryModal } from "../components/ImportSummaryModal";
+import { useImportToast } from "../components/ImportToastProvider";
 
-const STATUS_OPTIONS = ["", "allowed", "gated", "requires_invoice", "restricted", "unknown"];
+const STATUS_OPTIONS = [
+  { value: "", label: "All Statuses" },
+  { value: "allowed", label: "Allowed", color: "#22c55e" },
+  { value: "gated", label: "Gated", color: "#eab308" },
+  { value: "requires_invoice", label: "Requires Invoice", color: "#f97316" },
+  { value: "restricted", label: "Restricted", color: "#ef4444" },
+  { value: "unknown", label: "Unknown", color: "#94a3b8" },
+];
+
 const SORT_FIELDS = [
   { value: "created_at", label: "Date Added" },
   { value: "asin", label: "ASIN" },
@@ -18,6 +27,12 @@ const SORT_FIELDS = [
   { value: "rating", label: "Rating" },
   { value: "seller_status", label: "Status" },
   { value: "checked_at", label: "Checked At" },
+];
+
+const CHECKED_OPTIONS = [
+  { value: "", label: "All" },
+  { value: "not_null", label: "Checked" },
+  { value: "null", label: "Not Checked" },
 ];
 
 const PAGE_SIZE_OPTIONS = [100, 200, 500, 1000, 2000, 5000] as const;
@@ -42,6 +57,7 @@ function getSessionClickedAsins() {
 
 export function ProductsPage() {
   const qc = useQueryClient();
+  const { showImporting, showSuccess, showError } = useImportToast();
 
   // Filters
   const [search, setSearch] = useState("");
@@ -52,6 +68,7 @@ export function ProductsPage() {
   const [checkedAt, setCheckedAt] = useState<"" | "null" | "not_null">("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<(typeof PAGE_SIZE_OPTIONS)[number]>(100);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Selection
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -62,6 +79,8 @@ export function ProductsPage() {
   const [manualAsin, setManualAsin] = useState("");
   const [importResult, setImportResult] = useState<null | object>(null);
   const [importError, setImportError] = useState("");
+
+  const activeFilterCount = [brand, status, checkedAt].filter(Boolean).length;
 
   const { data, isLoading } = useQuery({
     queryKey: ["products", { page, pageSize, search, brand, status, checkedAt, sortBy, sortOrder }],
@@ -87,21 +106,32 @@ export function ProductsPage() {
   });
 
   const csvMutation = useMutation({
-    mutationFn: (file: File) => importApi.uploadCSV(file),
+    mutationFn: (file: File) => {
+      showImporting(file.name);
+      return importApi.uploadCSV(file);
+    },
     onSuccess: (data) => {
+      showSuccess(data.summary);
       setImportResult(data);
       qc.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: (err: Error) => setImportError(err.message),
+    onError: (err: Error) => {
+      showError(err.message);
+      setImportError(err.message);
+    },
   });
 
   const manualMutation = useMutation({
     mutationFn: () => importApi.addManual(manualAsin.trim()),
     onSuccess: () => {
       setManualAsin("");
+      showSuccess({ total_rows: 1, inserted_rows: 1, updated_rows: 0, failed_rows: 0 });
       qc.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: (err: Error) => setImportError(err.message),
+    onError: (err: Error) => {
+      showError(err.message);
+      setImportError(err.message);
+    },
   });
 
   function toggleSelect(asin: string) {
@@ -141,6 +171,16 @@ export function ProductsPage() {
     }
   }
 
+  function clearFilters() {
+    setSearch("");
+    setBrand("");
+    setStatus("");
+    setCheckedAt("");
+    setSortBy("created_at");
+    setSortOrder("desc");
+    setPage(1);
+  }
+
   const sortIcon = (field: string) => {
     if (sortBy !== field) return " ↕";
     return sortOrder === "asc" ? " ↑" : " ↓";
@@ -164,7 +204,7 @@ export function ProductsPage() {
             }}
           />
           <button className="btn btn-secondary" onClick={() => fileInputRef.current?.click()} disabled={csvMutation.isPending}>
-            {csvMutation.isPending ? <><span className="spinner" /> Importing...</> : "📤 Import CSV"}
+            {csvMutation.isPending ? <><span className="spinner" /> Importing...</> : "Import CSV"}
           </button>
         </div>
       </div>
@@ -190,33 +230,44 @@ export function ProductsPage() {
           </button>
         </div>
         {importError && <p className="error-text">{importError}</p>}
-        {manualMutation.isSuccess && !manualMutation.isPending && (
-          <p className="success-text" style={{ animation: 'fadeIn 0.3s ease-out' }}>
-            ✓ ASIN added successfully
-          </p>
-        )}
       </div>
 
-      {/* Filters */}
-      <div className="filters-row">
-        <input className="input" placeholder="🔍 Search ASIN or Brand..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} />
-        <input className="input" placeholder="Filter by brand..." value={brand} onChange={(e) => { setBrand(e.target.value); setPage(1); }} />
-        <select className="select" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
-          {STATUS_OPTIONS.map((s) => (
-            <option key={s} value={s}>{s || "All Statuses"}</option>
-          ))}
-        </select>
-        <select className="select" value={checkedAt} onChange={(e) => { setCheckedAt(e.target.value as "" | "null" | "not_null"); setPage(1); }}>
-          <option value="">All (Checked)</option>
-          <option value="not_null">Checked</option>
-          <option value="null">Not Checked</option>
-        </select>
-        <select className="select" value={sortBy} onChange={(e) => { setSortBy(e.target.value); setPage(1); }}>
-          {SORT_FIELDS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
-        </select>
-        <button className="btn btn-secondary" onClick={() => setSortOrder((o) => o === "asc" ? "desc" : "asc")}>
-          {sortOrder === "asc" ? "↑ Asc" : "↓ Desc"}
+      {/* Search & Filter Toolbar */}
+      <div className="toolbar">
+        <div className="toolbar-search">
+          <Search size={16} className="toolbar-search-icon" />
+          <input
+            className="toolbar-search-input"
+            placeholder="Search by ASIN or Brand..."
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          />
+          {search && (
+            <button className="toolbar-search-clear" onClick={() => { setSearch(""); setPage(1); }}>
+              <X size={14} />
+            </button>
+          )}
+        </div>
+
+        <button
+          className={`btn btn-filter ${showFilters || activeFilterCount > 0 ? "btn-filter-active" : ""}`}
+          onClick={() => setShowFilters((v) => !v)}
+        >
+          <SlidersHorizontal size={14} />
+          Filters
+          {activeFilterCount > 0 && <span className="filter-badge">{activeFilterCount}</span>}
+          {showFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </button>
+
+        <div className="toolbar-sort">
+          <select className="select" value={sortBy} onChange={(e) => { setSortBy(e.target.value); setPage(1); }}>
+            {SORT_FIELDS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
+          </select>
+          <button className="btn btn-sort-toggle" onClick={() => setSortOrder((o) => o === "asc" ? "desc" : "asc")}>
+            {sortOrder === "asc" ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </button>
+        </div>
+
         {selected.size > 0 && (
           <button
             className="btn btn-danger"
@@ -227,10 +278,55 @@ export function ProductsPage() {
             }}
             disabled={deleteMutation.isPending}
           >
-            🗑 Delete {selected.size} selected
+            Delete {selected.size} selected
           </button>
         )}
       </div>
+
+      {/* Expandable filters panel */}
+      {showFilters && (
+        <div className="filters-panel">
+          <div className="filter-group">
+            <label className="filter-label">Brand</label>
+            <input className="input" placeholder="Filter by brand..." value={brand} onChange={(e) => { setBrand(e.target.value); setPage(1); }} />
+          </div>
+          <div className="filter-group">
+            <label className="filter-label">Status</label>
+            <div className="status-chips">
+              {STATUS_OPTIONS.map((s) => (
+                <button
+                  key={s.value}
+                  className={`status-chip ${status === s.value ? "status-chip-active" : ""}`}
+                  onClick={() => { setStatus(s.value); setPage(1); }}
+                  style={status === s.value && s.color ? { borderColor: s.color, background: s.color + "18", color: s.color } : {}}
+                >
+                  {s.color && <span className="status-chip-dot" style={{ background: s.color }} />}
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="filter-group">
+            <label className="filter-label">Check Status</label>
+            <div className="status-chips">
+              {CHECKED_OPTIONS.map((o) => (
+                <button
+                  key={o.value}
+                  className={`status-chip ${checkedAt === o.value ? "status-chip-active" : ""}`}
+                  onClick={() => { setCheckedAt(o.value as "" | "null" | "not_null"); setPage(1); }}
+                >
+                  {o.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {activeFilterCount > 0 && (
+            <button className="btn btn-clear-filters" onClick={clearFilters}>
+              <X size={14} /> Clear all filters
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Record count */}
       {data && (
@@ -350,74 +446,6 @@ export function ProductsPage() {
         />
       )}
 
-      {/* Toast during CSV import - non-blocking! */}
-      {csvMutation.isPending && (
-        <div style={{
-          position: 'fixed',
-          bottom: 24,
-          right: 24,
-          background: 'white',
-          padding: '20px 24px',
-          borderRadius: '12px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px',
-          minWidth: '280px',
-          zIndex: 1000,
-          animation: 'slideIn 0.3s ease-out',
-          border: '1px solid #e2e8f0'
-        }}>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            <span className="spinner" style={{ width: 20, height: 20, borderWidth: 2 }} />
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '14px' }}>
-                📤 Importing CSV
-              </div>
-              <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
-                Processing your file...
-              </div>
-            </div>
-          </div>
-          <div style={{ 
-            height: '4px', 
-            background: '#e2e8f0', 
-            borderRadius: '2px',
-            overflow: 'hidden'
-          }}>
-            <div style={{ 
-              height: '100%', 
-              background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-              width: '100%',
-              animation: 'progress 1.5s ease-in-out infinite'
-            }} />
-          </div>
-        </div>
-      )}
-
-      {/* Toast for manual ASIN success */}
-      {manualMutation.isSuccess && !manualMutation.isPending && (
-        <div style={{
-          position: 'fixed',
-          bottom: 24,
-          right: 24,
-          background: '#22c55e',
-          color: 'white',
-          padding: '16px 24px',
-          borderRadius: '12px',
-          boxShadow: '0 8px 24px rgba(34, 197, 94, 0.4)',
-          display: 'flex',
-          gap: '12px',
-          alignItems: 'center',
-          fontSize: '14px',
-          fontWeight: 500,
-          zIndex: 1000,
-          animation: 'slideIn 0.3s ease-out'
-        }}>
-          <span>✅</span>
-          <span>ASIN added successfully!</span>
-        </div>
-      )}
     </div>
   );
 }

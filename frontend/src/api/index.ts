@@ -68,6 +68,9 @@ export const processingApi = {
 
   getActiveStatus: () =>
     api.get<ProcessingStatus>("/processing/status").then((r) => r.data),
+
+  cancel: () =>
+    api.post<{ message: string; jobId: string }>("/processing/cancel").then((r) => r.data),
 };
 
 // ── Tags ──────────────────────────────────────────────────────────────────────

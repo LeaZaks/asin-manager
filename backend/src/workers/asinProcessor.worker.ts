@@ -30,8 +30,16 @@ async function processAsinJob(job: Job<AsinProcessingJobData>): Promise<void> {
 
   // Process in batches of 5 for parallel execution
   for (let i = 0; i < asins.length; i += BATCH_SIZE) {
+    // Check cancel flag before each batch
+    const cancelled = await processingService.isJobCancelled(jobId);
+    if (cancelled) {
+      logger.info(`[Worker] Job ${jobId} cancelled by user at ${processed}/${totalCount}`);
+      await processingService.markJobCancelled(jobId, processed, totalCount);
+      return;
+    }
+
     const batch = asins.slice(i, i + BATCH_SIZE);
-    
+
     // Process all ASINs in batch concurrently
     await Promise.all(
       batch.map(async (asin) => {
