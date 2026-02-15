@@ -253,13 +253,13 @@ export function ProductsPage() {
                   <span className="asin-cell-content">
                     <Link to={`/products/${product.asin}`} className="asin-link">{product.asin}</Link>
                     <a
+                      href={getAmazonUrl(product)}
                       className={`amazon-link-icon ${clickedAmazonAsins.has(product.asin) ? "is-clicked" : ""}`}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={`Open ${product.asin} on Amazon`}
                       title={clickedAmazonAsins.has(product.asin) ? "Amazon link opened in this session" : "Open on Amazon"}
                       onClick={() => markAmazonClicked(product.asin)}
-                      
                     >
                       ↗
                       <ExternalLink size={11} strokeWidth={2.25} />
