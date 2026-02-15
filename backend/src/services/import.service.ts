@@ -119,15 +119,25 @@ async function processCSVImport(
       }
     }
 
-    // Upsert in small batches for smooth progress updates
-    const BATCH_SIZE = 20;
+    // Upsert in small batches with delay for visible progress in the UI.
+    // Dynamic delay targets ~3s minimum total so the frontend (polling at 500ms)
+    // can observe smooth progress updates instead of jumping 0% → 100%.
+    const BATCH_SIZE = 10;
+    const numBatches = Math.ceil(valid.length / BATCH_SIZE);
+    const delayMs = Math.max(50, Math.min(500, Math.ceil(3000 / numBatches)));
+
     for (let i = 0; i < valid.length; i += BATCH_SIZE) {
       const batch = valid.slice(i, i + BATCH_SIZE);
       await productsRepository.upsertMany(batch);
 
       const processed = Math.min(i + BATCH_SIZE, valid.length);
       await updateProgress(jobId, processed, valid.length);
-      logger.info(`[import:${jobId}] Batch ${i / BATCH_SIZE + 1} done — ${processed}/${valid.length}`);
+      logger.info(`[import:${jobId}] Batch ${i / BATCH_SIZE + 1}/${numBatches} done — ${processed}/${valid.length}`);
+
+      // Delay between batches (skip after last batch) for frontend progress visibility
+      if (i + BATCH_SIZE < valid.length) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
     }
 
     if (hazmatAsins.length > 0) {

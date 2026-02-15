@@ -45,13 +45,29 @@ const KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = {
   "Buy Box 💚: Highest": "buybox_price_highest",
   "Buy Box 💚: Stock": "buybox_stock",
 
-  // New Buy Box format variants
+  // New Buy Box format variants (plain)
   "New, Buy Box: Current": "buybox_price",
   "New, Buy Box: 90 days avg.": "buybox_price_avg_90d",
   "New, Buy Box: 90 days drop %": "buybox_price_drop_90d",
   "New, Buy Box: Lowest": "buybox_price_lowest",
   "New, Buy Box: Highest": "buybox_price_highest",
   "New, Buy Box: Stock": "buybox_stock",
+
+  // New Buy Box — combined with truck emoji 🚚
+  "New, Buy Box 🚚: Current": "buybox_price",
+  "New, Buy Box 🚚: 90 days avg.": "buybox_price_avg_90d",
+  "New, Buy Box 🚚: 90 days drop %": "buybox_price_drop_90d",
+  "New, Buy Box 🚚: Lowest": "buybox_price_lowest",
+  "New, Buy Box 🚚: Highest": "buybox_price_highest",
+  "New, Buy Box 🚚: Stock": "buybox_stock",
+
+  // New Buy Box — combined with green heart emoji 💚
+  "New, Buy Box 💚: Current": "buybox_price",
+  "New, Buy Box 💚: 90 days avg.": "buybox_price_avg_90d",
+  "New, Buy Box 💚: 90 days drop %": "buybox_price_drop_90d",
+  "New, Buy Box 💚: Lowest": "buybox_price_lowest",
+  "New, Buy Box 💚: Highest": "buybox_price_highest",
+  "New, Buy Box 💚: Stock": "buybox_stock",
 
   // Referral Fee
   "Referral Fee based on current Buy Box price": "referral_fee",
@@ -84,6 +100,21 @@ const KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = {
   "URL: Amazon": "amazon_url",
 };
 
+// Strips emojis, "New, " / "New " prefix, and extra whitespace from a Buy Box header
+// so that ANY variant like "New, Buy Box 🚚: Current" normalizes to "Buy Box: Current"
+function stripBuyBoxDecorations(header: string): string {
+  return header
+    // Remove all emoji characters (covers most Unicode emoji ranges)
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FEFF}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu, "")
+    // Remove zero-width characters and other invisible Unicode
+    .replace(/[\u200B-\u200F\u2028-\u202F\uFEFF]/g, "")
+    // Remove "New, " or "New " prefix (case-insensitive)
+    .replace(/^new,?\s*/i, "")
+    // Collapse multiple spaces into one
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export interface ParseResult {
   valid: UpsertProductData[];
   errors: Array<{ row: number; reason: string; rawData?: string }>;
@@ -113,7 +144,8 @@ function parseValue(
   }
 
   if (numericFields.includes(field)) {
-    const cleaned = raw.replace(/[,%$]/g, "").trim();
+    // Remove currency symbols ($, €, £, ¥), commas, percent signs, and whitespace
+    const cleaned = raw.replace(/[,%$€£¥\s]/g, "").trim();
     const num = Number(cleaned);
     return isNaN(num) ? null : num;
   }
@@ -161,25 +193,54 @@ export function parseKeepaCSV(csvBuffer: Buffer): ParseResult {
     // Build product record from known Keepa fields only
     const product: Partial<UpsertProductData> = {};
 
-    // Build a normalized lookup for this row's headers (handles case/whitespace differences)
+    // Build a normalized lookup for this row's headers (handles case/whitespace/emoji differences)
     if (!normalizedHeaderMap) {
       normalizedHeaderMap = new Map();
-      for (const csvHeader of Object.keys(row)) {
+      const csvHeaderKeys = Object.keys(row);
+
+      // Pass 1: exact match after trimming
+      for (const csvHeader of csvHeaderKeys) {
         const normalized = csvHeader.trim();
-        // Try exact match first
         if (normalized in KEEPA_FIELD_MAP) {
           normalizedHeaderMap.set(normalized, csvHeader);
         }
       }
-      // For unmatched expected headers, try case-insensitive/whitespace-normalized matching
+
+      // Pass 2: case-insensitive/whitespace-normalized matching
       for (const keepaHeader of Object.keys(KEEPA_FIELD_MAP)) {
         if (normalizedHeaderMap.has(keepaHeader)) continue;
         const normalizedExpected = keepaHeader.toLowerCase().replace(/\s+/g, " ").trim();
-        for (const csvHeader of Object.keys(row)) {
+        for (const csvHeader of csvHeaderKeys) {
           const normalizedCsv = csvHeader.toLowerCase().replace(/\s+/g, " ").trim();
           if (normalizedCsv === normalizedExpected) {
             normalizedHeaderMap.set(keepaHeader, csvHeader);
             break;
+          }
+        }
+      }
+
+      // Pass 3: for still-unmatched CSV headers containing "Buy Box",
+      // strip emojis & "New," prefix, then match against the plain "Buy Box: X" variants
+      const matchedCsvHeaders = new Set(normalizedHeaderMap.values());
+      for (const csvHeader of csvHeaderKeys) {
+        if (matchedCsvHeaders.has(csvHeader)) continue;
+        const lower = csvHeader.toLowerCase();
+        if (!lower.includes("buy box")) continue;
+
+        const stripped = stripBuyBoxDecorations(csvHeader);
+        // Try to find a matching KEEPA_FIELD_MAP key that matches after stripping
+        if (stripped in KEEPA_FIELD_MAP) {
+          normalizedHeaderMap.set(stripped, csvHeader);
+          console.log(`[keepaCsvParser] Fuzzy-matched Buy Box header: "${csvHeader}" → "${stripped}"`);
+        } else {
+          // Also try case-insensitive match on the stripped version
+          for (const keepaHeader of Object.keys(KEEPA_FIELD_MAP)) {
+            if (normalizedHeaderMap.has(keepaHeader)) continue;
+            if (stripBuyBoxDecorations(keepaHeader).toLowerCase() === stripped.toLowerCase()) {
+              normalizedHeaderMap.set(keepaHeader, csvHeader);
+              console.log(`[keepaCsvParser] Fuzzy-matched Buy Box header: "${csvHeader}" → "${keepaHeader}"`);
+              break;
+            }
           }
         }
       }
