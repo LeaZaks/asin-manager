@@ -156,9 +156,32 @@ export function ProductDetailPage() {
   );
 }
 
-function KeepaRow({ label, value, isLink = false }: { label: string; value?: string; isLink?: boolean }) {  return (
+/* ---------- KeepaRow ---------- */
+
+function KeepaRow({
+  label,
+  value,
+  isLink = false,
+}: {
+  label: string;
+  value?: string;
+  isLink?: boolean;
+}) {
+  return (
     <div>
       <span style={{ color: "#64748b" }}>{label}: </span>
+
+      {value ? (
+        isLink ? (
+          <a href={value} target="_blank" rel="noreferrer" style={{ color: "#2563eb" }}>
+            {value}
+          </a>
+        ) : (
+          <span>{value}</span>
+        )
+      ) : (
+        <span style={{ color: "#94a3b8" }}>—</span>
+      )}
     </div>
   );
 }

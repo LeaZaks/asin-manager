@@ -5,6 +5,7 @@ import { parseKeepaCSV } from "../lib/keepaCsvParser";
 import { productsRepository } from "../repositories/products.repository";
 import { importRepository } from "../repositories/import.repository";
 import { logger } from "../lib/logger";
+import { prisma } from "../lib/prisma";
 import { redisConnection } from "../lib/queue";
 import { v4 as uuidv4 } from "uuid";
 
@@ -29,6 +30,7 @@ export interface ImportProgress {
 }
 
 const IMPORT_JOB_PREFIX = "import:job:";
+const HAZMAT_TAG_NAME = "H";
 
 export const importService = {
   async importFromCSV(
@@ -71,6 +73,7 @@ export const importService = {
 
     if (valid.length > 0) {
       const asins = valid.map((p) => p.asin);
+      const hazmatAsins = valid.filter((p) => p.is_hazmat === true).map((p) => p.asin);
 
       // Find already-existing ASINs
       const existingProducts = await productsRepository.findMany({
@@ -99,6 +102,21 @@ export const importService = {
         await this.updateProgress(jobId, processed, valid.length);
         
         logger.info(`Upserted batch ${i / BATCH_SIZE + 1}, records ${i + 1}-${i + batch.length}`);
+      }
+
+      if (hazmatAsins.length > 0) {
+        const hazmatTag = await prisma.tag.upsert({
+          where: { name: HAZMAT_TAG_NAME },
+          update: {},
+          create: { name: HAZMAT_TAG_NAME, type: "warning" },
+        });
+
+        await prisma.productTag.createMany({
+          data: hazmatAsins.map((asin) => ({ asin, tag_id: hazmatTag.id })),
+          skipDuplicates: true,
+        });
+
+        logger.info(`Assigned tag \"${HAZMAT_TAG_NAME}\" to ${hazmatAsins.length} HazMat products`);
       }
     }
 

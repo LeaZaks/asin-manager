@@ -226,14 +226,17 @@ export function ProductsPage() {
           <thead>
             <tr>
               <th><input type="checkbox" className="checkbox" onChange={toggleSelectAll} checked={!!data && selected.size === data.items.length && data.items.length > 0} /></th>
-              <th onClick={() => handleSort("asin")}>ASIN{sortIcon("asin")}</th>
-              <th onClick={() => handleSort("brand")}>Brand{sortIcon("brand")}</th>
+              <th className="asin-column" onClick={() => handleSort("asin")}>ASIN{sortIcon("asin")}</th>
+                            <th onClick={() => handleSort("brand")}>Brand{sortIcon("brand")}</th>
               <th onClick={() => handleSort("sales_rank_current")}>Sales Rank{sortIcon("sales_rank_current")}</th>
               <th onClick={() => handleSort("buybox_price")}>Buy Box{sortIcon("buybox_price")}</th>
               <th onClick={() => handleSort("rating")}>Rating{sortIcon("rating")}</th>
               <th>Status</th>
               <th>Score</th>
+              <th className="score-column">Score</th>
               <th>Tags</th>
+              <th className="score-column">Score</th>
+              <th className="tags-column">Tags</th>
               <th>Checked At</th>
             </tr>
           </thead>
@@ -244,22 +247,17 @@ export function ProductsPage() {
             {data?.items.map((product: Product) => (
               <tr key={product.asin} className={selected.has(product.asin) ? "tr-selected" : ""}>
                 <td><input type="checkbox" className="checkbox" checked={selected.has(product.asin)} onChange={() => toggleSelect(product.asin)} /></td>
-                <td>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                    <Link to={`/products/${product.asin}`} style={{ color: "#3b82f6", fontWeight: 600 }}>{product.asin}</Link>
+                <td className="asin-column">
+                  <span className="asin-cell-content">
+                    <Link to={`/products/${product.asin}`} className="asin-link">{product.asin}</Link>
                     <a
-                      href={getAmazonUrl(product)}
+                      className={`amazon-link-icon ${clickedAmazonAsins.has(product.asin) ? "is-clicked" : ""}`}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={`Open ${product.asin} on Amazon`}
                       title={clickedAmazonAsins.has(product.asin) ? "Amazon link opened in this session" : "Open on Amazon"}
                       onClick={() => markAmazonClicked(product.asin)}
-                      style={{
-                        color: clickedAmazonAsins.has(product.asin) ? "#22c55e" : "#94a3b8",
-                        fontSize: 13,
-                        lineHeight: 1,
-                        textDecoration: "none",
-                      }}
+                      
                     >
                       ↗
                     </a>
@@ -270,11 +268,11 @@ export function ProductsPage() {
                 <td>{product.buybox_price != null ? `$${product.buybox_price.toFixed(2)}` : <span className="text-muted">—</span>}</td>
                 <td>{product.rating != null ? `⭐ ${product.rating}` : <span className="text-muted">—</span>}</td>
                 <td><StatusBadge status={product.sellerStatus?.status} /></td>
-                <td>
-                  <ScoreEditor asin={product.asin} currentScore={product.evaluation?.score ?? null} />
+                <td className="score-column">
+                   <ScoreEditor asin={product.asin} currentScore={product.evaluation?.score ?? null} />
                 </td>
-                <td>
-                  <TagChips
+                <td className="tags-column">
+                <TagChips
                     asin={product.asin}
                     productTags={product.productTags}
                     allTags={allTags}

@@ -8,10 +8,11 @@ interface TagChipsProps {
   productTags: ProductTag[];
   allTags: Tag[];
   showAll?: boolean; // detail page: show full UI
+  compact?: boolean;
 }
 
-export function TagChips({ asin, productTags, allTags, showAll = false }: TagChipsProps) {
-  const qc = useQueryClient();
+export function TagChips({ asin, productTags, allTags, showAll = false, compact = false }: TagChipsProps) {
+    const qc = useQueryClient();
   const [showPicker, setShowPicker] = useState(false);
 
   const addMutation = useMutation({
@@ -34,7 +35,7 @@ export function TagChips({ asin, productTags, allTags, showAll = false }: TagChi
   const availableTags = allTags.filter((t) => !assignedTagIds.has(t.id));
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 3, alignItems: "center" }}>
+    <div className={`tag-chips-row ${compact ? "compact" : ""}`}>
       {productTags.map((pt) => (
         <span
           key={pt.id}

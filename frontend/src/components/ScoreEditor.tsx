@@ -41,8 +41,10 @@ export function ScoreEditor({ asin, currentScore }: ScoreEditorProps) {
         >
           ★
         </span>
-      ))}
-      {saved && <span style={{ color: "#22c55e", fontSize: 11 }}>✓</span>}
-    </div>
+      ))}      
+      
+      <span className={`score-save-indicator ${saved ? "visible" : ""}`}>✓</span>
+      
+      </div>
   );
 }
