@@ -58,19 +58,31 @@ export const productsRepository = {
       ],
     };
 
-    // Dynamic sort – only allow known Product fields to prevent injection
-    const allowedSortFields = [
+    // Dynamic sort – only allow known fields to prevent injection
+    const allowedProductFields = [
       "asin", "brand", "created_at", "updated_at",
       "sales_rank_current", "buybox_price", "rating",
     ];
-    const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : "created_at";
+    const allowedRelationFields = ["seller_status", "checked_at"];
+    const isRelationSort = allowedRelationFields.includes(sortBy);
+    const safeSortBy = allowedProductFields.includes(sortBy) ? sortBy : (!isRelationSort ? "created_at" : sortBy);
+
+    // Build orderBy: relation fields use nested syntax
+    let orderBy: Prisma.ProductOrderByWithRelationInput;
+    if (safeSortBy === "seller_status") {
+      orderBy = { sellerStatus: { status: sortOrder } };
+    } else if (safeSortBy === "checked_at") {
+      orderBy = { sellerStatus: { checked_at: sortOrder } };
+    } else {
+      orderBy = { [safeSortBy]: sortOrder };
+    }
 
     const [items, total] = await prisma.$transaction([
       prisma.product.findMany({
         where,
         skip,
         take: limit,
-        orderBy: { [safeSortBy]: sortOrder },
+        orderBy,
         include: {
           sellerStatus: true,
           evaluation: true,
