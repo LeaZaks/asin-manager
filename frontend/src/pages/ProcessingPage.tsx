@@ -24,15 +24,21 @@ export function ProcessingPage() {
   });
 
   useEffect(() => {
-    if (status?.status === "running") {
+    // 🔍 הוסף לוג כאן
+    console.log("📊 Processing Status:", status);
+    
+    if (status?.status === "running" && status.total > 0) {
       setPollingEnabled(true);
     } else if (status?.status === "completed" || status?.status === "failed" || status?.status === "idle") {
       setPollingEnabled(false);
       if (status?.status === "completed") {
-        qc.invalidateQueries({ queryKey: ["products"] });
+        setPollingEnabled(false); // ⬅️ תפסיק לשאול!
+    qc.invalidateQueries({ queryKey: ["products"] });
       }
+    } else if (status?.status === "running" && status.total === 0) {
+      setPollingEnabled(false);
     }
-  }, [status?.status, qc]);
+  }, [status?.status, status?.total, qc]);
 
   const startMutation = useMutation({
     mutationFn: (mode: ProcessingMode) => processingApi.start(mode),
@@ -42,8 +48,8 @@ export function ProcessingPage() {
     },
   });
 
-  const isRunning = status?.status === "running";
-  const isIdle = !status || status.status === "idle";
+  const isRunning = status?.status === "running" && status.total > 0;
+const isIdle = !status || status.status === "idle" || (status.status === "running" && status.total === 0);
 
   return (
     <div>
@@ -89,7 +95,7 @@ export function ProcessingPage() {
       </div>
 
       {/* Status panel */}
-      {!isIdle && (
+      {!isIdle && status?.total > 0 && (
         <div className="card">
           <div className="card-title">
             {status?.status === "running" && "⚡ Processing in Progress"}
@@ -143,15 +149,95 @@ export function ProcessingPage() {
         </div>
       )}
 
-      {/* Info card */}
+      {/* Summary Section */}
       <div className="card">
-        <div className="card-title">How it works</div>
-        <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.7 }}>
-          <p>Processing runs as a <strong>background job</strong> via BullMQ queue – not in your browser.</p>
-          <p>Each ASIN is checked against the <strong>Amazon Selling Partner API</strong> for seller eligibility.</p>
-          <p>The system automatically handles <strong>rate limits</strong> with retry + exponential backoff.</p>
-          <p>Failed ASINs are skipped (not marked as checked) and can be retried in a future run.</p>
-        </div>
+        <h2>
+          {status?.status === 'completed' ? '📊 Processing Summary' : 'How it works'}
+        </h2>
+
+        {status?.status === 'completed' ? (
+          // Show results summary after completion
+          <div style={{ marginTop: '1rem' }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+              gap: '1rem',
+              marginBottom: '1rem'
+            }}>
+              <div style={{ 
+                padding: '1rem', 
+                background: '#f0f9ff', 
+                borderRadius: '8px',
+                border: '1px solid #bae6fd'
+              }}>
+                <div style={{ fontSize: '0.875rem', color: '#0369a1', marginBottom: '0.25rem' }}>
+                  Total Processed
+                </div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#0c4a6e' }}>
+                  {status?.processed}
+                </div>
+              </div>
+
+              <div style={{ 
+                padding: '1rem', 
+                background: '#f0fdf4', 
+                borderRadius: '8px',
+                border: '1px solid #86efac'
+              }}>
+                <div style={{ fontSize: '0.875rem', color: '#15803d', marginBottom: '0.25rem' }}>
+                  ✅ Allowed
+                </div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#166534' }}>
+                  {status?.summary?.allowed || 0}
+                </div>
+              </div>
+
+              <div style={{ 
+                padding: '1rem', 
+                background: '#fefce8', 
+                borderRadius: '8px',
+                border: '1px solid #fde047'
+              }}>
+                <div style={{ fontSize: '0.875rem', color: '#a16207', marginBottom: '0.25rem' }}>
+                  🟡 Gated
+                </div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#854d0e' }}>
+                  {status?.summary?.gated || 0}
+                </div>
+              </div>
+
+              <div style={{ 
+                padding: '1rem', 
+                background: '#fef2f2', 
+                borderRadius: '8px',
+                border: '1px solid #fca5a5'
+              }}>
+                <div style={{ fontSize: '0.875rem', color: '#b91c1c', marginBottom: '0.25rem' }}>
+                  🔴 Restricted
+                </div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#991b1b' }}>
+                  {status?.summary?.restricted || 0}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Show "How it works" before/during processing
+          <div style={{ marginTop: '1rem', color: '#6b7280', fontSize: '0.875rem' }}>
+            <p>
+              Processing runs as a <strong>background job</strong> via BullMQ queue – not in your browser.
+            </p>
+            <p>
+              Each ASIN is checked against the <strong>Amazon Selling Partner API</strong> for seller eligibility.
+            </p>
+            <p>
+              The system automatically handles <strong>rate limits</strong> with retry + exponential backoff.
+            </p>
+            <p>
+              Failed ASINs are skipped (not marked as checked) and can be retried in a future run.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

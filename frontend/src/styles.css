@@ -109,6 +109,24 @@ tr:hover td { background: #f8fafc; }
 .success-text { color: #22c55e; font-size: 12px; margin-top: 6px; }
 .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #e2e8f0; border-top-color: #3b82f6; border-radius: 50%; animation: spin .7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slideIn { 
+  from { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  } 
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  } 
+}
+@keyframes fadeIn { 
+  from { opacity: 0; } 
+  to { opacity: 1; } 
+}
+@keyframes progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
 .summary-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; font-size: 13px; }
 .summary-row { display: flex; justify-content: space-between; padding: 3px 0; }
 .summary-row strong { color: #0f172a; }

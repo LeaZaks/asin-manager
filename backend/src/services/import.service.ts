@@ -5,9 +5,12 @@ import { parseKeepaCSV } from "../lib/keepaCsvParser";
 import { productsRepository } from "../repositories/products.repository";
 import { importRepository } from "../repositories/import.repository";
 import { logger } from "../lib/logger";
+import { redisConnection } from "../lib/queue";
+import { v4 as uuidv4 } from "uuid";
 
 export interface ImportSummary {
   importFileId: number;
+  jobId: string; // 🔥 Added jobId
   inserted_rows: number;
   updated_rows: number;
   failed_rows: number;
@@ -16,16 +19,43 @@ export interface ImportSummary {
   errorFilePath?: string;
 }
 
+export interface ImportProgress {
+  jobId: string;
+  status: "processing" | "completed" | "failed";
+  total: number;
+  processed: number;
+  startedAt: string;
+  completedAt?: string;
+}
+
+const IMPORT_JOB_PREFIX = "import:job:";
+
 export const importService = {
   async importFromCSV(
     buffer: Buffer,
     fileName: string,
     source: ImportSource = "keepa",
   ): Promise<ImportSummary> {
+    const jobId = uuidv4();
+    
     // Parse CSV
     const { valid, errors, totalRows } = parseKeepaCSV(buffer);
 
     logger.info(`CSV parse: ${totalRows} total rows, ${valid.length} valid, ${errors.length} errors`);
+
+    // 🔥 Initialize progress in Redis
+    const initialProgress: ImportProgress = {
+      jobId,
+      status: "processing",
+      total: valid.length,
+      processed: 0,
+      startedAt: new Date().toISOString(),
+    };
+    await redisConnection.setex(
+      `${IMPORT_JOB_PREFIX}${jobId}`,
+      3600, // TTL: 1 hour
+      JSON.stringify(initialProgress)
+    );
 
     // Create ImportFile record before processing
     const importFile = await importRepository.create({
@@ -63,6 +93,11 @@ export const importService = {
       for (let i = 0; i < valid.length; i += BATCH_SIZE) {
         const batch = valid.slice(i, i + BATCH_SIZE);
         await productsRepository.upsertMany(batch);
+        
+        // 🔥 Update progress in Redis after each batch
+        const processed = Math.min(i + BATCH_SIZE, valid.length);
+        await this.updateProgress(jobId, processed, valid.length);
+        
         logger.info(`Upserted batch ${i / BATCH_SIZE + 1}, records ${i + 1}-${i + batch.length}`);
       }
     }
@@ -85,8 +120,12 @@ export const importService = {
       error_file_path: errorFilePath,
     });
 
+    // 🔥 Mark job as completed
+    await this.markCompleted(jobId);
+
     return {
       importFileId: importFile.id,
+      jobId, // 🔥 Return jobId
       inserted_rows: insertedRows,
       updated_rows: updatedRows,
       failed_rows: errors.length,
@@ -94,6 +133,41 @@ export const importService = {
       errors,
       errorFilePath,
     };
+  },
+
+  // 🔥 New: Update progress
+  async updateProgress(jobId: string, processed: number, total: number): Promise<void> {
+    const key = `${IMPORT_JOB_PREFIX}${jobId}`;
+    const raw = await redisConnection.get(key);
+    if (!raw) return;
+
+    const progress = JSON.parse(raw) as ImportProgress;
+    progress.processed = processed;
+    progress.status = "processing";
+
+    await redisConnection.setex(key, 3600, JSON.stringify(progress));
+  },
+
+  // 🔥 New: Mark as completed
+  async markCompleted(jobId: string): Promise<void> {
+    const key = `${IMPORT_JOB_PREFIX}${jobId}`;
+    const raw = await redisConnection.get(key);
+    if (!raw) return;
+
+    const progress = JSON.parse(raw) as ImportProgress;
+    progress.status = "completed";
+    progress.completedAt = new Date().toISOString();
+
+    await redisConnection.setex(key, 3600, JSON.stringify(progress));
+  },
+
+  // 🔥 New: Get progress
+  async getProgress(jobId: string): Promise<ImportProgress | null> {
+    const key = `${IMPORT_JOB_PREFIX}${jobId}`;
+    const raw = await redisConnection.get(key);
+    if (!raw) return null;
+
+    return JSON.parse(raw) as ImportProgress;
   },
 
   async importManualAsin(asin: string): Promise<ImportSummary> {
@@ -120,6 +194,7 @@ export const importService = {
 
       return {
         importFileId: importFile.id,
+        jobId: "", // Manual imports don't need jobId tracking
         inserted_rows: 1,
         updated_rows: 0,
         failed_rows: 0,

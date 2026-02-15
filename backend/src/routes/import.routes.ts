@@ -23,6 +23,9 @@ router.post("/csv", upload.single("file"), importController.uploadCSV);
 // POST /api/import/manual
 router.post("/manual", importController.addManual);
 
+// GET /api/import/progress/:jobId - 🔥 New: Get import progress
+router.get("/progress/:jobId", importController.getProgress);
+
 // GET /api/import/history
 router.get("/history", importController.getHistory);
 

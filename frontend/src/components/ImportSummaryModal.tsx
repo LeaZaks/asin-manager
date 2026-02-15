@@ -12,17 +12,54 @@ interface ImportSummaryResult {
 }
 
 interface Props {
-  result: ImportSummaryResult;
+  result: ImportSummaryResult | null;
+  isLoading?: boolean;
   onClose: () => void;
 }
 
-export function ImportSummaryModal({ result, onClose }: Props) {
+export function ImportSummaryModal({ result, isLoading = false, onClose }: Props) {
+  // If loading, show loading state
+  if (isLoading) {
+    return (
+      <div className="modal-overlay">
+        <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-title">📤 Importing CSV</div>
+          
+          <div style={{ 
+            textAlign: 'center', 
+            padding: '40px 20px',
+            color: '#64748b'
+          }}>
+            <div style={{ marginBottom: '16px' }}>
+              <span className="spinner" style={{ 
+                width: 40, 
+                height: 40, 
+                borderWidth: 3 
+              }} />
+            </div>
+            <p style={{ fontSize: '14px', margin: 0 }}>
+              Processing your CSV file...
+            </p>
+            <p style={{ fontSize: '12px', marginTop: '8px', color: '#94a3b8' }}>
+              This may take a moment for large files
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If no result yet, don't show modal
+  if (!result) return null;
+
   const { summary } = result;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-title">📊 Import Summary</div>
+        <div className="modal-title">
+          {summary.failed_rows === 0 ? '✅ Import Complete' : '⚠️ Import Completed with Errors'}
+        </div>
 
         <div className="summary-box mb-4">
           <div className="summary-row">

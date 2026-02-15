@@ -97,7 +97,7 @@ export interface ImportFile {
 }
 
 export interface ProcessingStatus {
-  jobId?: string;
+  jobId: string;
   status: "running" | "completed" | "failed" | "idle";
   total: number;
   processed: number;
@@ -105,4 +105,10 @@ export interface ProcessingStatus {
   startedAt?: string;
   completedAt?: string;
   error?: string;
+  summary?: {  // 🔥 הוסף זה!
+    allowed: number;
+    gated: number;
+    restricted: number;
+    unknown: number;
+  };
 }

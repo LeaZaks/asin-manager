@@ -13,8 +13,9 @@ import { processingService } from "../services/processing.service";
 import { prisma } from "../lib/prisma";
 import { logger } from "../lib/logger";
 
-// Delay between individual ASIN calls to respect Amazon rate limits (~1 req/sec safe)
-const INTER_ASIN_DELAY_MS = 1100;
+// Process ASINs in parallel batches for speed
+const BATCH_SIZE = 5; // Process 5 ASINs concurrently
+const BATCH_DELAY_MS = 200; // Small delay between batches
 
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -27,40 +28,46 @@ async function processAsinJob(job: Job<AsinProcessingJobData>): Promise<void> {
 
   let processed = 0;
 
-  for (const asin of asins) {
-    try {
-      const status = await checkAsinEligibility(asin);
+  // Process in batches of 5 for parallel execution
+  for (let i = 0; i < asins.length; i += BATCH_SIZE) {
+    const batch = asins.slice(i, i + BATCH_SIZE);
+    
+    // Process all ASINs in batch concurrently
+    await Promise.all(
+      batch.map(async (asin) => {
+        try {
+          const status = await checkAsinEligibility(asin);
 
-      // Upsert SellerStatus
-      await prisma.sellerStatus.upsert({
-        where: { asin },
-        create: {
-          asin,
-          status: status as SellerStatusEnum,
-          checked_at: new Date(),
-        },
-        update: {
-          status: status as SellerStatusEnum,
-          checked_at: new Date(),
-        },
-      });
+          // Upsert SellerStatus
+          await prisma.sellerStatus.upsert({
+            where: { asin },
+            create: {
+              asin,
+              status: status as SellerStatusEnum,
+              checked_at: new Date(),
+            },
+            update: {
+              status: status as SellerStatusEnum,
+              checked_at: new Date(),
+            },
+          });
 
-      logger.info(`[Worker] ASIN ${asin}: ${status}`);
-    } catch (err) {
-      // Per-ASIN failure: log, do NOT update checked_at, continue to next
-      const message = err instanceof Error ? err.message : String(err);
-      logger.error(`[Worker] ASIN ${asin} failed: ${message}`);
-    }
+          logger.info(`[Worker] ASIN ${asin}: ${status}`);
+        } catch (err) {
+          // Per-ASIN failure: log, do NOT update checked_at, continue to next
+          const message = err instanceof Error ? err.message : String(err);
+          logger.error(`[Worker] ASIN ${asin} failed: ${message}`);
+        }
 
-    processed++;
-    await processingService.updateJobProgress(jobId, processed, totalCount);
+        processed++;
+        await processingService.updateJobProgress(jobId, processed, totalCount);
+        await job.updateProgress(Math.round((processed / totalCount) * 100));
+      })
+    );
 
-    // Update BullMQ job progress (visible in Bull Board)
-    await job.updateProgress(Math.round((processed / totalCount) * 100));
-
-    // Rate limiting delay between ASINs
-    if (processed < totalCount) {
-      await sleep(INTER_ASIN_DELAY_MS);
+    // Small delay between batches (not between individual ASINs!)
+    if (i + BATCH_SIZE < asins.length) {
+      await sleep(BATCH_DELAY_MS);
     }
   }
 

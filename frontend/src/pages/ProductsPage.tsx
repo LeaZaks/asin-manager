@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { productsApi, importApi, tagsApi } from "../api";
@@ -47,6 +47,11 @@ export function ProductsPage() {
     queryKey: ["tags"],
     queryFn: tagsApi.list,
   });
+
+  // 🔥 Refetch products when entering the page (e.g., coming back from Processing)
+  useEffect(() => {
+    qc.invalidateQueries({ queryKey: ["products"] });
+  }, []); // Only run once when component mounts
 
   const deleteMutation = useMutation({
     mutationFn: (asins: string[]) => productsApi.deleteMany(asins),
@@ -149,7 +154,11 @@ export function ProductsPage() {
           </button>
         </div>
         {importError && <p className="error-text">{importError}</p>}
-        {manualMutation.isSuccess && <p className="success-text">✓ ASIN added</p>}
+        {manualMutation.isSuccess && !manualMutation.isPending && (
+          <p className="success-text" style={{ animation: 'fadeIn 0.3s ease-out' }}>
+            ✓ ASIN added successfully
+          </p>
+        )}
       </div>
 
       {/* Filters */}
@@ -249,8 +258,85 @@ export function ProductsPage() {
         </div>
       )}
 
-      {importResult && (
-        <ImportSummaryModal result={importResult as Parameters<typeof ImportSummaryModal>[0]["result"]} onClose={() => setImportResult(null)} />
+      {/* Import Summary Modal - only after completion */}
+      {importResult && !csvMutation.isPending && (
+        <ImportSummaryModal 
+          result={importResult as Parameters<typeof ImportSummaryModal>[0]["result"]} 
+          isLoading={false}
+          onClose={() => {
+            setImportResult(null);
+            csvMutation.reset();
+          }} 
+        />
+      )}
+
+      {/* Toast during CSV import - non-blocking! */}
+      {csvMutation.isPending && (
+        <div style={{
+          position: 'fixed',
+          bottom: 24,
+          right: 24,
+          background: 'white',
+          padding: '20px 24px',
+          borderRadius: '12px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          minWidth: '280px',
+          zIndex: 1000,
+          animation: 'slideIn 0.3s ease-out',
+          border: '1px solid #e2e8f0'
+        }}>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <span className="spinner" style={{ width: 20, height: 20, borderWidth: 2 }} />
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '14px' }}>
+                📤 Importing CSV
+              </div>
+              <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+                Processing your file...
+              </div>
+            </div>
+          </div>
+          <div style={{ 
+            height: '4px', 
+            background: '#e2e8f0', 
+            borderRadius: '2px',
+            overflow: 'hidden'
+          }}>
+            <div style={{ 
+              height: '100%', 
+              background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
+              width: '100%',
+              animation: 'progress 1.5s ease-in-out infinite'
+            }} />
+          </div>
+        </div>
+      )}
+
+      {/* Toast for manual ASIN success */}
+      {manualMutation.isSuccess && !manualMutation.isPending && (
+        <div style={{
+          position: 'fixed',
+          bottom: 24,
+          right: 24,
+          background: '#22c55e',
+          color: 'white',
+          padding: '16px 24px',
+          borderRadius: '12px',
+          boxShadow: '0 8px 24px rgba(34, 197, 94, 0.4)',
+          display: 'flex',
+          gap: '12px',
+          alignItems: 'center',
+          fontSize: '14px',
+          fontWeight: 500,
+          zIndex: 1000,
+          animation: 'slideIn 0.3s ease-out'
+        }}>
+          <span>✅</span>
+          <span>ASIN added successfully!</span>
+        </div>
       )}
     </div>
   );

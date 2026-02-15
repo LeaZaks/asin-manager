@@ -1,7 +1,7 @@
 {
   "name": "asin-manager-backend",
   "version": "1.0.0",
-  "description": "ASIN Manager Backend \u2013 Node.js + Express + TypeScript + BullMQ",
+  "description": "ASIN Manager Backend – Node.js + Express + TypeScript + BullMQ",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
@@ -13,19 +13,21 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@bull-board/api": "^5.16.4",
+    "@bull-board/express": "^5.16.4",
     "@prisma/client": "^5.10.2",
+    "aws4": "^1.13.2",
+    "axios": "^1.13.5",
     "bullmq": "^5.4.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "express-async-errors": "^3.1.1",
+    "ioredis": "^5.3.2",
     "multer": "^1.4.5-lts.1",
     "papaparse": "^5.4.1",
-    "winston": "^3.12.0",
-    "@bull-board/api": "^5.16.4",
-    "@bull-board/express": "^5.16.4",
     "uuid": "^9.0.1",
-    "ioredis": "^5.3.2"
+    "winston": "^3.12.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -33,9 +35,9 @@
     "@types/multer": "^1.4.11",
     "@types/node": "^20.11.28",
     "@types/papaparse": "^5.3.14",
+    "@types/uuid": "^9.0.8",
     "prisma": "^5.10.2",
     "tsx": "^4.7.1",
-    "typescript": "^5.4.2",
-    "@types/uuid": "^9.0.8"
+    "typescript": "^5.4.2"
   }
 }

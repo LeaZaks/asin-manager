@@ -1,4 +1,6 @@
-import { logger } from "../lib/logger";
+import aws4 from "aws4";
+import axios from "axios";
+import { logger } from "./logger";
 
 export type SellerStatusResult =
   | "allowed"
@@ -7,129 +9,173 @@ export type SellerStatusResult =
   | "restricted"
   | "unknown";
 
-// Amazon SP-API response types (simplified for our use case)
-interface SPApiEligibilityResult {
-  marketplaceId: string;
-  asin: string;
-  eligibilityStatus: string; // "ELIGIBLE" | "NOT_ELIGIBLE"
-  reasons?: Array<{ reasonCode: string; message: string }>;
-}
+const HOST = "sellingpartnerapi-na.amazon.com";
+const REGION = "us-east-1";
+const MARKETPLACE_ID = "ATVPDKIKX0DER";
 
-// Retry configuration
+// Token caching
+let cachedToken: string | null = null;
+let tokenExpiresAt = 0;
+
 const MAX_RETRIES = 3;
-const INITIAL_BACKOFF_MS = 1000;
 
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
- * Fetches a fresh LWA access token using the refresh token flow.
+ * Get LWA access token (with caching)
  */
 async function getAccessToken(): Promise<string> {
-  const response = await fetch("https://api.amazon.com/auth/o2/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: process.env.AMAZON_SP_API_REFRESH_TOKEN ?? "",
-      client_id: process.env.AMAZON_SP_API_CLIENT_ID ?? "",
-      client_secret: process.env.AMAZON_SP_API_CLIENT_SECRET ?? "",
-    }),
-  });
+  const now = Date.now();
 
-  if (!response.ok) {
-    throw new Error(`LWA token fetch failed: ${response.status}`);
+  if (cachedToken && now < tokenExpiresAt) {
+    return cachedToken;
   }
 
-  const data = (await response.json()) as { access_token: string };
-  return data.access_token;
+  logger.info("[Amazon API] Fetching new access token");
+
+  try {
+    const response = await axios.post("https://api.amazon.com/auth/o2/token", {
+      grant_type: "refresh_token",
+      refresh_token: process.env.LWA_REFRESH_TOKEN ?? "",
+      client_id: process.env.LWA_CLIENT_ID ?? "",
+      client_secret: process.env.LWA_CLIENT_SECRET ?? "",
+    });
+
+    cachedToken = response.data.access_token;
+    tokenExpiresAt = now + (response.data.expires_in - 60) * 1000;
+
+    logger.info("[Amazon API] ✅ Access token refreshed successfully");
+    return cachedToken;
+  } catch (err: unknown) {
+    const error = err as { response?: { status?: number; data?: unknown }; message?: string };
+    
+    // Log detailed error information
+    logger.error("[Amazon API] ❌ LWA Token Error - Full Details:", {
+      status: error?.response?.status,
+      errorData: error?.response?.data,
+      message: error?.message,
+      // Show if credentials are set (but not the actual values)
+      hasClientId: !!process.env.LWA_CLIENT_ID,
+      hasClientSecret: !!process.env.LWA_CLIENT_SECRET,
+      hasRefreshToken: !!process.env.LWA_REFRESH_TOKEN,
+      refreshTokenLength: process.env.LWA_REFRESH_TOKEN?.length,
+    });
+    
+    throw new Error(`LWA token fetch failed: ${error?.response?.status}`);
+  }
 }
 
 /**
- * Check seller eligibility for a single ASIN via Amazon SP-API.
- * Implements retry with exponential backoff for rate limits.
+ * Make signed request to Amazon SP-API
+ */
+async function amazonRequest({ path, method = "GET" }: { path: string; method?: string }) {
+  const accessToken = await getAccessToken();
+
+  const opts: aws4.Request = {
+    host: HOST,
+    path,
+    service: "execute-api",
+    region: REGION,
+    method,
+    headers: {
+      "x-amz-access-token": accessToken,
+      "content-type": "application/json",
+    },
+  };
+
+  // Sign request with IAM credentials
+  aws4.sign(opts, {
+    accessKeyId: process.env.AWS_ACCESS_KEY ?? "",
+    secretAccessKey: process.env.AWS_SECRET_KEY ?? "",
+  });
+
+  const url = `https://${HOST}${path}`;
+
+  const res = await axios({
+    url,
+    method,
+    headers: opts.headers,
+  });
+
+  return res.data;
+}
+
+/**
+ * Check ASIN restriction status
  */
 export async function checkAsinEligibility(
   asin: string,
+  retries = MAX_RETRIES,
 ): Promise<SellerStatusResult> {
-  const marketplaceId =
-    process.env.AMAZON_SP_API_MARKETPLACE_ID ?? "ATVPDKIKX0DER";
+  const query = new URLSearchParams({
+    asin,
+    sellerId: process.env.SELLER_ID ?? "",
+    marketplaceIds: MARKETPLACE_ID,
+  }).toString();
 
-  let lastError: Error | null = null;
+  const path = `/listings/2021-08-01/restrictions?${query}`;
 
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const accessToken = await getAccessToken();
+  logger.info(`[Amazon API] Checking ASIN: ${asin}`);
 
-      const url = new URL(
-        `https://sellingpartnerapi-na.amazon.com/fba/inbound/v0/eligibility/itemPreview`,
-      );
-      url.searchParams.set("asin", asin);
-      url.searchParams.set("program", "INBOUND");
-      url.searchParams.set("marketplaceIds", marketplaceId);
+  try {
+    const data = await amazonRequest({ path });
+    
+    logger.info(`[Amazon API] ✅ Response for ${asin}:`, JSON.stringify(data));
 
-      const response = await fetch(url.toString(), {
-        headers: {
-          "x-amz-access-token": accessToken,
-          "Content-Type": "application/json",
-        },
-      });
-
-      // Rate limit – wait and retry
-      if (response.status === 429) {
-        const retryAfter = parseInt(
-          response.headers.get("retry-after") ?? "2",
-          10,
-        );
-        const waitMs = retryAfter * 1000 || INITIAL_BACKOFF_MS * Math.pow(2, attempt);
-        logger.warn(`[Amazon API] Rate limit for ASIN ${asin}, waiting ${waitMs}ms (attempt ${attempt})`);
-        await sleep(waitMs);
-        continue;
-      }
-
-      if (!response.ok) {
-        throw new Error(`SP-API error ${response.status}: ${await response.text()}`);
-      }
-
-      const data = (await response.json()) as {
-        payload: SPApiEligibilityResult;
-      };
-
-      return mapEligibilityToStatus(data.payload);
-    } catch (err) {
-      lastError = err instanceof Error ? err : new Error(String(err));
-      if (attempt < MAX_RETRIES) {
-        const backoff = INITIAL_BACKOFF_MS * Math.pow(2, attempt - 1);
-        logger.warn(`[Amazon API] Attempt ${attempt} failed for ASIN ${asin}: ${lastError.message}, retrying in ${backoff}ms`);
-        await sleep(backoff);
-      }
+    // No restrictions = allowed
+    if (!data?.restrictions || data.restrictions.length === 0) {
+      return "allowed";
     }
-  }
 
-  logger.error(`[Amazon API] All retries exhausted for ASIN ${asin}: ${lastError?.message}`);
-  throw lastError ?? new Error("Unknown error");
-}
+    // Check new_new condition
+    const newCondition = data.restrictions.find(
+      (r: { conditionType: string }) => r.conditionType === "new_new",
+    );
 
-function mapEligibilityToStatus(
-  result: SPApiEligibilityResult,
-): SellerStatusResult {
-  if (result.eligibilityStatus === "ELIGIBLE") {
-    return "allowed";
-  }
+    if (!newCondition) {
+      return "allowed";
+    }
 
-  const reasons = result.reasons ?? [];
-  const reasonCodes = reasons.map((r) => r.reasonCode);
+    const reasonCode = newCondition?.reasons?.[0]?.reasonCode;
 
-  if (reasonCodes.includes("GATED_BY_BRAND") || reasonCodes.includes("GATED_BY_CATEGORY")) {
-    return "gated";
-  }
-  if (reasonCodes.includes("REQUIRES_INVOICE")) {
-    return "requires_invoice";
-  }
-  if (reasonCodes.includes("INELIGIBLE")) {
-    return "restricted";
-  }
+    if (!reasonCode) {
+      return "allowed";
+    }
 
-  return "unknown";
+    // Map reason codes
+    if (reasonCode === "APPROVAL_REQUIRED") {
+      return "gated";
+    }
+    if (reasonCode === "NOT_ELIGIBLE") {
+      return "restricted";
+    }
+    if (reasonCode === "ASIN_NOT_FOUND") {
+      return "unknown";
+    }
+
+    return "unknown";
+
+  } catch (err: unknown) {
+    const error = err as { response?: { status?: number; data?: unknown }; message?: string };
+    const statusCode = error?.response?.status;
+
+    // Rate limit or server error - retry
+    if ((statusCode === 429 || (statusCode && statusCode >= 500)) && retries > 0) {
+      const delay = (MAX_RETRIES - retries + 1) * 1000;
+      logger.warn(`[Amazon API] Rate limit/error for ${asin}, retrying in ${delay}ms (${retries} left)`);
+      await sleep(delay);
+      return checkAsinEligibility(asin, retries - 1);
+    }
+
+    // Final failure
+    logger.error(`[Amazon API] ❌ Error for ${asin}:`, {
+      status: statusCode,
+      message: error?.message,
+      data: error?.response?.data,
+    });
+
+    return "unknown";
+  }
 }

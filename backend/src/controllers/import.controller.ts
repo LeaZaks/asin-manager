@@ -19,6 +19,7 @@ export const importController = {
 
     res.json({
       message: "Import completed",
+      jobId: summary.jobId, // 🔥 Return jobId
       summary: {
         importFileId: summary.importFileId,
         total_rows: summary.total_rows,
@@ -29,6 +30,18 @@ export const importController = {
         errors: summary.errors.slice(0, 50), // Return first 50 errors in response
       },
     });
+  },
+
+  // 🔥 New: Get import progress
+  async getProgress(req: Request, res: Response) {
+    const { jobId } = req.params;
+    const progress = await importService.getProgress(jobId);
+    
+    if (!progress) {
+      throw new AppError(404, "Import job not found");
+    }
+
+    res.json(progress);
   },
 
   async addManual(req: Request, res: Response) {
