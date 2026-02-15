@@ -46,16 +46,38 @@ th { padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; co
 th:hover { background: #f1f5f9; }
 td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; vertical-align: middle; }
 .asin-column { width: 220px; min-width: 220px; }
-.asin-cell-content { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
-.asin-link { display: inline-block; line-height: 1; color: #2563eb; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.asin-cell-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* רוחב קבוע ל-ASIN עצמו */
+.asin-link {
+  display: inline-block;
+  width: 95px;            /* זה הסוד ליישור */
+  line-height: 16px;
+  height: 16px;
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* האייקון */
+.amazon-link-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .asin-link:hover { color: #1d4ed8; }
-.amazon-link-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 5px; border: 1px solid #cbd5e1; background: #f8fafc; color: #64748b; line-height: 1; text-decoration: none; transition: all .15s ease; vertical-align: middle; }
-.amazon-link-icon:hover { border-color: #93c5fd; background: #eff6ff; color: #2563eb; }
-.amazon-link-icon.is-clicked { color: #16a34a; border-color: #86efac; background: #f0fdf4; }.asin-column { width: 220px; min-width: 220px; }
-.asin-cell-content { display: inline-flex; align-items: center; gap: 4px; width: 100%; }
-.asin-link { color: #2563eb; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-.asin-link:hover { color: #1d4ed8; }
-.amazon-link-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 5px; border: 1px solid #cbd5e1; background: #f8fafc; color: #64748b; font-size: 11px; line-height: 1; text-decoration: none; transition: all .15s ease; flex-shrink: 0; }
+
+.amazon-link-icon svg { display: block; width: 11px; height: 11px; }
 .amazon-link-icon:hover { border-color: #93c5fd; background: #eff6ff; color: #2563eb; }
 .amazon-link-icon.is-clicked { color: #16a34a; border-color: #86efac; background: #f0fdf4; }
 

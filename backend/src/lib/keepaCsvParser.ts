@@ -36,6 +36,10 @@ const KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = {
   "URL: Amazon": "amazon_url",
 };
 
+const NORMALIZED_KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = Object.fromEntries(
+  Object.entries(KEEPA_FIELD_MAP).map(([header, dbField]) => [normalizeHeader(header), dbField]),
+);
+
 export interface ParseResult {
   valid: UpsertProductData[];
   errors: Array<{ row: number; reason: string; rawData?: string }>;
@@ -65,13 +69,49 @@ function parseValue(
   }
 
   if (numericFields.includes(field)) {
-    const cleaned = raw.replace(/[,%$]/g, "").trim();
-    const num = Number(cleaned);
+    const num = parseNumeric(raw);  
     return isNaN(num) ? null : num;
   }
 
   return raw.trim();
 }
+
+
+function normalizeHeader(header: string): string {
+  return header.replace(/^\uFEFF/, "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function parseNumeric(raw: string): number {
+  const compact = raw.replace(/\s+/g, "").trim();
+  if (!compact) return NaN;
+
+  // Keepa values can include currency symbols and separators (for example: €1,234.56 or 1.234,56)
+  const sanitized = compact.replace(/[^0-9,.-]/g, "");
+  if (!sanitized) return NaN;
+
+  const commaCount = (sanitized.match(/,/g) || []).length;
+  const dotCount = (sanitized.match(/\./g) || []).length;
+
+  let normalized = sanitized;
+
+  if (commaCount > 0 && dotCount > 0) {
+    // Mixed separators: use the last separator as decimal and strip the other as thousands.
+    const lastComma = sanitized.lastIndexOf(",");
+    const lastDot = sanitized.lastIndexOf(".");
+
+    if (lastComma > lastDot) {
+      normalized = sanitized.replace(/\./g, "").replace(/,/g, ".");
+    } else {
+      normalized = sanitized.replace(/,/g, "");
+    }
+  } else if (commaCount > 0 && dotCount === 0) {
+    // Only commas: use comma as decimal separator.
+    normalized = sanitized.replace(/,/g, ".");
+  }
+
+  return Number(normalized);
+}
+
 
 export function parseKeepaCSV(csvBuffer: Buffer): ParseResult {
   const csvText = csvBuffer.toString("utf-8");
@@ -85,12 +125,17 @@ export function parseKeepaCSV(csvBuffer: Buffer): ParseResult {
   const errors: ParseResult["errors"] = [];
   const totalRows = parsed.data.length;
 
-  parsed.data.forEach((row, index) => {
-    const rowNumber = index + 2; // 1-indexed + header row
+  parsed.data.forEach((rawRow, index) => {
+        const rowNumber = index + 2; // 1-indexed + header row
+
+        const row: Record<string, string> = {};
+    for (const [key, value] of Object.entries(rawRow)) {
+      row[normalizeHeader(key)] = value;
+    }
 
     // ASIN is mandatory
-    const rawAsin = row["ASIN"] ?? "";
-    if (!rawAsin.trim()) {
+    const rawAsin = row[normalizeHeader("ASIN")] ?? "";
+        if (!rawAsin.trim()) {
       errors.push({ row: rowNumber, reason: "Missing ASIN", rawData: JSON.stringify(row) });
       return;
     }
@@ -98,10 +143,9 @@ export function parseKeepaCSV(csvBuffer: Buffer): ParseResult {
     // Build product record from known Keepa fields only
     const product: Partial<UpsertProductData> = {};
 
-    for (const [keepaHeader, dbField] of Object.entries(KEEPA_FIELD_MAP)) {
-      if (keepaHeader in row) {
-        const parsed = parseValue(dbField, row[keepaHeader] ?? "");
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    for (const [normalizedHeader, dbField] of Object.entries(NORMALIZED_KEEPA_FIELD_MAP)) {
+      if (normalizedHeader in row) {
+        const parsed = parseValue(dbField, row[normalizedHeader] ?? "");
         (product as any)[dbField] = parsed;
       }
     }

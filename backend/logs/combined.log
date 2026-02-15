@@ -44116,3 +44116,14 @@ Server has closed the connection.
 2026-02-15 01:42:44 [[32minfo[39m]: Server running on http://localhost:3001
 2026-02-15 01:42:44 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
 2026-02-15 01:42:44 [[32minfo[39m]: Redis connected
+2026-02-15 01:42:48 [[32minfo[39m]: [Worker] ASIN Processing Worker started, listening on queue: asin-processing
+2026-02-15 01:42:48 [[32minfo[39m]: Redis connected
+2026-02-15 02:00:22 [[32minfo[39m]: Server running on http://localhost:3001
+2026-02-15 02:00:22 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
+2026-02-15 02:00:22 [[32minfo[39m]: Redis connected
+2026-02-15 02:00:38 [[32minfo[39m]: Server running on http://localhost:3001
+2026-02-15 02:00:38 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
+2026-02-15 02:00:38 [[32minfo[39m]: Redis connected
+2026-02-15 02:00:53 [[32minfo[39m]: Server running on http://localhost:3001
+2026-02-15 02:00:53 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
+2026-02-15 02:00:53 [[32minfo[39m]: Redis connected
