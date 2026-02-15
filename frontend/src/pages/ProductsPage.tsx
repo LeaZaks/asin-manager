@@ -20,16 +20,16 @@ const SORT_FIELDS = [
 
 const PAGE_SIZE_OPTIONS = [100, 200, 500] as const;
 
-const AMAZON_CLICKED_KEY = "clickedAmazonAsins";
+const AMAZON_CLICKED_SESSION_KEY = "clickedAmazonAsins";
+const AMAZON_CLICKED_EVER_KEY = "clickedAmazonAsinsEver";
 
 function getAmazonUrl(product: Product) {
   return product.amazon_url?.trim() || `https://www.amazon.com/dp/${product.asin}?psc=1`;
 }
 
-function getSessionClickedAsins() {
-  if (typeof window === "undefined") return [];
+function getStoredAsins(storage: Storage, key: string): string[] {
   try {
-    const raw = sessionStorage.getItem(AMAZON_CLICKED_KEY);
+    const raw = storage.getItem(key);
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : [];
   } catch {
@@ -52,7 +52,8 @@ export function ProductsPage() {
 
   // Selection
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [clickedAmazonAsins, setClickedAmazonAsins] = useState<Set<string>>(() => new Set(getSessionClickedAsins()));
+  const [clickedAmazonAsins, setClickedAmazonAsins] = useState<Set<string>>(() => new Set(getStoredAsins(sessionStorage, AMAZON_CLICKED_SESSION_KEY)));
+  const [everClickedAsins, setEverClickedAsins] = useState<Set<string>>(() => new Set(getStoredAsins(localStorage, AMAZON_CLICKED_EVER_KEY)));
 
   // Import state
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -154,7 +155,14 @@ export function ProductsPage() {
       if (prev.has(asin)) return prev;
       const next = new Set(prev);
       next.add(asin);
-      sessionStorage.setItem(AMAZON_CLICKED_KEY, JSON.stringify(Array.from(next)));
+      sessionStorage.setItem(AMAZON_CLICKED_SESSION_KEY, JSON.stringify(Array.from(next)));
+      return next;
+    });
+    setEverClickedAsins((prev) => {
+      if (prev.has(asin)) return prev;
+      const next = new Set(prev);
+      next.add(asin);
+      localStorage.setItem(AMAZON_CLICKED_EVER_KEY, JSON.stringify(Array.from(next)));
       return next;
     });
   }
@@ -284,14 +292,13 @@ export function ProductsPage() {
                     <Link to={`/products/${product.asin}`} className="asin-link">{product.asin}</Link>
                     <a
                       href={getAmazonUrl(product)}
-                      className={`amazon-link-icon ${clickedAmazonAsins.has(product.asin) ? "is-clicked" : ""}`}
+                      className={`amazon-link-icon${clickedAmazonAsins.has(product.asin) ? " is-clicked" : everClickedAsins.has(product.asin) ? " was-clicked" : ""}`}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={`Open ${product.asin} on Amazon`}
-                      title={clickedAmazonAsins.has(product.asin) ? "Amazon link opened in this session" : "Open on Amazon"}
+                      title={clickedAmazonAsins.has(product.asin) ? "Opened this session" : everClickedAsins.has(product.asin) ? "Opened before" : "Open on Amazon"}
                       onClick={() => markAmazonClicked(product.asin)}
                     >
-                      ↗
                       <ExternalLink size={11} strokeWidth={2.25} />
                     </a>
                   </span>

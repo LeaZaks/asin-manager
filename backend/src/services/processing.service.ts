@@ -30,22 +30,35 @@ const JOB_STATUS_PREFIX = "asin:processing:status:";
 
 export const processingService = {
   async startProcessing(mode: ProcessingMode): Promise<{ jobId: string; totalAsins: number }> {
-    // Prevent double-run
-    const activeJobId = await redisConnection.get(ACTIVE_JOB_KEY);
-    if (activeJobId) {
-      const status = await processingService.getJobStatus(activeJobId);
-      if (status?.status === "running") {
+    const jobId = uuidv4();
+
+    // Atomic lock: SET NX prevents race conditions from multiple browsers/tabs
+    const lockAcquired = await redisConnection.set(ACTIVE_JOB_KEY, jobId, 'EX', 86400, 'NX');
+
+    if (!lockAcquired) {
+      // Key already exists — check if the existing job is still running
+      const existingJobId = await redisConnection.get(ACTIVE_JOB_KEY);
+      if (existingJobId) {
+        const existingStatus = await processingService.getJobStatus(existingJobId);
+        if (existingStatus?.status === "running") {
+          throw new Error("A processing job is already running. Please wait for it to complete.");
+        }
+      }
+      // Existing job is completed/failed/expired — clean up stale lock and retry
+      await redisConnection.del(ACTIVE_JOB_KEY);
+      const retryLock = await redisConnection.set(ACTIVE_JOB_KEY, jobId, 'EX', 86400, 'NX');
+      if (!retryLock) {
         throw new Error("A processing job is already running. Please wait for it to complete.");
       }
     }
 
     const products = await productsRepository.findAsinsForProcessing(mode);
     if (products.length === 0) {
+      await redisConnection.del(ACTIVE_JOB_KEY);
       throw new Error("No ASINs found for the selected processing mode.");
     }
 
     const asins = products.map((p) => p.asin);
-    const jobId = uuidv4();
 
     // Store initial status in Redis
     const initialStatus: ProcessingJobStatus = {
@@ -63,7 +76,6 @@ export const processingService = {
       86400, // TTL: 24 hours
       JSON.stringify(initialStatus),
     );
-    await redisConnection.setex(ACTIVE_JOB_KEY, 86400, jobId);
 
     // Enqueue job
     const jobData: AsinProcessingJobData = { jobId, asins, totalCount: asins.length };
