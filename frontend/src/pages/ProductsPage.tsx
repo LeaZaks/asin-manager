@@ -363,6 +363,7 @@ export function ProductsPage() {
                   <span className="asin-cell-content">
                     <Link to={`/products/${product.asin}`} className="asin-link">{product.asin}</Link>
                     <a
+                                          href={getAmazonUrl(product)}
                       className={`amazon-link-icon ${clickedAmazonAsins.has(product.asin) ? "is-clicked" : ""}`}
                       target="_blank"
                       rel="noreferrer"

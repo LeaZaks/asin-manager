@@ -3529,3 +3529,26 @@ Server has closed the connection.
 2026-02-15 17:32:18 [[31merror[39m]: [Worker] Worker error: Missing lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e. moveToFinished
 2026-02-15 17:32:18 [[31merror[39m]: [Worker] Worker error: Missing lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e. moveToDelayed
 2026-02-15 17:33:44 [[31merror[39m]: [Worker] Job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e failed: job stalled more than allowable limit
+2026-02-15 17:42:32 [[31merror[39m]: Prisma error: 
+Invalid `prisma.productTag.createMany()` invocation in
+C:\Dev\asin-manager\backend\src\services\import.service.ts:150:31
+
+  147   create: { name: HAZMAT_TAG_NAME, type: "warning" },
+  148 });
+  149 
+→ 150 await prisma.productTag.createMany(
+Foreign key constraint violated: `product_tags_asin_fkey (index)`
+2026-02-15 17:42:32 [[31merror[39m]: PrismaClientKnownRequestError: 
+Invalid `prisma.productTag.createMany()` invocation in
+C:\Dev\asin-manager\backend\src\services\import.service.ts:150:31
+
+  147   create: { name: HAZMAT_TAG_NAME, type: "warning" },
+  148 });
+  149 
+→ 150 await prisma.productTag.createMany(
+Foreign key constraint violated: `product_tags_asin_fkey (index)`
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async processCSVImport (C:\Dev\asin-manager\backend\src\services\import.service.ts:150:7)

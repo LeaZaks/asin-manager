@@ -51563,3 +51563,553 @@ Server has closed the connection.
 2026-02-15 17:32:44 [[32minfo[39m]: [Worker] ASIN Processing Worker started, listening on queue: asin-processing
 2026-02-15 17:32:44 [[32minfo[39m]: Redis connected
 2026-02-15 17:33:44 [[31merror[39m]: [Worker] Job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e failed: job stalled more than allowable limit
+2026-02-15 17:34:54 [[32minfo[39m]: [Worker] ASIN Processing Worker started, listening on queue: asin-processing
+2026-02-15 17:34:54 [[32minfo[39m]: Redis connected
+2026-02-15 17:34:58 [[32minfo[39m]: Server running on http://localhost:3001
+2026-02-15 17:34:58 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
+2026-02-15 17:34:58 [[32minfo[39m]: Redis connected
+2026-02-15 17:37:48 [[32minfo[39m]: CSV parse: 1000 total rows, 1000 valid, 0 errors
+2026-02-15 17:37:56 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 1/100 done — 10/1000
+2026-02-15 17:37:59 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 2/100 done — 20/1000
+2026-02-15 17:38:01 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 3/100 done — 30/1000
+2026-02-15 17:38:04 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 4/100 done — 40/1000
+2026-02-15 17:38:07 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 5/100 done — 50/1000
+2026-02-15 17:38:10 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 6/100 done — 60/1000
+2026-02-15 17:38:13 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 7/100 done — 70/1000
+2026-02-15 17:38:15 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 8/100 done — 80/1000
+2026-02-15 17:38:18 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 9/100 done — 90/1000
+2026-02-15 17:38:21 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 10/100 done — 100/1000
+2026-02-15 17:38:24 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 11/100 done — 110/1000
+2026-02-15 17:38:27 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 12/100 done — 120/1000
+2026-02-15 17:38:30 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 13/100 done — 130/1000
+2026-02-15 17:38:33 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 14/100 done — 140/1000
+2026-02-15 17:38:35 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 15/100 done — 150/1000
+2026-02-15 17:38:38 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 16/100 done — 160/1000
+2026-02-15 17:38:41 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 17/100 done — 170/1000
+2026-02-15 17:38:43 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 18/100 done — 180/1000
+2026-02-15 17:38:46 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 19/100 done — 190/1000
+2026-02-15 17:38:49 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 20/100 done — 200/1000
+2026-02-15 17:38:52 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 21/100 done — 210/1000
+2026-02-15 17:38:55 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 22/100 done — 220/1000
+2026-02-15 17:38:58 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 23/100 done — 230/1000
+2026-02-15 17:39:01 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 24/100 done — 240/1000
+2026-02-15 17:39:03 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 25/100 done — 250/1000
+2026-02-15 17:39:07 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 26/100 done — 260/1000
+2026-02-15 17:39:09 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 27/100 done — 270/1000
+2026-02-15 17:39:11 [[32minfo[39m]: Processing job 093b58b1-504a-489a-8945-d224f3b4808e enqueued with 745 ASINs (mode: unchecked)
+2026-02-15 17:39:11 [[32minfo[39m]: [Worker] Starting job 093b58b1-504a-489a-8945-d224f3b4808e – 745 ASINs
+2026-02-15 17:39:11 [[32minfo[39m]: [Amazon API] Checking ASIN: B0006HXPZY
+2026-02-15 17:39:11 [[32minfo[39m]: [Amazon API] Fetching new access token
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Checking ASIN: B0006HXQ0S
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Fetching new access token
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Checking ASIN: B0006HXQNK
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Fetching new access token
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Checking ASIN: B0006HXQOO
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Fetching new access token
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Checking ASIN: B000KNJQH0
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] Fetching new access token
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Access token refreshed successfully
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Access token refreshed successfully
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Access token refreshed successfully
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Access token refreshed successfully
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Access token refreshed successfully
+2026-02-15 17:39:12 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 28/100 done — 280/1000
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Response for B000KNJQH0:
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Response for B0006HXQ0S:
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Response for B0006HXQOO:
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Response for B0006HXQNK:
+2026-02-15 17:39:12 [[32minfo[39m]: [Amazon API] ✅ Response for B0006HXPZY:
+2026-02-15 17:39:14 [[32minfo[39m]: [Worker] ASIN B0006HXQOO: gated
+2026-02-15 17:39:15 [[32minfo[39m]: [Worker] ASIN B0006HXQNK: gated
+2026-02-15 17:39:15 [[32minfo[39m]: [Worker] ASIN B000KNJQH0: gated
+2026-02-15 17:39:15 [[32minfo[39m]: [Worker] ASIN B0006HXQ0S: gated
+2026-02-15 17:39:15 [[32minfo[39m]: [Worker] ASIN B0006HXPZY: gated
+2026-02-15 17:39:15 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 29/100 done — 290/1000
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] Checking ASIN: B000XZXQUS
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] Checking ASIN: B0015UJ2D0
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] Checking ASIN: B001K66DMC
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] Checking ASIN: B0027A3DN2
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] Checking ASIN: B0027A5EJS
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] ✅ Response for B0015UJ2D0:
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] ✅ Response for B000XZXQUS:
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] ✅ Response for B0027A5EJS:
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] ✅ Response for B0027A3DN2:
+2026-02-15 17:39:15 [[32minfo[39m]: [Amazon API] ✅ Response for B001K66DMC:
+2026-02-15 17:39:16 [[32minfo[39m]: [Worker] ASIN B0027A3DN2: gated
+2026-02-15 17:39:16 [[32minfo[39m]: [Worker] ASIN B000XZXQUS: gated
+2026-02-15 17:39:16 [[32minfo[39m]: [Worker] ASIN B001K66DMC: gated
+2026-02-15 17:39:16 [[32minfo[39m]: [Worker] ASIN B0027A5EJS: gated
+2026-02-15 17:39:16 [[32minfo[39m]: [Worker] ASIN B0015UJ2D0: gated
+2026-02-15 17:39:16 [[32minfo[39m]: [Amazon API] Checking ASIN: B0027RN0JW
+2026-02-15 17:39:16 [[32minfo[39m]: [Amazon API] Checking ASIN: B0039KNAC8
+2026-02-15 17:39:16 [[32minfo[39m]: [Amazon API] Checking ASIN: B003EDDZWK
+2026-02-15 17:39:16 [[32minfo[39m]: [Amazon API] Checking ASIN: B003Y7FQIC
+2026-02-15 17:39:16 [[32minfo[39m]: [Amazon API] Checking ASIN: B0044S9EDI
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] ✅ Response for B0027RN0JW:
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] ✅ Response for B0039KNAC8:
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] ✅ Response for B003Y7FQIC:
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] ✅ Response for B003EDDZWK:
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] ✅ Response for B0044S9EDI:
+2026-02-15 17:39:17 [[32minfo[39m]: [Worker] ASIN B0044S9EDI: gated
+2026-02-15 17:39:17 [[32minfo[39m]: [Worker] ASIN B003Y7FQIC: gated
+2026-02-15 17:39:17 [[32minfo[39m]: [Worker] ASIN B0039KNAC8: gated
+2026-02-15 17:39:17 [[32minfo[39m]: [Worker] ASIN B0027RN0JW: gated
+2026-02-15 17:39:17 [[32minfo[39m]: [Worker] ASIN B003EDDZWK: gated
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] Checking ASIN: B004N84B1O
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] Checking ASIN: B005E9KAHA
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] Checking ASIN: B005E9M79Y
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] Checking ASIN: B00DEF2S1C
+2026-02-15 17:39:17 [[32minfo[39m]: [Amazon API] Checking ASIN: B00MEWVDMG
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] ✅ Response for B004N84B1O:
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] ✅ Response for B005E9KAHA:
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] ✅ Response for B00DEF2S1C:
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] ✅ Response for B005E9M79Y:
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] ✅ Response for B00MEWVDMG:
+2026-02-15 17:39:18 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 30/100 done — 300/1000
+2026-02-15 17:39:18 [[32minfo[39m]: [Worker] ASIN B00DEF2S1C: gated
+2026-02-15 17:39:18 [[32minfo[39m]: [Worker] ASIN B00MEWVDMG: gated
+2026-02-15 17:39:18 [[32minfo[39m]: [Worker] ASIN B005E9M79Y: gated
+2026-02-15 17:39:18 [[32minfo[39m]: [Worker] ASIN B004N84B1O: gated
+2026-02-15 17:39:18 [[32minfo[39m]: [Worker] ASIN B005E9KAHA: gated
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] Checking ASIN: B00OA3WT16
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] Checking ASIN: B00OV56XUQ
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] Checking ASIN: B00ZRTXKTM
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] Checking ASIN: B01LZ7PGP5
+2026-02-15 17:39:18 [[32minfo[39m]: [Amazon API] Checking ASIN: B01MFGALN9
+2026-02-15 17:39:19 [[32minfo[39m]: [Amazon API] ✅ Response for B00OA3WT16:
+2026-02-15 17:39:19 [[32minfo[39m]: [Amazon API] ✅ Response for B01LZ7PGP5:
+2026-02-15 17:39:19 [[32minfo[39m]: [Amazon API] ✅ Response for B00ZRTXKTM:
+2026-02-15 17:39:19 [[32minfo[39m]: [Amazon API] ✅ Response for B00OV56XUQ:
+2026-02-15 17:39:19 [[32minfo[39m]: [Amazon API] ✅ Response for B01MFGALN9:
+2026-02-15 17:39:19 [[32minfo[39m]: [Worker] ASIN B01LZ7PGP5: gated
+2026-02-15 17:39:19 [[32minfo[39m]: [Worker] ASIN B00ZRTXKTM: gated
+2026-02-15 17:39:19 [[32minfo[39m]: [Worker] ASIN B00OV56XUQ: gated
+2026-02-15 17:39:19 [[32minfo[39m]: [Worker] ASIN B00OA3WT16: gated
+2026-02-15 17:39:19 [[32minfo[39m]: [Worker] ASIN B01MFGALN9: gated
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] Checking ASIN: B01MXNYTC4
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] Checking ASIN: B06WWPPT9V
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] Checking ASIN: B071GRG26Y
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] Checking ASIN: B072K388V9
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] Checking ASIN: B073Z93GBN
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] ✅ Response for B073Z93GBN:
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] ✅ Response for B01MXNYTC4:
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] ✅ Response for B06WWPPT9V:
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] ✅ Response for B072K388V9:
+2026-02-15 17:39:20 [[32minfo[39m]: [Amazon API] ✅ Response for B071GRG26Y:
+2026-02-15 17:39:21 [[32minfo[39m]: [Worker] ASIN B072K388V9: gated
+2026-02-15 17:39:21 [[32minfo[39m]: [Worker] ASIN B071GRG26Y: gated
+2026-02-15 17:39:21 [[32minfo[39m]: [Worker] ASIN B073Z93GBN: restricted
+2026-02-15 17:39:21 [[32minfo[39m]: [Worker] ASIN B06WWPPT9V: gated
+2026-02-15 17:39:21 [[32minfo[39m]: [Worker] ASIN B01MXNYTC4: gated
+2026-02-15 17:39:21 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 31/100 done — 310/1000
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] Checking ASIN: B076DB2D8S
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] Checking ASIN: B0787G3WPW
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] Checking ASIN: B07BC16NX7
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] Checking ASIN: B07BC4HGPJ
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] Checking ASIN: B07CVSQ4Q7
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] ✅ Response for B0787G3WPW:
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] ✅ Response for B07BC16NX7:
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] ✅ Response for B07BC4HGPJ:
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] ✅ Response for B076DB2D8S:
+2026-02-15 17:39:21 [[32minfo[39m]: [Amazon API] ✅ Response for B07CVSQ4Q7:
+2026-02-15 17:39:22 [[32minfo[39m]: [Worker] ASIN B07BC4HGPJ: gated
+2026-02-15 17:39:22 [[32minfo[39m]: [Worker] ASIN B0787G3WPW: gated
+2026-02-15 17:39:22 [[32minfo[39m]: [Worker] ASIN B076DB2D8S: gated
+2026-02-15 17:39:22 [[32minfo[39m]: [Worker] ASIN B07BC16NX7: gated
+2026-02-15 17:39:22 [[32minfo[39m]: [Worker] ASIN B07CVSQ4Q7: gated
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] Checking ASIN: B07D3CXPNB
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] Checking ASIN: B07K8NTW2L
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] Checking ASIN: B07LGG4DY7
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] Checking ASIN: B07N7B56SZ
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] Checking ASIN: B07N7F19WW
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] ✅ Response for B07LGG4DY7:
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] ✅ Response for B07K8NTW2L:
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] ✅ Response for B07N7B56SZ:
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] ✅ Response for B07D3CXPNB:
+2026-02-15 17:39:22 [[32minfo[39m]: [Amazon API] ✅ Response for B07N7F19WW:
+2026-02-15 17:39:23 [[32minfo[39m]: [Worker] ASIN B07N7B56SZ: restricted
+2026-02-15 17:39:23 [[32minfo[39m]: [Worker] ASIN B07LGG4DY7: gated
+2026-02-15 17:39:23 [[32minfo[39m]: [Worker] ASIN B07K8NTW2L: gated
+2026-02-15 17:39:23 [[32minfo[39m]: [Worker] ASIN B07D3CXPNB: gated
+2026-02-15 17:39:23 [[32minfo[39m]: [Worker] ASIN B07N7F19WW: restricted
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] Checking ASIN: B07N7MSXGK
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] Checking ASIN: B07NJBP61C
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] Checking ASIN: B07NJDLDZH
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] Checking ASIN: B07QM9YJMB
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] Checking ASIN: B07QRB6XYQ
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] ✅ Response for B07NJDLDZH:
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] ✅ Response for B07NJBP61C:
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] ✅ Response for B07N7MSXGK:
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] ✅ Response for B07QM9YJMB:
+2026-02-15 17:39:23 [[32minfo[39m]: [Amazon API] ✅ Response for B07QRB6XYQ:
+2026-02-15 17:39:23 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 32/100 done — 320/1000
+2026-02-15 17:39:24 [[32minfo[39m]: [Worker] ASIN B07QM9YJMB: gated
+2026-02-15 17:39:24 [[32minfo[39m]: [Worker] ASIN B07NJDLDZH: restricted
+2026-02-15 17:39:24 [[32minfo[39m]: [Worker] ASIN B07N7MSXGK: restricted
+2026-02-15 17:39:24 [[32minfo[39m]: [Worker] ASIN B07NJBP61C: restricted
+2026-02-15 17:39:24 [[32minfo[39m]: [Worker] ASIN B07QRB6XYQ: gated
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] Checking ASIN: B07QRMQFKZ
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] Checking ASIN: B07RSQXSGY
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] Checking ASIN: B07RT1FHBR
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] Checking ASIN: B07WG7KSQ2
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] Checking ASIN: B081K3RJHK
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] ✅ Response for B081K3RJHK:
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] ✅ Response for B07QRMQFKZ:
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] ✅ Response for B07RT1FHBR:
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] ✅ Response for B07RSQXSGY:
+2026-02-15 17:39:24 [[32minfo[39m]: [Amazon API] ✅ Response for B07WG7KSQ2:
+2026-02-15 17:39:25 [[32minfo[39m]: [Worker] ASIN B081K3RJHK: restricted
+2026-02-15 17:39:25 [[32minfo[39m]: [Worker] ASIN B07RT1FHBR: gated
+2026-02-15 17:39:25 [[32minfo[39m]: [Worker] ASIN B07QRMQFKZ: gated
+2026-02-15 17:39:25 [[32minfo[39m]: [Worker] ASIN B07RSQXSGY: restricted
+2026-02-15 17:39:25 [[32minfo[39m]: [Worker] ASIN B07WG7KSQ2: gated
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] Checking ASIN: B081K3TFG8
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] Checking ASIN: B081K3TPSM
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] Checking ASIN: B081K49H7N
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] Checking ASIN: B081TFSNNT
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] Checking ASIN: B081TGYT12
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] ✅ Response for B081K3TPSM:
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] ✅ Response for B081TFSNNT:
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] ✅ Response for B081K49H7N:
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] ✅ Response for B081TGYT12:
+2026-02-15 17:39:25 [[32minfo[39m]: [Amazon API] ✅ Response for B081K3TFG8:
+2026-02-15 17:39:26 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 33/100 done — 330/1000
+2026-02-15 17:39:26 [[32minfo[39m]: [Worker] ASIN B081TFSNNT: restricted
+2026-02-15 17:39:26 [[32minfo[39m]: [Worker] ASIN B081K3TPSM: restricted
+2026-02-15 17:39:26 [[32minfo[39m]: [Worker] ASIN B081TGYT12: restricted
+2026-02-15 17:39:26 [[32minfo[39m]: [Worker] ASIN B081K49H7N: restricted
+2026-02-15 17:39:26 [[32minfo[39m]: [Worker] ASIN B081K3TFG8: restricted
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] Checking ASIN: B081VPM9M3
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] Checking ASIN: B086BJ69H4
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] Checking ASIN: B08BTJPYDS
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] Checking ASIN: B08BTSJVRQ
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] Checking ASIN: B08BTZTTNP
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] ✅ Response for B086BJ69H4:
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] ✅ Response for B081VPM9M3:
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] ✅ Response for B08BTZTTNP:
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] ✅ Response for B08BTJPYDS:
+2026-02-15 17:39:26 [[32minfo[39m]: [Amazon API] ✅ Response for B08BTSJVRQ:
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08BTJPYDS: restricted
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B086BJ69H4: gated
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08BTZTTNP: restricted
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B081VPM9M3: restricted
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08BTSJVRQ: restricted
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] Checking ASIN: B08BV1HJMW
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] Checking ASIN: B08JCD4PS6
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] Checking ASIN: B08N9FFJ8M
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] Checking ASIN: B08NB4GR32
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] Checking ASIN: B08P15G82L
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] ✅ Response for B08NB4GR32:
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] ✅ Response for B08N9FFJ8M:
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] ✅ Response for B08P15G82L:
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] ✅ Response for B08JCD4PS6:
+2026-02-15 17:39:27 [[32minfo[39m]: [Amazon API] ✅ Response for B08BV1HJMW:
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08NB4GR32: gated
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08P15G82L: restricted
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08N9FFJ8M: gated
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08JCD4PS6: gated
+2026-02-15 17:39:27 [[32minfo[39m]: [Worker] ASIN B08BV1HJMW: restricted
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] Checking ASIN: B08P17V4T8
+2026-02-15 17:39:28 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 34/100 done — 340/1000
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] Checking ASIN: B08R5ZXPG3
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] Checking ASIN: B08R636Z5L
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] Checking ASIN: B08R64FP68
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] Checking ASIN: B08R64M2H7
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] ✅ Response for B08P17V4T8:
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] ✅ Response for B08R64M2H7:
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] ✅ Response for B08R64FP68:
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] ✅ Response for B08R5ZXPG3:
+2026-02-15 17:39:28 [[32minfo[39m]: [Amazon API] ✅ Response for B08R636Z5L:
+2026-02-15 17:39:29 [[32minfo[39m]: [Worker] ASIN B08R64FP68: restricted
+2026-02-15 17:39:29 [[32minfo[39m]: [Worker] ASIN B08R64M2H7: restricted
+2026-02-15 17:39:29 [[32minfo[39m]: [Worker] ASIN B08R636Z5L: restricted
+2026-02-15 17:39:29 [[32minfo[39m]: [Worker] ASIN B08R5ZXPG3: restricted
+2026-02-15 17:39:29 [[32minfo[39m]: [Worker] ASIN B08P17V4T8: restricted
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] Checking ASIN: B08R72S5MQ
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] Checking ASIN: B08RN238DY
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] Checking ASIN: B08SCC5JH7
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] Checking ASIN: B08XWLFLZK
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] Checking ASIN: B08YDDCBDZ
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] ✅ Response for B08RN238DY:
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] ✅ Response for B08XWLFLZK:
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] ✅ Response for B08SCC5JH7:
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] ✅ Response for B08R72S5MQ:
+2026-02-15 17:39:29 [[32minfo[39m]: [Amazon API] ✅ Response for B08YDDCBDZ:
+2026-02-15 17:39:30 [[32minfo[39m]: [Worker] ASIN B08YDDCBDZ: gated
+2026-02-15 17:39:30 [[32minfo[39m]: [Worker] ASIN B08R72S5MQ: restricted
+2026-02-15 17:39:30 [[32minfo[39m]: [Worker] ASIN B08RN238DY: restricted
+2026-02-15 17:39:30 [[32minfo[39m]: [Worker] ASIN B08XWLFLZK: restricted
+2026-02-15 17:39:30 [[32minfo[39m]: [Worker] ASIN B08SCC5JH7: restricted
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] Checking ASIN: B08Z2VBMC9
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] Checking ASIN: B08ZNCTMC1
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] Checking ASIN: B092D2YB8R
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] Checking ASIN: B096MS523F
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] Checking ASIN: B099Q1XSYJ
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] ✅ Response for B08ZNCTMC1:
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] ✅ Response for B08Z2VBMC9:
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] ✅ Response for B096MS523F:
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] ✅ Response for B099Q1XSYJ:
+2026-02-15 17:39:30 [[32minfo[39m]: [Amazon API] ✅ Response for B092D2YB8R:
+2026-02-15 17:39:30 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 35/100 done — 350/1000
+2026-02-15 17:39:31 [[32minfo[39m]: [Worker] ASIN B08ZNCTMC1: gated
+2026-02-15 17:39:31 [[32minfo[39m]: [Worker] ASIN B08Z2VBMC9: gated
+2026-02-15 17:39:31 [[32minfo[39m]: [Worker] ASIN B096MS523F: gated
+2026-02-15 17:39:31 [[32minfo[39m]: [Worker] ASIN B099Q1XSYJ: restricted
+2026-02-15 17:39:31 [[32minfo[39m]: [Worker] ASIN B092D2YB8R: gated
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] Checking ASIN: B09BQ2B1BK
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] Checking ASIN: B09BVW659P
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] Checking ASIN: B09BVX7LR9
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] Checking ASIN: B09HN7Y6ZW
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] Checking ASIN: B09J7WN27F
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] ✅ Response for B09BVX7LR9:
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] ✅ Response for B09BQ2B1BK:
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] ✅ Response for B09BVW659P:
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] ✅ Response for B09HN7Y6ZW:
+2026-02-15 17:39:31 [[32minfo[39m]: [Amazon API] ✅ Response for B09J7WN27F:
+2026-02-15 17:39:32 [[32minfo[39m]: [Worker] ASIN B09BVX7LR9: restricted
+2026-02-15 17:39:32 [[32minfo[39m]: [Worker] ASIN B09BQ2B1BK: restricted
+2026-02-15 17:39:32 [[32minfo[39m]: [Worker] ASIN B09BVW659P: restricted
+2026-02-15 17:39:32 [[32minfo[39m]: [Worker] ASIN B09HN7Y6ZW: restricted
+2026-02-15 17:39:32 [[32minfo[39m]: [Worker] ASIN B09J7WN27F: gated
+2026-02-15 17:39:32 [[32minfo[39m]: [Amazon API] Checking ASIN: B09KG8CXJV
+2026-02-15 17:39:32 [[32minfo[39m]: [Amazon API] Checking ASIN: B09NL2R96X
+2026-02-15 17:39:32 [[32minfo[39m]: [Amazon API] Checking ASIN: B09SFZKHK1
+2026-02-15 17:39:32 [[32minfo[39m]: [Amazon API] Checking ASIN: B09VC8S65L
+2026-02-15 17:39:32 [[32minfo[39m]: [Amazon API] Checking ASIN: B09VYGTFP5
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] ✅ Response for B09VC8S65L:
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] ✅ Response for B09KG8CXJV:
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] ✅ Response for B09SFZKHK1:
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] ✅ Response for B09NL2R96X:
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] ✅ Response for B09VYGTFP5:
+2026-02-15 17:39:33 [[32minfo[39m]: [Worker] ASIN B09VYGTFP5: gated
+2026-02-15 17:39:33 [[32minfo[39m]: [Worker] ASIN B09VC8S65L: restricted
+2026-02-15 17:39:33 [[32minfo[39m]: [Worker] ASIN B09KG8CXJV: restricted
+2026-02-15 17:39:33 [[32minfo[39m]: [Worker] ASIN B09SFZKHK1: gated
+2026-02-15 17:39:33 [[32minfo[39m]: [Worker] ASIN B09NL2R96X: gated
+2026-02-15 17:39:33 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 36/100 done — 360/1000
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] Checking ASIN: B09W5NFGJJ
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] Checking ASIN: B09W5PHZRG
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] Checking ASIN: B09W5QPK5F
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] Checking ASIN: B09Y18WRFT
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] Checking ASIN: B09Y1W66VV
+2026-02-15 17:39:33 [[32minfo[39m]: [Amazon API] ✅ Response for B09Y1W66VV:
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] ✅ Response for B09Y18WRFT:
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] ✅ Response for B09W5PHZRG:
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] ✅ Response for B09W5QPK5F:
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] ✅ Response for B09W5NFGJJ:
+2026-02-15 17:39:34 [[32minfo[39m]: [Worker] ASIN B09Y1W66VV: gated
+2026-02-15 17:39:34 [[32minfo[39m]: [Worker] ASIN B09W5NFGJJ: restricted
+2026-02-15 17:39:34 [[32minfo[39m]: [Worker] ASIN B09Y18WRFT: gated
+2026-02-15 17:39:34 [[32minfo[39m]: [Worker] ASIN B09W5PHZRG: restricted
+2026-02-15 17:39:34 [[32minfo[39m]: [Worker] ASIN B09W5QPK5F: restricted
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] Checking ASIN: B09YWRL7QX
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] Checking ASIN: B09YWVNZL7
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] Checking ASIN: B09YX5DW8J
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] Checking ASIN: B09YX67BY8
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] Checking ASIN: B09YX9VVGN
+2026-02-15 17:39:34 [[32minfo[39m]: [Amazon API] ✅ Response for B09YX67BY8:
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] ✅ Response for B09YX9VVGN:
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] ✅ Response for B09YWVNZL7:
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] ✅ Response for B09YWRL7QX:
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] ✅ Response for B09YX5DW8J:
+2026-02-15 17:39:35 [[32minfo[39m]: [Worker] ASIN B09YX5DW8J: gated
+2026-02-15 17:39:35 [[32minfo[39m]: [Worker] ASIN B09YX67BY8: gated
+2026-02-15 17:39:35 [[32minfo[39m]: [Worker] ASIN B09YX9VVGN: gated
+2026-02-15 17:39:35 [[32minfo[39m]: [Worker] ASIN B09YWVNZL7: gated
+2026-02-15 17:39:35 [[32minfo[39m]: [Worker] ASIN B09YWRL7QX: gated
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] Checking ASIN: B09ZQQ6N9D
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] Checking ASIN: B09ZQQG5KN
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] Checking ASIN: B09ZQRH285
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] Checking ASIN: B09ZTVK63W
+2026-02-15 17:39:35 [[32minfo[39m]: [Amazon API] Checking ASIN: B0B1CQ38VK
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] ✅ Response for B09ZQQ6N9D:
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] ✅ Response for B09ZQQG5KN:
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] ✅ Response for B0B1CQ38VK:
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] ✅ Response for B09ZTVK63W:
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] ✅ Response for B09ZQRH285:
+2026-02-15 17:39:36 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 37/100 done — 370/1000
+2026-02-15 17:39:36 [[32minfo[39m]: [Worker] ASIN B09ZQQ6N9D: gated
+2026-02-15 17:39:36 [[32minfo[39m]: [Worker] ASIN B09ZTVK63W: restricted
+2026-02-15 17:39:36 [[32minfo[39m]: [Worker] ASIN B09ZQRH285: restricted
+2026-02-15 17:39:36 [[32minfo[39m]: [Worker] ASIN B0B1CQ38VK: gated
+2026-02-15 17:39:36 [[32minfo[39m]: [Worker] ASIN B09ZQQG5KN: restricted
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] Checking ASIN: B0B3QSDYRL
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] Checking ASIN: B0B6Z9W4P7
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] Checking ASIN: B0B79JKMTN
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] Checking ASIN: B0B8D631TL
+2026-02-15 17:39:36 [[32minfo[39m]: [Amazon API] Checking ASIN: B0B8DGMNKZ
+2026-02-15 17:39:37 [[32minfo[39m]: [Amazon API] ✅ Response for B0B6Z9W4P7:
+2026-02-15 17:39:37 [[32minfo[39m]: [Amazon API] ✅ Response for B0B3QSDYRL:
+2026-02-15 17:39:37 [[32minfo[39m]: [Amazon API] ✅ Response for B0B8DGMNKZ:
+2026-02-15 17:39:37 [[32minfo[39m]: [Amazon API] ✅ Response for B0B8D631TL:
+2026-02-15 17:39:37 [[32minfo[39m]: [Amazon API] ✅ Response for B0B79JKMTN:
+2026-02-15 17:39:37 [[32minfo[39m]: [Worker] ASIN B0B6Z9W4P7: restricted
+2026-02-15 17:39:37 [[32minfo[39m]: [Worker] ASIN B0B3QSDYRL: restricted
+2026-02-15 17:39:37 [[32minfo[39m]: [Worker] ASIN B0B79JKMTN: restricted
+2026-02-15 17:39:37 [[32minfo[39m]: [Worker] ASIN B0B8DGMNKZ: gated
+2026-02-15 17:39:37 [[32minfo[39m]: [Worker] ASIN B0B8D631TL: gated
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BN45SZTM
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BN4623R6
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BN46864T
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BN477JVX
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BN48G898
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] ✅ Response for B0BN46864T:
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] ✅ Response for B0BN4623R6:
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] ✅ Response for B0BN48G898:
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] ✅ Response for B0BN45SZTM:
+2026-02-15 17:39:38 [[32minfo[39m]: [Amazon API] ✅ Response for B0BN477JVX:
+2026-02-15 17:39:38 [[32minfo[39m]: [Worker] ASIN B0BN46864T: restricted
+2026-02-15 17:39:38 [[32minfo[39m]: [Worker] ASIN B0BN48G898: restricted
+2026-02-15 17:39:38 [[32minfo[39m]: [Worker] ASIN B0BN45SZTM: restricted
+2026-02-15 17:39:38 [[32minfo[39m]: [Worker] ASIN B0BN4623R6: restricted
+2026-02-15 17:39:38 [[32minfo[39m]: [Worker] ASIN B0BN477JVX: restricted
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BRR4XYMJ
+2026-02-15 17:39:39 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 38/100 done — 380/1000
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BRR54Z26
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BRR591FQ
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BRRNG894
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BTKDZFB2
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] ✅ Response for B0BRR4XYMJ:
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] ✅ Response for B0BRRNG894:
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] ✅ Response for B0BRR54Z26:
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] ✅ Response for B0BTKDZFB2:
+2026-02-15 17:39:39 [[32minfo[39m]: [Amazon API] ✅ Response for B0BRR591FQ:
+2026-02-15 17:39:40 [[32minfo[39m]: [Worker] ASIN B0BRR591FQ: restricted
+2026-02-15 17:39:40 [[32minfo[39m]: [Worker] ASIN B0BRR54Z26: restricted
+2026-02-15 17:39:40 [[32minfo[39m]: [Worker] ASIN B0BRR4XYMJ: restricted
+2026-02-15 17:39:40 [[32minfo[39m]: [Worker] ASIN B0BTKDZFB2: gated
+2026-02-15 17:39:40 [[32minfo[39m]: [Worker] ASIN B0BRRNG894: restricted
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BTNG4VC4
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BVZ6SHYJ
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BWF5BVYV
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BWQB88LK
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BX34RRR1
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] ✅ Response for B0BWF5BVYV:
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] ✅ Response for B0BWQB88LK:
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] ✅ Response for B0BX34RRR1:
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] ✅ Response for B0BTNG4VC4:
+2026-02-15 17:39:40 [[32minfo[39m]: [Amazon API] ✅ Response for B0BVZ6SHYJ:
+2026-02-15 17:39:41 [[32minfo[39m]: [Worker] ASIN B0BWF5BVYV: restricted
+2026-02-15 17:39:41 [[32minfo[39m]: [Worker] ASIN B0BX34RRR1: gated
+2026-02-15 17:39:41 [[32minfo[39m]: [Worker] ASIN B0BWQB88LK: gated
+2026-02-15 17:39:41 [[32minfo[39m]: [Worker] ASIN B0BTNG4VC4: gated
+2026-02-15 17:39:41 [[32minfo[39m]: [Worker] ASIN B0BVZ6SHYJ: restricted
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BX65J2N1
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BXD7PC2G
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BXNYQVBF
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BXS34FHL
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BXSH9BL8
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] ✅ Response for B0BX65J2N1:
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] ✅ Response for B0BXS34FHL:
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] ✅ Response for B0BXD7PC2G:
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] ✅ Response for B0BXNYQVBF:
+2026-02-15 17:39:41 [[32minfo[39m]: [Amazon API] ✅ Response for B0BXSH9BL8:
+2026-02-15 17:39:41 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 39/100 done — 390/1000
+2026-02-15 17:39:42 [[32minfo[39m]: [Worker] ASIN B0BXD7PC2G: restricted
+2026-02-15 17:39:42 [[32minfo[39m]: [Worker] ASIN B0BXS34FHL: restricted
+2026-02-15 17:39:42 [[32minfo[39m]: [Worker] ASIN B0BX65J2N1: restricted
+2026-02-15 17:39:42 [[32minfo[39m]: [Worker] ASIN B0BXNYQVBF: gated
+2026-02-15 17:39:42 [[32minfo[39m]: [Worker] ASIN B0BXSH9BL8: restricted
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BYMB6B91
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BZ52KXRT
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BZ8SB54C
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] Checking ASIN: B0BZZ2FQXB
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] Checking ASIN: B0C2PZ7TWX
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] ✅ Response for B0BZ52KXRT:
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] ✅ Response for B0C2PZ7TWX:
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] ✅ Response for B0BYMB6B91:
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] ✅ Response for B0BZZ2FQXB:
+2026-02-15 17:39:42 [[32minfo[39m]: [Amazon API] ✅ Response for B0BZ8SB54C:
+2026-02-15 17:39:42 [[32minfo[39m]: [Processing] Cancel flag set for job 093b58b1-504a-489a-8945-d224f3b4808e
+2026-02-15 17:39:43 [[32minfo[39m]: [Worker] ASIN B0BZ52KXRT: restricted
+2026-02-15 17:39:43 [[32minfo[39m]: [Worker] ASIN B0C2PZ7TWX: gated
+2026-02-15 17:39:43 [[32minfo[39m]: [Worker] ASIN B0BZZ2FQXB: gated
+2026-02-15 17:39:43 [[32minfo[39m]: [Worker] ASIN B0BYMB6B91: restricted
+2026-02-15 17:39:43 [[32minfo[39m]: [Worker] ASIN B0BZ8SB54C: gated
+2026-02-15 17:39:43 [[32minfo[39m]: [Worker] Job 093b58b1-504a-489a-8945-d224f3b4808e cancelled by user at 135/745
+2026-02-15 17:39:43 [[32minfo[39m]: [Processing] Job 093b58b1-504a-489a-8945-d224f3b4808e cancelled (135/745 processed)
+2026-02-15 17:39:43 [[32minfo[39m]: [Worker] Job 093b58b1-504a-489a-8945-d224f3b4808e completed
+2026-02-15 17:39:44 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 40/100 done — 400/1000
+2026-02-15 17:39:47 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 41/100 done — 410/1000
+2026-02-15 17:39:50 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 42/100 done — 420/1000
+2026-02-15 17:39:53 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 43/100 done — 430/1000
+2026-02-15 17:39:55 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 44/100 done — 440/1000
+2026-02-15 17:39:58 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 45/100 done — 450/1000
+2026-02-15 17:40:00 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 46/100 done — 460/1000
+2026-02-15 17:40:03 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 47/100 done — 470/1000
+2026-02-15 17:40:07 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 48/100 done — 480/1000
+2026-02-15 17:40:09 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 49/100 done — 490/1000
+2026-02-15 17:40:13 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 50/100 done — 500/1000
+2026-02-15 17:40:15 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 51/100 done — 510/1000
+2026-02-15 17:40:18 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 52/100 done — 520/1000
+2026-02-15 17:40:21 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 53/100 done — 530/1000
+2026-02-15 17:40:24 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 54/100 done — 540/1000
+2026-02-15 17:40:26 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 55/100 done — 550/1000
+2026-02-15 17:40:29 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 56/100 done — 560/1000
+2026-02-15 17:40:32 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 57/100 done — 570/1000
+2026-02-15 17:40:34 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 58/100 done — 580/1000
+2026-02-15 17:40:37 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 59/100 done — 590/1000
+2026-02-15 17:40:40 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 60/100 done — 600/1000
+2026-02-15 17:40:42 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 61/100 done — 610/1000
+2026-02-15 17:40:45 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 62/100 done — 620/1000
+2026-02-15 17:40:48 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 63/100 done — 630/1000
+2026-02-15 17:40:50 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 64/100 done — 640/1000
+2026-02-15 17:40:53 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 65/100 done — 650/1000
+2026-02-15 17:40:56 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 66/100 done — 660/1000
+2026-02-15 17:40:59 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 67/100 done — 670/1000
+2026-02-15 17:41:02 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 68/100 done — 680/1000
+2026-02-15 17:41:05 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 69/100 done — 690/1000
+2026-02-15 17:41:07 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 70/100 done — 700/1000
+2026-02-15 17:41:10 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 71/100 done — 710/1000
+2026-02-15 17:41:13 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 72/100 done — 720/1000
+2026-02-15 17:41:16 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 73/100 done — 730/1000
+2026-02-15 17:41:18 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 74/100 done — 740/1000
+2026-02-15 17:41:22 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 75/100 done — 750/1000
+2026-02-15 17:41:25 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 76/100 done — 760/1000
+2026-02-15 17:41:27 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 77/100 done — 770/1000
+2026-02-15 17:41:30 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 78/100 done — 780/1000
+2026-02-15 17:41:33 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 79/100 done — 790/1000
+2026-02-15 17:41:35 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 80/100 done — 800/1000
+2026-02-15 17:41:38 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 81/100 done — 810/1000
+2026-02-15 17:41:41 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 82/100 done — 820/1000
+2026-02-15 17:41:44 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 83/100 done — 830/1000
+2026-02-15 17:41:46 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 84/100 done — 840/1000
+2026-02-15 17:41:49 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 85/100 done — 850/1000
+2026-02-15 17:41:52 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 86/100 done — 860/1000
+2026-02-15 17:41:54 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 87/100 done — 870/1000
+2026-02-15 17:41:57 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 88/100 done — 880/1000
+2026-02-15 17:42:00 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 89/100 done — 890/1000
+2026-02-15 17:42:02 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 90/100 done — 900/1000
+2026-02-15 17:42:05 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 91/100 done — 910/1000
+2026-02-15 17:42:08 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 92/100 done — 920/1000
+2026-02-15 17:42:11 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 93/100 done — 930/1000
+2026-02-15 17:42:14 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 94/100 done — 940/1000
+2026-02-15 17:42:17 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 95/100 done — 950/1000
+2026-02-15 17:42:19 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 96/100 done — 960/1000
+2026-02-15 17:42:22 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 97/100 done — 970/1000
+2026-02-15 17:42:24 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 98/100 done — 980/1000
+2026-02-15 17:42:27 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 99/100 done — 990/1000
+2026-02-15 17:42:30 [[32minfo[39m]: [import:9d089b5b-912b-4ba2-8f08-15720b10c62b] Batch 100/100 done — 1000/1000
+2026-02-15 17:42:32 [[31merror[39m]: Prisma error: 
+Invalid `prisma.productTag.createMany()` invocation in
+C:\Dev\asin-manager\backend\src\services\import.service.ts:150:31
+
+  147   create: { name: HAZMAT_TAG_NAME, type: "warning" },
+  148 });
+  149 
+→ 150 await prisma.productTag.createMany(
+Foreign key constraint violated: `product_tags_asin_fkey (index)`
+2026-02-15 17:42:32 [[31merror[39m]: PrismaClientKnownRequestError: 
+Invalid `prisma.productTag.createMany()` invocation in
+C:\Dev\asin-manager\backend\src\services\import.service.ts:150:31
+
+  147   create: { name: HAZMAT_TAG_NAME, type: "warning" },
+  148 });
+  149 
+→ 150 await prisma.productTag.createMany(
+Foreign key constraint violated: `product_tags_asin_fkey (index)`
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async processCSVImport (C:\Dev\asin-manager\backend\src\services\import.service.ts:150:7)
