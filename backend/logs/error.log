@@ -3290,3 +3290,242 @@ Server has closed the connection.
 2026-02-15 01:27:20 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
 2026-02-15 01:27:21 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
 2026-02-15 01:27:21 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 13:35:05 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
+    at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:58:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
+2026-02-15 13:39:00 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
+    at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:58:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
+2026-02-15 15:40:57 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
+    at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:58:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
+2026-02-15 17:03:12 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
+    at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:44:13)
+    at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:58 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:29:58 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:30:00 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:30:00 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+2026-02-15 17:30:00 [[31merror[39m]: PrismaClientKnownRequestError: 
+Invalid `prisma.product.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:113:31
+
+  110 const results = await prisma.$transaction(
+  111   records.map((record) => {
+  112     const data = normalizeProductData(record);
+→ 113     return prisma.product.upsert(
+Server has closed the connection.
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:58 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 17:29:58 [[31merror[39m]: Prisma error: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:58 [[31merror[39m]: [Worker] ASIN B0CN818LBZ failed: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:58 [[31merror[39m]: Prisma error: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:58 [[31merror[39m]: [Worker] ASIN B0CN7YX1Z2 failed: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: [Worker] ASIN B0CN81QBQ5 failed: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: [Worker] ASIN B0CN826WHJ failed: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:29:59 [[31merror[39m]: Prisma error: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:30:00 [[31merror[39m]: [Worker] ASIN B0CN7Z3RVZ failed: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-15 17:30:00 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:30:08 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:30:15 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:30:23 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:30:30 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:30:38 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:30:45 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:30:53 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:00 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:08 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:15 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:23 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:30 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:38 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:45 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:31:53 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:32:00 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:32:08 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:32:15 [[31merror[39m]: [Worker] Worker error: could not renew lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e
+2026-02-15 17:32:18 [[31merror[39m]: [Worker] Worker error: Missing lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e. moveToFinished
+2026-02-15 17:32:18 [[31merror[39m]: [Worker] Worker error: Missing lock for job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e. moveToDelayed
+2026-02-15 17:33:44 [[31merror[39m]: [Worker] Job 0237df6f-3df5-4134-bf5a-4f4f5a99a65e failed: job stalled more than allowable limit
