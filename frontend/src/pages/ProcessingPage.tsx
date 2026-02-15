@@ -149,24 +149,22 @@ const isIdle = !status || status.status === "idle" || (status.status === "runnin
         </div>
       )}
 
-      {/* Summary Section */}
-      <div className="card">
-        <h2>
-          {status?.status === 'completed' ? '📊 Processing Summary' : 'How it works'}
-        </h2>
-
-        {status?.status === 'completed' ? (
-          // Show results summary after completion
+      {/* Real-time Summary Section - shown during running and after completion */}
+      {(status?.status === 'running' || status?.status === 'completed') && status?.summary && (
+        <div className="card">
+          <h2>
+            {status.status === 'completed' ? '📊 Processing Summary' : '📊 Live Summary'}
+          </h2>
           <div style={{ marginTop: '1rem' }}>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
               gap: '1rem',
               marginBottom: '1rem'
             }}>
-              <div style={{ 
-                padding: '1rem', 
-                background: '#f0f9ff', 
+              <div style={{
+                padding: '1rem',
+                background: '#f0f9ff',
                 borderRadius: '8px',
                 border: '1px solid #bae6fd'
               }}>
@@ -174,13 +172,13 @@ const isIdle = !status || status.status === "idle" || (status.status === "runnin
                   Total Processed
                 </div>
                 <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#0c4a6e' }}>
-                  {status?.processed}
+                  {status.processed}
                 </div>
               </div>
 
-              <div style={{ 
-                padding: '1rem', 
-                background: '#f0fdf4', 
+              <div style={{
+                padding: '1rem',
+                background: '#f0fdf4',
                 borderRadius: '8px',
                 border: '1px solid #86efac'
               }}>
@@ -188,13 +186,13 @@ const isIdle = !status || status.status === "idle" || (status.status === "runnin
                   ✅ Allowed
                 </div>
                 <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#166534' }}>
-                  {status?.summary?.allowed || 0}
+                  {status.summary.allowed || 0}
                 </div>
               </div>
 
-              <div style={{ 
-                padding: '1rem', 
-                background: '#fefce8', 
+              <div style={{
+                padding: '1rem',
+                background: '#fefce8',
                 borderRadius: '8px',
                 border: '1px solid #fde047'
               }}>
@@ -202,13 +200,13 @@ const isIdle = !status || status.status === "idle" || (status.status === "runnin
                   🟡 Gated
                 </div>
                 <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#854d0e' }}>
-                  {status?.summary?.gated || 0}
+                  {status.summary.gated || 0}
                 </div>
               </div>
 
-              <div style={{ 
-                padding: '1rem', 
-                background: '#fef2f2', 
+              <div style={{
+                padding: '1rem',
+                background: '#fef2f2',
                 borderRadius: '8px',
                 border: '1px solid #fca5a5'
               }}>
@@ -216,13 +214,18 @@ const isIdle = !status || status.status === "idle" || (status.status === "runnin
                   🔴 Restricted
                 </div>
                 <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#991b1b' }}>
-                  {status?.summary?.restricted || 0}
+                  {status.summary.restricted || 0}
                 </div>
               </div>
             </div>
           </div>
-        ) : (
-          // Show "How it works" before/during processing
+        </div>
+      )}
+
+      {/* How it works - shown when idle */}
+      {isIdle && (
+        <div className="card">
+          <h2>How it works</h2>
           <div style={{ marginTop: '1rem', color: '#6b7280', fontSize: '0.875rem' }}>
             <p>
               Processing runs as a <strong>background job</strong> via BullMQ queue – not in your browser.
@@ -237,8 +240,8 @@ const isIdle = !status || status.status === "idle" || (status.status === "runnin
               Failed ASINs are skipped (not marked as checked) and can be retried in a future run.
             </p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

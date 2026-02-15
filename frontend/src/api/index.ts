@@ -93,6 +93,6 @@ export const tagsApi = {
 
 // ── Evaluations ───────────────────────────────────────────────────────────────
 export const evaluationsApi = {
-  upsert: (asin: string, score: number, note?: string) =>
+  upsert: (asin: string, score: number | null, note?: string) =>
     api.put<ProductEvaluation>(`/evaluations/${asin}`, { score, note }).then((r) => r.data),
 };

@@ -5,7 +5,16 @@ import { AppError } from "../middleware/errorHandler";
 export const evaluationsController = {
   async upsertEvaluation(req: Request, res: Response) {
     const { asin } = req.params;
-    const { score, note } = req.body as { score?: number; note?: string };
+    const { score, note } = req.body as { score?: number | null; note?: string };
+
+    // score=null means "clear the evaluation"
+    if (score === null) {
+      await prisma.productEvaluation.deleteMany({
+        where: { asin: asin.toUpperCase() },
+      });
+      res.json({ deleted: true, asin: asin.toUpperCase() });
+      return;
+    }
 
     if (score === undefined) throw new AppError(400, "score is required");
     if (!Number.isInteger(score) || score < 1 || score > 5) {

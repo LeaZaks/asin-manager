@@ -80,8 +80,8 @@ export const processingService = {
 
     const status = JSON.parse(raw) as ProcessingJobStatus;
 
-    // If completed, add summary
-    if (status.status === "completed") {
+    // Add summary for both running and completed states (real-time counts)
+    if (status.status === "running" || status.status === "completed") {
       const summary = await processingService.getJobSummary(jobId);
       return { ...status, summary };
     }
