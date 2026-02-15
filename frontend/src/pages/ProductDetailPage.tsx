@@ -144,6 +144,7 @@ export function ProductDetailPage() {
             <KeepaRow label="Category Root" value={product.category_root ?? undefined} />
             <KeepaRow label="Category Sub" value={product.category_sub ?? undefined} />
             <KeepaRow label="Brand" value={product.brand ?? undefined} />
+            <KeepaRow label="Amazon URL" value={product.amazon_url || `https://www.amazon.com/dp/${product.asin}?psc=1`} isLink />
             <KeepaRow label="Is HazMat" value={product.is_hazmat != null ? (product.is_hazmat ? "Yes ⚠️" : "No") : undefined} />
             <KeepaRow label="Is Heat Sensitive" value={product.is_heat_sensitive != null ? (product.is_heat_sensitive ? "Yes" : "No") : undefined} />
             <KeepaRow label="Package Weight" value={product.package_weight_g != null ? `${product.package_weight_g}g` : undefined} />
@@ -155,11 +156,9 @@ export function ProductDetailPage() {
   );
 }
 
-function KeepaRow({ label, value }: { label: string; value?: string }) {
-  return (
+function KeepaRow({ label, value, isLink = false }: { label: string; value?: string; isLink?: boolean }) {  return (
     <div>
       <span style={{ color: "#64748b" }}>{label}: </span>
-      <span style={{ fontWeight: 500 }}>{value ?? <span className="text-muted">—</span>}</span>
     </div>
   );
 }

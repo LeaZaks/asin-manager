@@ -33,6 +33,7 @@ const KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = {
   "Package: Quantity": "package_quantity",
   "Is HazMat": "is_hazmat",
   "Is heat sensitive": "is_heat_sensitive",
+  "URL: Amazon": "amazon_url",
 };
 
 export interface ParseResult {

@@ -18,6 +18,18 @@ export type UpsertProductData = Omit<
   "sellerStatus" | "evaluation" | "productTags"
 >;
 
+
+function buildAmazonUrl(asin: string): string {
+  return `https://www.amazon.com/dp/${asin}?psc=1`;
+}
+
+function normalizeProductData(data: UpsertProductData): UpsertProductData {
+  return {
+    ...data,
+    amazon_url: data.amazon_url?.trim() || buildAmazonUrl(data.asin),
+  };
+}
+
 // ── Repository ────────────────────────────────────────────────────────────────
 export const productsRepository = {
   async findMany(params: ProductListParams) {
@@ -84,13 +96,14 @@ export const productsRepository = {
 
   async upsertMany(records: UpsertProductData[]) {
     const results = await prisma.$transaction(
-      records.map((data) =>
-        prisma.product.upsert({
+      records.map((record) => {
+        const data = normalizeProductData(record);
+        return prisma.product.upsert({
           where: { asin: data.asin },
           create: data,
           update: data,
-        }),
-      ),
+        });
+      }),
     );
     return results;
   },

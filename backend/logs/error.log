@@ -3216,3 +3216,66 @@ Validation Error Count: 1
 2026-02-13 14:18:52 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
 2026-02-13 14:18:52 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
 2026-02-13 14:18:52 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:06:41 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
+    at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:44:13)
+    at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:30 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:21:31 [[31merror[39m]: Prisma error: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-14 23:21:31 [[31merror[39m]: [Worker] ASIN B000063TSM failed: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-14 23:21:31 [[31merror[39m]: Prisma error: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-14 23:21:31 [[31merror[39m]: [Worker] ASIN B001CFLGEG failed: 
+Invalid `prisma.sellerStatus.upsert()` invocation in
+C:\Dev\asin-manager\backend\src\workers\asinProcessor.worker.ts:42:37
+
+  39 const status = await checkAsinEligibility(asin);
+  40 
+  41 // Upsert SellerStatus
+→ 42 await prisma.sellerStatus.upsert(
+Server has closed the connection.
+2026-02-14 23:21:31 [[31merror[39m]: [Worker] Worker error: could not renew lock for job aff41f03-06f0-4fd3-9efa-a48458402505
+2026-02-14 23:21:39 [[31merror[39m]: [Worker] Worker error: could not renew lock for job aff41f03-06f0-4fd3-9efa-a48458402505
+2026-02-14 23:21:46 [[31merror[39m]: [Worker] Worker error: could not renew lock for job aff41f03-06f0-4fd3-9efa-a48458402505
+2026-02-14 23:21:54 [[31merror[39m]: [Worker] Worker error: could not renew lock for job aff41f03-06f0-4fd3-9efa-a48458402505
+2026-02-14 23:22:01 [[31merror[39m]: [Worker] Worker error: could not renew lock for job aff41f03-06f0-4fd3-9efa-a48458402505
+2026-02-14 23:22:09 [[31merror[39m]: [Worker] Worker error: could not renew lock for job aff41f03-06f0-4fd3-9efa-a48458402505
+2026-02-14 23:22:12 [[31merror[39m]: [Worker] Worker error: Missing lock for job aff41f03-06f0-4fd3-9efa-a48458402505. moveToFinished
+2026-02-14 23:22:12 [[31merror[39m]: [Worker] Worker error: Missing lock for job aff41f03-06f0-4fd3-9efa-a48458402505. moveToDelayed
+2026-02-14 23:31:32 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:31:32 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:31:32 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:31:33 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:31:33 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:31:33 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-14 23:31:33 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }

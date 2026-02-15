@@ -50,6 +50,7 @@ model Product {
   package_quantity        Int?
   is_hazmat               Boolean?
   is_heat_sensitive       Boolean?
+  amazon_url              String?
 
   // שדות טכניים
   created_at              DateTime  @default(now())

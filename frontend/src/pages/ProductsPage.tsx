@@ -3,7 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { productsApi, importApi, tagsApi } from "../api";
 import type { Product, Tag } from "../types";
-import { ScoreDisplay } from "../components/ScoreDisplay";
 import { ScoreEditor } from "../components/ScoreEditor";
 import { TagChips } from "../components/TagChips";
 import { ImportSummaryModal } from "../components/ImportSummaryModal";
@@ -18,6 +17,24 @@ const SORT_FIELDS = [
   { value: "rating", label: "Rating" },
 ];
 
+const AMAZON_CLICKED_KEY = "clickedAmazonAsins";
+
+function getAmazonUrl(product: Product) {
+  return product.amazon_url?.trim() || `https://www.amazon.com/dp/${product.asin}?psc=1`;
+}
+
+function getSessionClickedAsins() {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = sessionStorage.getItem(AMAZON_CLICKED_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+
 export function ProductsPage() {
   const qc = useQueryClient();
 
@@ -31,6 +48,7 @@ export function ProductsPage() {
 
   // Selection
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [clickedAmazonAsins, setClickedAmazonAsins] = useState<Set<string>>(() => new Set(getSessionClickedAsins()));
 
   // Import state
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -95,6 +113,17 @@ export function ProductsPage() {
       setSelected(new Set(data.items.map((p) => p.asin)));
     }
   }
+
+  function markAmazonClicked(asin: string) {
+    setClickedAmazonAsins((prev) => {
+      if (prev.has(asin)) return prev;
+      const next = new Set(prev);
+      next.add(asin);
+      sessionStorage.setItem(AMAZON_CLICKED_KEY, JSON.stringify(Array.from(next)));
+      return next;
+    });
+  }
+
 
   function handleSort(field: string) {
     if (sortBy === field) {
@@ -215,7 +244,27 @@ export function ProductsPage() {
             {data?.items.map((product: Product) => (
               <tr key={product.asin} className={selected.has(product.asin) ? "tr-selected" : ""}>
                 <td><input type="checkbox" className="checkbox" checked={selected.has(product.asin)} onChange={() => toggleSelect(product.asin)} /></td>
-                <td><Link to={`/products/${product.asin}`} style={{ color: "#3b82f6", fontWeight: 600 }}>{product.asin}</Link></td>
+                <td>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                    <Link to={`/products/${product.asin}`} style={{ color: "#3b82f6", fontWeight: 600 }}>{product.asin}</Link>
+                    <a
+                      href={getAmazonUrl(product)}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Open ${product.asin} on Amazon`}
+                      title={clickedAmazonAsins.has(product.asin) ? "Amazon link opened in this session" : "Open on Amazon"}
+                      onClick={() => markAmazonClicked(product.asin)}
+                      style={{
+                        color: clickedAmazonAsins.has(product.asin) ? "#22c55e" : "#94a3b8",
+                        fontSize: 13,
+                        lineHeight: 1,
+                        textDecoration: "none",
+                      }}
+                    >
+                      ↗
+                    </a>
+                  </span>
+                </td>
                 <td>{product.brand ?? <span className="text-muted">—</span>}</td>
                 <td>{product.sales_rank_current?.toLocaleString() ?? <span className="text-muted">—</span>}</td>
                 <td>{product.buybox_price != null ? `$${product.buybox_price.toFixed(2)}` : <span className="text-muted">—</span>}</td>
