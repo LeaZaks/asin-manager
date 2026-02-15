@@ -6,6 +6,7 @@ import { ProductsPage } from "./pages/ProductsPage";
 import { ProcessingPage } from "./pages/ProcessingPage";
 import { TagsPage } from "./pages/TagsPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { ImportToastProvider } from "./components/ImportToastProvider";
 import "./styles.css";
 
 const queryClient = new QueryClient({
@@ -41,15 +42,17 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Navigate to="/products" replace />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:asin" element={<ProductDetailPage />} />
-            <Route path="/processing" element={<ProcessingPage />} />
-            <Route path="/tags" element={<TagsPage />} />
-          </Routes>
-        </Layout>
+        <ImportToastProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Navigate to="/products" replace />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:asin" element={<ProductDetailPage />} />
+              <Route path="/processing" element={<ProcessingPage />} />
+              <Route path="/tags" element={<TagsPage />} />
+            </Routes>
+          </Layout>
+        </ImportToastProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>,

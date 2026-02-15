@@ -35,4 +35,12 @@ export const processingController = {
     if (!status) throw new AppError(404, `Job ${jobId} not found`);
     res.json(status);
   },
+
+  async cancelJob(_req: Request, res: Response) {
+    const result = await processingService.cancelJob();
+    if (!result.cancelled) {
+      throw new AppError(400, "No active processing job to cancel");
+    }
+    res.json({ message: "Cancellation requested", jobId: result.jobId });
+  },
 };

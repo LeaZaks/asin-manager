@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Square } from "lucide-react";
 import { processingApi } from "../api";
 import type { ProcessingStatus } from "../types";
 
@@ -48,6 +49,13 @@ export function ProcessingPage() {
     },
   });
 
+  const cancelMutation = useMutation({
+    mutationFn: () => processingApi.cancel(),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["processing-status"] });
+    },
+  });
+
   const isRunning = status?.status === "running" && status.total > 0;
 const isIdle = !status || status.status === "idle" || (status.status === "running" && status.total === 0);
 
@@ -75,22 +83,41 @@ const isIdle = !status || status.status === "idle" || (status.status === "runnin
         <p style={{ fontSize: 13, color: "#64748b", marginBottom: 16 }}>
           {MODES.find((m) => m.value === selectedMode)?.description}
         </p>
-        <button
-          className="btn btn-success"
-          onClick={() => startMutation.mutate(selectedMode)}
-          disabled={isRunning || startMutation.isPending}
-          style={{ minWidth: 160 }}
-        >
-          {startMutation.isPending ? (
-            <><span className="spinner" /> Starting...</>
-          ) : isRunning ? (
-            "⏳ Running..."
-          ) : (
-            "▶ Start Processing"
+        <div className="flex gap-2">
+          <button
+            className="btn btn-success"
+            onClick={() => startMutation.mutate(selectedMode)}
+            disabled={isRunning || startMutation.isPending}
+            style={{ minWidth: 160 }}
+          >
+            {startMutation.isPending ? (
+              <><span className="spinner" /> Starting...</>
+            ) : isRunning ? (
+              "Running..."
+            ) : (
+              "Start Processing"
+            )}
+          </button>
+          {isRunning && (
+            <button
+              className="btn-stop"
+              onClick={() => {
+                if (confirm("Are you sure you want to stop the processing? ASINs already processed will keep their results.")) {
+                  cancelMutation.mutate();
+                }
+              }}
+              disabled={cancelMutation.isPending}
+            >
+              <Square size={14} />
+              {cancelMutation.isPending ? "Stopping..." : "Stop Processing"}
+            </button>
           )}
-        </button>
+        </div>
         {startMutation.isError && (
           <p className="error-text">{(startMutation.error as Error).message}</p>
+        )}
+        {cancelMutation.isError && (
+          <p className="error-text">{(cancelMutation.error as Error).message}</p>
         )}
       </div>
 

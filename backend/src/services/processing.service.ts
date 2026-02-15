@@ -27,6 +27,7 @@ export interface ProcessingJobStatus {
 
 const ACTIVE_JOB_KEY = "asin:processing:active_job_id";
 const JOB_STATUS_PREFIX = "asin:processing:status:";
+const CANCEL_FLAG_PREFIX = "asin:processing:cancel:";
 
 export const processingService = {
   async startProcessing(mode: ProcessingMode): Promise<{ jobId: string; totalAsins: number }> {
@@ -162,5 +163,45 @@ export const processingService = {
 
     await redisConnection.setex(key, 86400, JSON.stringify(status));
     await redisConnection.del(ACTIVE_JOB_KEY);
+  },
+
+  async cancelJob(): Promise<{ cancelled: boolean; jobId?: string }> {
+    const activeJobId = await redisConnection.get(ACTIVE_JOB_KEY);
+    if (!activeJobId) {
+      return { cancelled: false };
+    }
+
+    const status = await processingService.getJobStatus(activeJobId);
+    if (!status || status.status !== "running") {
+      return { cancelled: false };
+    }
+
+    // Set cancel flag in Redis — worker checks this between batches
+    await redisConnection.setex(`${CANCEL_FLAG_PREFIX}${activeJobId}`, 3600, "1");
+    logger.info(`[Processing] Cancel flag set for job ${activeJobId}`);
+
+    return { cancelled: true, jobId: activeJobId };
+  },
+
+  async isJobCancelled(jobId: string): Promise<boolean> {
+    const flag = await redisConnection.get(`${CANCEL_FLAG_PREFIX}${jobId}`);
+    return flag === "1";
+  },
+
+  async markJobCancelled(jobId: string, processed: number, total: number): Promise<void> {
+    const key = `${JOB_STATUS_PREFIX}${jobId}`;
+    const raw = await redisConnection.get(key);
+    if (!raw) return;
+
+    const status = JSON.parse(raw) as ProcessingJobStatus;
+    status.status = "failed";
+    status.error = `Cancelled by user (${processed}/${total} processed)`;
+    status.completedAt = new Date().toISOString();
+
+    await redisConnection.setex(key, 86400, JSON.stringify(status));
+    await redisConnection.del(ACTIVE_JOB_KEY);
+    await redisConnection.del(`${CANCEL_FLAG_PREFIX}${jobId}`);
+
+    logger.info(`[Processing] Job ${jobId} cancelled (${processed}/${total} processed)`);
   },
 };
