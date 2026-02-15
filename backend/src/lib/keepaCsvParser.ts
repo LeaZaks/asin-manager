@@ -29,15 +29,21 @@ const KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = {
   "Buy Box: % Amazon 180 days": "amazon_share_180d",
   "Buy Box: Winner Count 90 days": "buybox_winner_count_90d",
 
-  // Buy Box — alternate Keepa format (without space after colon, different naming)
+  // Buy Box — Keepa format with truck emoji 🚚
+  "Buy Box 🚚: Current": "buybox_price",
+  "Buy Box 🚚: 90 days avg.": "buybox_price_avg_90d",
+  "Buy Box 🚚: 90 days drop %": "buybox_price_drop_90d",
+  "Buy Box 🚚: Lowest": "buybox_price_lowest",
+  "Buy Box 🚚: Highest": "buybox_price_highest",
+  "Buy Box 🚚: Stock": "buybox_stock",
+
+  // Buy Box — Keepa format with green heart emoji 💚
   "Buy Box 💚: Current": "buybox_price",
   "Buy Box 💚: 90 days avg.": "buybox_price_avg_90d",
   "Buy Box 💚: 90 days drop %": "buybox_price_drop_90d",
   "Buy Box 💚: Lowest": "buybox_price_lowest",
   "Buy Box 💚: Highest": "buybox_price_highest",
   "Buy Box 💚: Stock": "buybox_stock",
-  "Buy Box 💚: % Amazon 180 days": "amazon_share_180d",
-  "Buy Box 💚: Winner Count 90 days": "buybox_winner_count_90d",
 
   // New Buy Box format variants
   "New, Buy Box: Current": "buybox_price",
