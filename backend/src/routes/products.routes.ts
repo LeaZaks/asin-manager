@@ -3,7 +3,7 @@ import { productsController } from "../controllers/products.controller";
 
 const router = Router();
 
-// GET /api/products?page=1&limit=100&search=&brand=&status=&sortBy=&sortOrder=
+// GET /api/products?page=1&limit=100|200|500&search=&brand=&status=&sortBy=&sortOrder=
 router.get("/", productsController.list);
 
 // GET /api/products/:asin

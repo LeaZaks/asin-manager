@@ -44097,3 +44097,22 @@ Server has closed the connection.
 2026-02-15 00:59:21 [[32minfo[39m]: Server running on http://localhost:3001
 2026-02-15 00:59:21 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
 2026-02-15 00:59:21 [[32minfo[39m]: Redis connected
+2026-02-15 00:59:26 [[32minfo[39m]: [Worker] ASIN Processing Worker started, listening on queue: asin-processing
+2026-02-15 00:59:26 [[32minfo[39m]: Redis connected
+2026-02-15 01:00:03 [[32minfo[39m]: CSV parse: 5 total rows, 5 valid, 0 errors
+2026-02-15 01:00:07 [[32minfo[39m]: Upserted batch 1, records 1-5
+2026-02-15 01:00:09 [[32minfo[39m]: Assigned tag "H" to 5 HazMat products
+2026-02-15 01:07:37 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:07:37 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:27:20 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:27:21 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:27:21 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:39:14 [[32minfo[39m]: Server running on http://localhost:3001
+2026-02-15 01:39:14 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
+2026-02-15 01:39:14 [[32minfo[39m]: Redis connected
+2026-02-15 01:39:37 [[32minfo[39m]: Server running on http://localhost:3001
+2026-02-15 01:39:37 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
+2026-02-15 01:39:37 [[32minfo[39m]: Redis connected
+2026-02-15 01:42:44 [[32minfo[39m]: Server running on http://localhost:3001
+2026-02-15 01:42:44 [[32minfo[39m]: Bull Board at http://localhost:3001/admin/queues
+2026-02-15 01:42:44 [[32minfo[39m]: Redis connected

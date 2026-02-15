@@ -3285,3 +3285,8 @@ Server has closed the connection.
 2026-02-15 00:26:59 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
     at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:44:13)
     at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
+2026-02-15 01:07:37 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:07:37 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:27:20 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:27:21 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-15 01:27:21 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }

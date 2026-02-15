@@ -5,8 +5,8 @@ import { AppError } from "../middleware/errorHandler";
 export const productsController = {
   async list(req: Request, res: Response) {
     const page = Math.max(1, parseInt(String(req.query.page ?? "1"), 10));
-    const limit = Math.min(100, parseInt(String(req.query.limit ?? "100"), 10));
-
+    const parsedLimit = parseInt(String(req.query.limit ?? "100"), 10);
+    const limit = Number.isNaN(parsedLimit) ? 100 : Math.max(1, Math.min(500, parsedLimit));
     const result = await productsRepository.findMany({
       page,
       limit,

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 import { productsApi, importApi, tagsApi } from "../api";
 import type { Product, Tag } from "../types";
 import { ScoreEditor } from "../components/ScoreEditor";
@@ -16,6 +17,8 @@ const SORT_FIELDS = [
   { value: "buybox_price", label: "Buy Box Price" },
   { value: "rating", label: "Rating" },
 ];
+
+const PAGE_SIZE_OPTIONS = [100, 200, 500] as const;
 
 const AMAZON_CLICKED_KEY = "clickedAmazonAsins";
 
@@ -45,6 +48,7 @@ export function ProductsPage() {
   const [sortBy, setSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState<(typeof PAGE_SIZE_OPTIONS)[number]>(100);
 
   // Selection
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -57,8 +61,9 @@ export function ProductsPage() {
   const [importError, setImportError] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["products", { page, search, brand, status, sortBy, sortOrder }],
-    queryFn: () => productsApi.list({ page, limit: 100, search, brand, status, sortBy, sortOrder }),
+    queryKey: ["products", { page, pageSize, search, brand, status, sortBy, sortOrder }],
+    queryFn: () => productsApi.list({ page, limit: pageSize, search, brand, status, sortBy, sortOrder 
+    }),
   });
 
   const { data: allTags = [] } = useQuery<Tag[]>({
@@ -227,14 +232,11 @@ export function ProductsPage() {
             <tr>
               <th><input type="checkbox" className="checkbox" onChange={toggleSelectAll} checked={!!data && selected.size === data.items.length && data.items.length > 0} /></th>
               <th className="asin-column" onClick={() => handleSort("asin")}>ASIN{sortIcon("asin")}</th>
-                            <th onClick={() => handleSort("brand")}>Brand{sortIcon("brand")}</th>
+              <th onClick={() => handleSort("brand")}>Brand{sortIcon("brand")}</th>
               <th onClick={() => handleSort("sales_rank_current")}>Sales Rank{sortIcon("sales_rank_current")}</th>
               <th onClick={() => handleSort("buybox_price")}>Buy Box{sortIcon("buybox_price")}</th>
               <th onClick={() => handleSort("rating")}>Rating{sortIcon("rating")}</th>
               <th>Status</th>
-              <th>Score</th>
-              <th className="score-column">Score</th>
-              <th>Tags</th>
               <th className="score-column">Score</th>
               <th className="tags-column">Tags</th>
               <th>Checked At</th>
@@ -260,6 +262,7 @@ export function ProductsPage() {
                       
                     >
                       ↗
+                      <ExternalLink size={11} strokeWidth={2.25} />
                     </a>
                   </span>
                 </td>
@@ -292,8 +295,24 @@ export function ProductsPage() {
       {data && data.totalPages > 1 && (
         <div className="pagination">
           <span className="pagination-info">
-            {((page - 1) * 100) + 1}–{Math.min(page * 100, data.total)} of {data.total.toLocaleString()} products
+          {((page - 1) * pageSize) + 1}–{Math.min(page * pageSize, data.total)} of {data.total.toLocaleString()} products          
           </span>
+          <label className="pagination-limit-control">
+            <span>Rows</span>
+            <select
+              className="select"
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value) as (typeof PAGE_SIZE_OPTIONS)[number]);
+                setPage(1);
+                setSelected(new Set());
+              }}
+            >
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <option key={size} value={size}>{size}</option>
+              ))}
+            </select>
+          </label>
           <button className="btn btn-secondary" disabled={page === 1} onClick={() => setPage(p => p - 1)}>← Prev</button>
           <span style={{ fontSize: 13 }}>Page {page} / {data.totalPages}</span>
           <button className="btn btn-secondary" disabled={page >= data.totalPages} onClick={() => setPage(p => p + 1)}>Next →</button>
