@@ -123,21 +123,16 @@ export function parseKeepaCSV(csvBuffer: Buffer): ParseResult {
     skipEmptyLines: true,
   });
 
-  // Log detected headers vs expected for debugging field mapping issues
+  // Log ALL CSV headers for debugging field mapping
   const csvHeaders = parsed.meta?.fields ?? [];
+  console.log(`[keepaCsvParser] CSV headers found (${csvHeaders.length}): ${csvHeaders.join(" | ")}`);
+
   const mappedHeaders = Object.keys(KEEPA_FIELD_MAP);
   const matched = csvHeaders.filter((h) => h in KEEPA_FIELD_MAP);
-  const unmatched = mappedHeaders.filter((h) => !csvHeaders.includes(h));
-  if (unmatched.length > 0) {
-    // Try to find close matches for unmapped headers
-    const csvHeaderSet = csvHeaders.map((h) => h.trim());
-    const suggestions = unmatched.map((expected) => {
-      const close = csvHeaderSet.find((h) =>
-        h.toLowerCase().replace(/[:\s.]/g, "") === expected.toLowerCase().replace(/[:\s.]/g, "")
-      );
-      return close ? `"${expected}" → found as "${close}"` : `"${expected}" (not found)`;
-    });
-    console.log(`[keepaCsvParser] Matched ${matched.length}/${mappedHeaders.length} headers. Unmatched: ${suggestions.join(", ")}`);
+  const unmatchedCsv = csvHeaders.filter((h) => !(h in KEEPA_FIELD_MAP));
+  console.log(`[keepaCsvParser] Matched ${matched.length} headers: ${matched.join(", ")}`);
+  if (unmatchedCsv.length > 0) {
+    console.log(`[keepaCsvParser] CSV headers NOT in field map: ${unmatchedCsv.join(" | ")}`);
   }
 
   const valid: UpsertProductData[] = [];

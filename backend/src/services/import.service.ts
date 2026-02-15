@@ -119,8 +119,8 @@ async function processCSVImport(
       }
     }
 
-    // Upsert in batches of 100
-    const BATCH_SIZE = 100;
+    // Upsert in small batches for smooth progress updates
+    const BATCH_SIZE = 20;
     for (let i = 0; i < valid.length; i += BATCH_SIZE) {
       const batch = valid.slice(i, i + BATCH_SIZE);
       await productsRepository.upsertMany(batch);
