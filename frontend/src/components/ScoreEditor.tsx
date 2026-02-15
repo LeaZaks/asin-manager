@@ -13,13 +13,22 @@ export function ScoreEditor({ asin, currentScore }: ScoreEditorProps) {
   const [saved, setSaved] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: (score: number) => evaluationsApi.upsert(asin, score),
+    mutationFn: (score: number | null) => evaluationsApi.upsert(asin, score),
     onSuccess: () => {
       setSaved(true);
       setTimeout(() => setSaved(false), 1000);
       qc.invalidateQueries({ queryKey: ["products"] });
     },
   });
+
+  const handleClick = (s: number) => {
+    // If clicking the same score that's already set, clear it
+    if (s === currentScore) {
+      mutation.mutate(null);
+    } else {
+      mutation.mutate(s);
+    }
+  };
 
   const displayScore = hovered || currentScore || 0;
   const color = displayScore <= 2 ? "#ef4444" : displayScore === 3 ? "#f59e0b" : "#22c55e";
@@ -36,8 +45,8 @@ export function ScoreEditor({ asin, currentScore }: ScoreEditorProps) {
             transition: "color .1s",
           }}
           onMouseEnter={() => setHovered(s)}
-          onClick={() => mutation.mutate(s)}
-          title={`Set score to ${s}`}
+          onClick={() => handleClick(s)}
+          title={s === currentScore ? "Clear score" : `Set score to ${s}`}
         >
           ★
         </span>
