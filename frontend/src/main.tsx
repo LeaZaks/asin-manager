@@ -7,6 +7,7 @@ import { ProcessingPage } from "./pages/ProcessingPage";
 import { TagsPage } from "./pages/TagsPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { ImportToastProvider } from "./components/ImportToastProvider";
+import { ProcessingSoundProvider } from "./components/ProcessingSoundMonitor";
 import "./styles.css";
 
 const queryClient = new QueryClient({
@@ -42,6 +43,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ProcessingSoundProvider>
         <ImportToastProvider>
           <Layout>
             <Routes>
@@ -53,6 +55,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             </Routes>
           </Layout>
         </ImportToastProvider>
+        </ProcessingSoundProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>,
