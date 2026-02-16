@@ -45,7 +45,7 @@ export function ProcessingPage() {
   const [selectedMode, setSelectedMode] = useState<ProcessingMode>("unchecked");
   const [pollingEnabled, setPollingEnabled] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const prevAllowedRef = useRef<number>(0);
+  const prevAllowedRef = useRef<number>(-1);
 
   // Poll active job status every 2 seconds when running
   const { data: status } = useQuery<ProcessingStatus>({
@@ -63,7 +63,8 @@ export function ProcessingPage() {
   useEffect(() => {
     if (status?.status === "running" && status?.summary) {
       const currentAllowed = status.summary.allowed || 0;
-      if (currentAllowed > prevAllowedRef.current && prevAllowedRef.current > 0) {
+      // Skip sound on first poll (initialization), play on subsequent increases
+      if (prevAllowedRef.current >= 0 && currentAllowed > prevAllowedRef.current) {
         playSound();
       }
       prevAllowedRef.current = currentAllowed;
