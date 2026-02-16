@@ -11,10 +11,26 @@ const MODES: { value: ProcessingMode; label: string; description: string }[] = [
   { value: "gated", label: "Re-check Gated", description: "Re-check all ASINs currently marked as Gated" },
 ];
 
+// Shared AudioContext – must be created/resumed from a user gesture (click)
+// so the browser's autoplay policy allows sound playback.
+let sharedAudioCtx: AudioContext | null = null;
+
+/** Ensure the shared AudioContext exists and is running. Call from a click handler. */
+function ensureAudioContext(): AudioContext {
+  if (!sharedAudioCtx || sharedAudioCtx.state === "closed") {
+    sharedAudioCtx = new AudioContext();
+  }
+  if (sharedAudioCtx.state === "suspended") {
+    sharedAudioCtx.resume();
+  }
+  return sharedAudioCtx;
+}
+
 /** Play a short positive chime via Web Audio API */
 function playApprovalSound() {
   try {
-    const ctx = new AudioContext();
+    if (!sharedAudioCtx || sharedAudioCtx.state !== "running") return;
+    const ctx = sharedAudioCtx;
     const now = ctx.currentTime;
 
     // Two-note chime: C5 → E5
@@ -32,9 +48,6 @@ function playApprovalSound() {
       osc.start(now + i * 0.08);
       osc.stop(now + i * 0.08 + 0.2);
     });
-
-    // Close context after sounds finish
-    setTimeout(() => ctx.close(), 500);
   } catch {
     // Audio not available — silently ignore
   }
@@ -110,7 +123,16 @@ export function ProcessingPage() {
         <h1 className="page-title">ASIN Processing</h1>
         <button
           className={`btn ${soundEnabled ? "btn-secondary" : "btn-secondary"}`}
-          onClick={() => setSoundEnabled((v) => !v)}
+          onClick={() => {
+            setSoundEnabled((v) => {
+              const next = !v;
+              if (next) {
+                // User gesture → create/resume AudioContext so browser allows playback
+                ensureAudioContext();
+              }
+              return next;
+            });
+          }}
           title={soundEnabled ? "Sound notifications ON" : "Sound notifications OFF"}
           style={{ gap: 6 }}
         >
@@ -140,7 +162,10 @@ export function ProcessingPage() {
         <div className="flex gap-2">
           <button
             className="btn btn-success"
-            onClick={() => startMutation.mutate(selectedMode)}
+            onClick={() => {
+              if (soundEnabled) ensureAudioContext();
+              startMutation.mutate(selectedMode);
+            }}
             disabled={isRunning || startMutation.isPending}
             style={{ minWidth: 160 }}
           >
