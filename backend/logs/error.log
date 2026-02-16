@@ -3552,3 +3552,21 @@ Foreign key constraint violated: `product_tags_asin_fkey (index)`
     at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
     at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
     at async processCSVImport (C:\Dev\asin-manager\backend\src\services\import.service.ts:150:7)
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 00:11:24 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 02:44:01 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 02:44:01 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 07:14:40 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 07:14:40 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 08:46:58 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 08:46:58 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-16 10:04:56 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
+    at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:45:13)
+    at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
