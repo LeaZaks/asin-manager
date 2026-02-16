@@ -67,22 +67,6 @@ export function ProductDetailPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
 
-        {/* Product Image */}
-        {product.image_url && (
-          <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <img
-              src={product.image_url}
-              alt={product.asin}
-              style={{
-                maxWidth: "100%",
-                maxHeight: 220,
-                objectFit: "contain",
-                borderRadius: 8,
-              }}
-            />
-          </div>
-        )}
-
         {/* Seller Status */}
         <div className="card">
           <div className="card-title">Seller Status</div>
@@ -157,8 +141,27 @@ export function ProductDetailPage() {
 
         {/* Keepa Data */}
         <div className="card">
-          <div className="card-title">Keepa Data</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 20px", fontSize: 13 }}>
+          <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+            {product.image_url && (
+              <img
+                src={product.image_url}
+                alt={product.asin}
+                style={{
+                  width: 100,
+                  height: 100,
+                  objectFit: "contain",
+                  borderRadius: 8,
+                  border: "1px solid #e2e8f0",
+                  background: "#fff",
+                  flexShrink: 0,
+                }}
+              />
+            )}
+            <div style={{ flex: 1 }}>
+              <div className="card-title">Product Details</div>
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 20px", fontSize: 13, marginTop: 12 }}>
             <KeepaRow label="Sales Rank" value={product.sales_rank_current?.toLocaleString()} />
             <KeepaRow label="Sales Rank 90d avg" value={product.sales_rank_avg_90d?.toLocaleString()} />
             <KeepaRow label="Sales Rank 90d drop" value={product.sales_rank_drop_90d != null ? `${product.sales_rank_drop_90d}%` : undefined} />
