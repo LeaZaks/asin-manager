@@ -30,6 +30,24 @@ function normalizeProductData(data: UpsertProductData): UpsertProductData {
   };
 }
 
+// Column names for bulk upsert (must match DB columns exactly)
+const UPSERT_COLUMNS = [
+  "asin", "sales_rank_current", "sales_rank_avg_90d", "sales_rank_drop_90d",
+  "bought_past_month", "rating", "rating_count", "rating_count_drop_90d",
+  "buybox_price", "buybox_price_avg_90d", "buybox_price_drop_90d",
+  "buybox_price_lowest", "buybox_price_highest", "buybox_stock",
+  "amazon_share_180d", "buybox_winner_count_90d", "referral_fee",
+  "offer_count_total", "new_offer_count_current", "new_offer_count_avg_90d",
+  "category_root", "category_sub", "category_tree", "brand", "release_date",
+  "package_dimension_cm3", "package_weight_g", "package_quantity",
+  "is_hazmat", "is_heat_sensitive", "amazon_url", "image_url",
+] as const;
+
+const UPDATE_SET = UPSERT_COLUMNS
+  .filter((c) => c !== "asin")
+  .map((c) => `${c} = EXCLUDED.${c}`)
+  .join(", ");
+
 // ── Repository ────────────────────────────────────────────────────────────────
 export const productsRepository = {
   async findMany(params: ProductListParams) {
@@ -107,17 +125,27 @@ export const productsRepository = {
   },
 
   async upsertMany(records: UpsertProductData[]) {
-    const results = await prisma.$transaction(
-      records.map((record) => {
-        const data = normalizeProductData(record);
-        return prisma.product.upsert({
-          where: { asin: data.asin },
-          create: data,
-          update: data,
-        });
-      }),
-    );
-    return results;
+    if (records.length === 0) return;
+
+    const normalized = records.map(normalizeProductData);
+    const colCount = UPSERT_COLUMNS.length;
+    const values: unknown[] = [];
+
+    const rowPlaceholders = normalized.map((record, rowIdx) => {
+      const params = UPSERT_COLUMNS.map((col, colIdx) => {
+        values.push((record as Record<string, unknown>)[col] ?? null);
+        return `$${rowIdx * colCount + colIdx + 1}`;
+      });
+      return `(${params.join(", ")}, NOW(), NOW())`;
+    });
+
+    const sql = `
+      INSERT INTO products (${UPSERT_COLUMNS.join(", ")}, created_at, updated_at)
+      VALUES ${rowPlaceholders.join(", ")}
+      ON CONFLICT (asin) DO UPDATE SET ${UPDATE_SET}, updated_at = NOW()
+    `;
+
+    await prisma.$executeRawUnsafe(sql, ...values);
   },
 
   async deleteMany(asins: string[]) {
