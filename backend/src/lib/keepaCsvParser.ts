@@ -70,8 +70,13 @@ function parseValue(
   }
 
   if (numericFields.includes(field)) {
-    const num = parseNumeric(raw);  
+    const num = parseNumeric(raw);
     return isNaN(num) ? null : num;
+  }
+
+  // Image field: Keepa sends multiple URLs separated by ";" — keep only the first
+  if (field === "image_url") {
+    return raw.split(";")[0].trim();
   }
 
   return raw.trim();
@@ -79,7 +84,13 @@ function parseValue(
 
 
 function normalizeHeader(header: string): string {
-  return header.replace(/^\uFEFF/, "").trim().replace(/\s+/g, " ").toLowerCase();
+  return header
+    .replace(/^\uFEFF/, "")
+    .replace(/\p{Extended_Pictographic}/gu, "")  // strip emojis (e.g. 🚚 in "Buy Box 🚚:")
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/\s+:/g, ":")   // "Buy Box : Current" → "Buy Box: Current"
+    .toLowerCase();
 }
 
 function parseNumeric(raw: string): number {
