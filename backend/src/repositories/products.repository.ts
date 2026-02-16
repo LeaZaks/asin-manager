@@ -126,7 +126,7 @@ export const productsRepository = {
     });
   },
 
-  async findAsinsForProcessing(mode: "100" | "200" | "unchecked") {
+  async findAsinsForProcessing(mode: "100" | "200" | "unchecked" | "gated") {
     if (mode === "unchecked") {
       return prisma.product.findMany({
         where: {
@@ -134,6 +134,15 @@ export const productsRepository = {
             { sellerStatus: null },
             { sellerStatus: { checked_at: null } },
           ],
+        },
+        select: { asin: true },
+      });
+    }
+
+    if (mode === "gated") {
+      return prisma.product.findMany({
+        where: {
+          sellerStatus: { status: "gated" },
         },
         select: { asin: true },
       });

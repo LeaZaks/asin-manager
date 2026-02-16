@@ -51,6 +51,7 @@ model Product {
   is_hazmat               Boolean?
   is_heat_sensitive       Boolean?
   amazon_url              String?
+  image_url               String?
 
   // שדות טכניים
   created_at              DateTime  @default(now())

@@ -44,12 +44,44 @@ export function ProductDetailPage() {
       <div className="page-header">
         <div className="flex items-center gap-3">
           <Link to="/products" style={{ color: "#64748b", textDecoration: "none" }}>← Products</Link>
-          <h1 className="page-title" style={{ margin: 0 }}>{product.asin}</h1>
-          {product.brand && <span style={{ color: "#64748b", fontWeight: 400 }}>{product.brand}</span>}
+          {product.image_url && (
+            <img
+              src={product.image_url}
+              alt={product.asin}
+              style={{
+                width: 48,
+                height: 48,
+                objectFit: "contain",
+                borderRadius: 8,
+                border: "1px solid #e2e8f0",
+                background: "#fff",
+              }}
+            />
+          )}
+          <div>
+            <h1 className="page-title" style={{ margin: 0 }}>{product.asin}</h1>
+            {product.brand && <span style={{ color: "#64748b", fontWeight: 400, fontSize: 13 }}>{product.brand}</span>}
+          </div>
         </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+
+        {/* Product Image */}
+        {product.image_url && (
+          <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <img
+              src={product.image_url}
+              alt={product.asin}
+              style={{
+                maxWidth: "100%",
+                maxHeight: 220,
+                objectFit: "contain",
+                borderRadius: 8,
+              }}
+            />
+          </div>
+        )}
 
         {/* Seller Status */}
         <div className="card">

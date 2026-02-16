@@ -69,7 +69,7 @@ export const importApi = {
 
 // ── Processing ────────────────────────────────────────────────────────────────
 export const processingApi = {
-  start: (mode: "100" | "200" | "unchecked") =>
+  start: (mode: "100" | "200" | "unchecked" | "gated") =>
     api.post<{ jobId: string; totalAsins: number }>("/processing/start", { mode }).then((r) => r.data),
 
   getActiveStatus: () =>

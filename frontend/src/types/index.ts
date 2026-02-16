@@ -70,6 +70,7 @@ export interface Product {
   is_hazmat: boolean | null;
   is_heat_sensitive: boolean | null;
   amazon_url: string | null;
+  image_url: string | null;
   created_at: string;
   updated_at: string;
   sellerStatus: SellerStatus | null;

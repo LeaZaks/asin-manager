@@ -34,6 +34,7 @@ const KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = {
   "Is HazMat": "is_hazmat",
   "Is heat sensitive": "is_heat_sensitive",
   "URL: Amazon": "amazon_url",
+  "Image": "image_url",
 };
 
 const NORMALIZED_KEEPA_FIELD_MAP: Record<string, keyof UpsertProductData> = Object.fromEntries(

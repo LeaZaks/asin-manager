@@ -76,7 +76,6 @@ export function ProductsPage() {
 
   // Import state
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [manualAsin, setManualAsin] = useState("");
   const [importResult, setImportResult] = useState<null | object>(null);
   const [importError, setImportError] = useState("");
 
@@ -113,19 +112,6 @@ export function ProductsPage() {
     onSuccess: (data) => {
       showSuccess(data.summary);
       setImportResult(data);
-      qc.invalidateQueries({ queryKey: ["products"] });
-    },
-    onError: (err: Error) => {
-      showError(err.message);
-      setImportError(err.message);
-    },
-  });
-
-  const manualMutation = useMutation({
-    mutationFn: () => importApi.addManual(manualAsin.trim()),
-    onSuccess: () => {
-      setManualAsin("");
-      showSuccess({ total_rows: 1, inserted_rows: 1, updated_rows: 0, failed_rows: 0 });
       qc.invalidateQueries({ queryKey: ["products"] });
     },
     onError: (err: Error) => {
@@ -207,29 +193,6 @@ export function ProductsPage() {
             {csvMutation.isPending ? <><span className="spinner" /> Importing...</> : "Import CSV"}
           </button>
         </div>
-      </div>
-
-      {/* Manual ASIN input */}
-      <div className="card mb-4">
-        <div className="card-title">Add Single ASIN</div>
-        <div className="flex gap-2" style={{ maxWidth: 400 }}>
-          <input
-            className="input"
-            placeholder="Enter ASIN (e.g. B08N5LNQCX)"
-            value={manualAsin}
-            onChange={(e) => setManualAsin(e.target.value.toUpperCase())}
-            onKeyDown={(e) => e.key === "Enter" && manualAsin.trim().length === 10 && manualMutation.mutate()}
-            maxLength={10}
-          />
-          <button
-            className="btn btn-primary"
-            onClick={() => manualMutation.mutate()}
-            disabled={manualAsin.trim().length !== 10 || manualMutation.isPending}
-          >
-            {manualMutation.isPending ? <span className="spinner" /> : "Add"}
-          </button>
-        </div>
-        {importError && <p className="error-text">{importError}</p>}
       </div>
 
       {/* Search & Filter Toolbar */}

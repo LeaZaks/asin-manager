@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { processingService, ProcessingMode } from "../services/processing.service";
 import { AppError } from "../middleware/errorHandler";
 
-const VALID_MODES: ProcessingMode[] = ["100", "200", "unchecked"];
+const VALID_MODES: ProcessingMode[] = ["100", "200", "unchecked", "gated"];
 
 export const processingController = {
   async startJob(req: Request, res: Response) {

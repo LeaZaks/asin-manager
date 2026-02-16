@@ -5,7 +5,7 @@ import { redisConnection } from "../lib/queue";
 import { logger } from "../lib/logger";
 import { prisma } from "../lib/prisma";
 
-export type ProcessingMode = "100" | "200" | "unchecked";
+export type ProcessingMode = "100" | "200" | "unchecked" | "gated";
 
 export interface ProcessingJobStatus {
   jobId: string;
