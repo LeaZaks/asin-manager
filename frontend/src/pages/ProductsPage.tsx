@@ -76,8 +76,8 @@ export function ProductsPage() {
 
   // Import state
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [importResult, setImportResult] = useState<null | object>(null);
-  const [importError, setImportError] = useState("");
+  const [importJobId, setImportJobId] = useState<string | null>(null);
+  const [importResult, setImportResult] = useState<null | { message: string; summary: { importFileId: number; total_rows: number; inserted_rows: number; updated_rows: number; failed_rows: number; hasErrors: boolean; errors: Array<{ row: number; reason: string }> } }>(null);
 
   const activeFilterCount = [brand, status, checkedAt].filter(Boolean).length;
 
@@ -110,15 +110,59 @@ export function ProductsPage() {
       return importApi.uploadCSV(file);
     },
     onSuccess: (data) => {
-      showSuccess(data.summary);
-      setImportResult(data);
-      qc.invalidateQueries({ queryKey: ["products"] });
+      setImportJobId(data.jobId);
     },
     onError: (err: Error) => {
       showError(err.message);
-      setImportError(err.message);
     },
   });
+
+  // Poll for import progress when we have a jobId
+  const { data: importProgress } = useQuery({
+    queryKey: ["import-progress", importJobId],
+    queryFn: () => importApi.getProgress(importJobId!),
+    enabled: !!importJobId,
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      if (status === "completed" || status === "failed") return false;
+      return 500;
+    },
+  });
+
+  // When import completes or fails, update UI
+  const prevProgressStatus = useRef<string | null>(null);
+  useEffect(() => {
+    if (!importProgress || prevProgressStatus.current === importProgress.status) return;
+    if (importProgress.status === "completed") {
+      prevProgressStatus.current = importProgress.status;
+      const summary = importProgress.summary;
+      if (summary) {
+        showSuccess({
+          total_rows: summary.total_rows,
+          inserted_rows: summary.inserted_rows,
+          updated_rows: summary.updated_rows,
+          failed_rows: summary.failed_rows,
+        });
+        setImportResult({
+          message: "Import complete",
+          summary,
+        });
+      } else {
+        showSuccess({
+          total_rows: importProgress.total,
+          inserted_rows: importProgress.processed,
+          updated_rows: 0,
+          failed_rows: 0,
+        });
+      }
+      qc.invalidateQueries({ queryKey: ["products"] });
+      setImportJobId(null);
+    } else if (importProgress.status === "failed") {
+      prevProgressStatus.current = importProgress.status;
+      showError("Import failed");
+      setImportJobId(null);
+    }
+  }, [importProgress?.status]);
 
   function toggleSelect(asin: string) {
     setSelected((prev) => {
@@ -183,7 +227,6 @@ export function ProductsPage() {
             accept=".csv"
             style={{ display: "none" }}
             onChange={(e) => {
-              setImportError("");
               const f = e.target.files?.[0];
               if (f) csvMutation.mutate(f);
               e.target.value = "";
@@ -304,6 +347,7 @@ export function ProductsPage() {
           <thead>
             <tr>
               <th><input type="checkbox" className="checkbox" onChange={toggleSelectAll} checked={!!data && selected.size === data.items.length && data.items.length > 0} /></th>
+              <th className="image-column">Img</th>
               <th className="asin-column" onClick={() => handleSort("asin")}>ASIN{sortIcon("asin")}</th>
               <th onClick={() => handleSort("brand")}>Brand{sortIcon("brand")}</th>
               <th onClick={() => handleSort("sales_rank_current")}>Sales Rank{sortIcon("sales_rank_current")}</th>
@@ -317,11 +361,18 @@ export function ProductsPage() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={10} style={{ textAlign: "center", padding: 40 }}><span className="spinner" /></td></tr>
+              <tr><td colSpan={11} style={{ textAlign: "center", padding: 40 }}><span className="spinner" /></td></tr>
             )}
             {data?.items.map((product: Product) => (
               <tr key={product.asin} className={selected.has(product.asin) ? "tr-selected" : ""}>
                 <td><input type="checkbox" className="checkbox" checked={selected.has(product.asin)} onChange={() => toggleSelect(product.asin)} /></td>
+                <td className="image-column">
+                  {product.image_url ? (
+                    <img src={product.image_url} alt="" className="product-thumb" />
+                  ) : (
+                    <span className="product-thumb-placeholder" />
+                  )}
+                </td>
                 <td className="asin-column">
                   <span className="asin-cell-content">
                     <Link to={`/products/${product.asin}`} className="asin-link">{product.asin}</Link>
@@ -359,7 +410,7 @@ export function ProductsPage() {
               </tr>
             ))}
             {data && data.items.length === 0 && (
-              <tr><td colSpan={10} style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>No products found</td></tr>
+              <tr><td colSpan={11} style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>No products found</td></tr>
             )}
           </tbody>
         </table>
@@ -399,14 +450,15 @@ export function ProductsPage() {
       )}
 
       {/* Import Summary Modal - only after completion */}
-      {importResult && !csvMutation.isPending && (
-        <ImportSummaryModal 
-          result={importResult as Parameters<typeof ImportSummaryModal>[0]["result"]} 
+      {importResult && (
+        <ImportSummaryModal
+          result={importResult}
           isLoading={false}
           onClose={() => {
             setImportResult(null);
+            prevProgressStatus.current = null;
             csvMutation.reset();
-          }} 
+          }}
         />
       )}
 

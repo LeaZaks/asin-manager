@@ -46,6 +46,10 @@ thead { background: #f8fafc; }
 th { padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; color: #64748b; border-bottom: 1px solid #e2e8f0; white-space: nowrap; cursor: pointer; user-select: none; }
 th:hover { background: #f1f5f9; }
 td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; vertical-align: middle; }
+.image-column { width: 44px; min-width: 44px; max-width: 44px; padding: 4px 6px !important; text-align: center; cursor: default; }
+.image-column:hover { background: transparent !important; }
+.product-thumb { width: 32px; height: 32px; object-fit: contain; border-radius: 4px; background: #f8fafc; display: block; }
+.product-thumb-placeholder { display: block; width: 32px; height: 32px; border-radius: 4px; background: #f1f5f9; }
 .asin-column { width: 220px; min-width: 220px; }
 .asin-cell-content {
   display: inline-flex;
