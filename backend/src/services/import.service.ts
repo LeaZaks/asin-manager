@@ -119,8 +119,8 @@ async function processCSVImport(
       }
     }
 
-    // Upsert in batches
-    const BATCH_SIZE = 100;
+    // Upsert in batches (single SQL query per batch)
+    const BATCH_SIZE = 500;
     const numBatches = Math.ceil(valid.length / BATCH_SIZE);
 
     for (let i = 0; i < valid.length; i += BATCH_SIZE) {
