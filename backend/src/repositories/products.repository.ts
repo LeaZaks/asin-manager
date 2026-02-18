@@ -154,6 +154,26 @@ export const productsRepository = {
     });
   },
 
+
+  async updateNotes(asin: string, notes: string | null) {
+    try {
+      return await prisma.product.update({
+        where: { asin },
+        data: { notes },
+        include: {
+          sellerStatus: true,
+          evaluation: true,
+          productTags: { include: { tag: true } },
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+        throw new AppError(404, `ASIN ${asin} not found`);
+      }
+      throw error;
+    }
+  },
+
   async findAsinsForProcessing(mode: "100" | "200" | "unchecked" | "gated") {
     if (mode === "unchecked") {
       return prisma.product.findMany({

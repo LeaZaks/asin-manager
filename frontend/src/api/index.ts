@@ -31,6 +31,9 @@ export const productsApi = {
 
   deleteMany: (asins: string[]) =>
     api.delete<{ deleted: number }>("/products", { data: { asins } }).then((r) => r.data),
+
+  updateNotes: (asin: string, notes: string | null) =>
+    api.patch<Product>(`/products/${encodeURIComponent(asin)}/notes`, { notes }).then((r) => r.data),
 };
 
 // ── Import ────────────────────────────────────────────────────────────────────

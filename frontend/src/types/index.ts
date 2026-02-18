@@ -71,6 +71,7 @@ export interface Product {
   is_heat_sensitive: boolean | null;
   amazon_url: string | null;
   image_url: string | null;
+  notes: string | null;
   created_at: string;
   updated_at: string;
   sellerStatus: SellerStatus | null;

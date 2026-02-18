@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { productsRepository } from "../repositories/products.repository";
 import { AppError } from "../middleware/errorHandler";
+import { PRODUCT_NOTES_MAX_LENGTH } from "../constants/products";
 
 export const productsController = {
   async list(req: Request, res: Response) {
@@ -35,5 +36,26 @@ export const productsController = {
     }
     const result = await productsRepository.deleteMany(asins);
     res.json({ deleted: result.count });
+  },
+
+  async updateNotes(req: Request, res: Response) {
+    const { asin } = req.params;
+    const { notes } = req.body as { notes?: string | null };
+
+    if (!Object.prototype.hasOwnProperty.call(req.body ?? {}, "notes")) {
+      throw new AppError(400, "Body must include notes field");
+    }
+
+    if (notes !== null && typeof notes !== "string") {
+      throw new AppError(400, "notes must be a string or null");
+    }
+
+    const normalizedNotes = typeof notes === "string" ? notes.trim() : null;
+    if (normalizedNotes && normalizedNotes.length > PRODUCT_NOTES_MAX_LENGTH) {
+      throw new AppError(400, `notes cannot exceed ${PRODUCT_NOTES_MAX_LENGTH} characters`);
+    }
+
+    const product = await productsRepository.updateNotes(asin.toUpperCase(), normalizedNotes || null);
+    res.json(product);
   },
 };

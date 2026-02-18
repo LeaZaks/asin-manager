@@ -2,10 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { ExternalLink, Search, X, SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
-import { productsApi, importApi, tagsApi } from "../api";
-import type { Product, Tag } from "../types";
+import { productsApi, importApi } from "../api";
+import type { Product } from "../types";
 import { ScoreEditor } from "../components/ScoreEditor";
-import { TagChips } from "../components/TagChips";
+import { NotesInlineEditor } from "../components/NotesInlineEditor";
 import { ImportSummaryModal } from "../components/ImportSummaryModal";
 import { useImportToast } from "../components/ImportToastProvider";
 
@@ -84,11 +84,6 @@ export function ProductsPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["products", { page, pageSize, search, brand, status, checkedAt, sortBy, sortOrder }],
     queryFn: () => productsApi.list({ page, limit: pageSize, search, brand, status, checkedAt: checkedAt || undefined, sortBy, sortOrder }),
-  });
-
-  const { data: allTags = [] } = useQuery<Tag[]>({
-    queryKey: ["tags"],
-    queryFn: tagsApi.list,
   });
 
   // 🔥 Refetch products when entering the page (e.g., coming back from Processing)
@@ -355,7 +350,7 @@ export function ProductsPage() {
               <th onClick={() => handleSort("rating")}>Rating{sortIcon("rating")}</th>
               <th onClick={() => handleSort("seller_status")}>Status{sortIcon("seller_status")}</th>
               <th className="score-column">Score</th>
-              <th className="tags-column">Tags</th>
+              <th className="notes-column">Notes</th>
               <th onClick={() => handleSort("checked_at")}>Checked At{sortIcon("checked_at")}</th>
             </tr>
           </thead>
