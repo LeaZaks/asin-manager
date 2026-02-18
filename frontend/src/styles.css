@@ -333,4 +333,4 @@ tr:hover td { background: #f8fafc; }
   cursor: pointer; transition: all .15s;
 }
 .btn-stop:hover { background: #fee2e2; border-color: #f87171; }
-.btn-stop:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-stop:disabled { opacity: 0.5; cursor: not-allowed; }\n.notes-column { width: 220px; min-width: 220px; max-width: 220px; }\n.notes-inline-editor { display: flex; flex-direction: column; gap: 2px; }\n.notes-inline-input { width: 100%; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 8px; font-size: 12px; color: #334155; background: #fff; }\n.notes-inline-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.1); }\n.notes-inline-input:disabled { opacity: .7; }\n.notes-inline-count { color: #94a3b8; font-size: 11px; line-height: 1.2; text-align: right; }\n.notes-inline-error { color: #dc2626; font-size: 11px; line-height: 1.2; }\n
