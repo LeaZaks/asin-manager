@@ -3570,3 +3570,807 @@ Foreign key constraint violated: `product_tags_asin_fkey (index)`
 2026-02-16 10:04:56 [[31merror[39m]: Error: No ASINs found for the selected processing mode.
     at Object.startProcessing (C:\Dev\asin-manager\backend\src\services\processing.service.ts:45:13)
     at async startJob (C:\Dev\asin-manager\backend\src\controllers\processing.controller.ts:15:20)
+2026-02-18 23:10:48 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "45",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+2026-02-18 23:10:48 [[31merror[39m]: PrismaClientValidationError: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "45",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+    at wn (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async updateNotes (C:\Dev\asin-manager\backend\src\controllers\products.controller.ts:43:23)
+2026-02-18 23:52:10 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "12",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+2026-02-18 23:52:10 [[31merror[39m]: PrismaClientValidationError: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "12",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+    at wn (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async updateNotes (C:\Dev\asin-manager\backend\src\controllers\products.controller.ts:43:23)
+2026-02-18 23:52:10 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "12",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+2026-02-18 23:52:10 [[31merror[39m]: PrismaClientValidationError: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "12",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+    at wn (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async updateNotes (C:\Dev\asin-manager\backend\src\controllers\products.controller.ts:43:23)
+2026-02-19 00:02:03 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "גדגד",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+2026-02-19 00:02:03 [[31merror[39m]: PrismaClientValidationError: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "גדגד",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+    at wn (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async updateNotes (C:\Dev\asin-manager\backend\src\controllers\products.controller.ts:43:23)
+2026-02-19 00:37:16 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "גדגד",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+2026-02-19 00:37:16 [[31merror[39m]: PrismaClientValidationError: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "גדגד",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+    at wn (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async updateNotes (C:\Dev\asin-manager\backend\src\controllers\products.controller.ts:43:23)
+2026-02-19 00:37:17 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "גדגד",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+2026-02-19 00:37:17 [[31merror[39m]: PrismaClientValidationError: 
+Invalid `prisma.product.update()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:129:27
+
+  126 
+  127 
+  128 async updateNotes(asin: string, notes: string | null) {
+→ 129   return prisma.product.update({
+          where: {
+            asin: "B07W9FLT9C"
+          },
+          data: {
+            notes: "גדגד",
+            ~~~~~
+        ?   asin?: String | StringFieldUpdateOperationsInput,
+        ?   sales_rank_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_avg_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   sales_rank_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   bought_past_month?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   rating_count?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   rating_count_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_drop_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_lowest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_price_highest?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_stock?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   amazon_share_180d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   buybox_winner_count_90d?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   referral_fee?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   offer_count_total?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_current?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   new_offer_count_avg_90d?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   category_root?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_sub?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   category_tree?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   brand?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   release_date?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   package_dimension_cm3?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_weight_g?: Float | NullableFloatFieldUpdateOperationsInput | Null,
+        ?   package_quantity?: Int | NullableIntFieldUpdateOperationsInput | Null,
+        ?   is_hazmat?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   is_heat_sensitive?: Boolean | NullableBoolFieldUpdateOperationsInput | Null,
+        ?   amazon_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   image_url?: String | NullableStringFieldUpdateOperationsInput | Null,
+        ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   updated_at?: DateTime | DateTimeFieldUpdateOperationsInput,
+        ?   sellerStatus?: SellerStatusUpdateOneWithoutProductNestedInput,
+        ?   evaluation?: ProductEvaluationUpdateOneWithoutProductNestedInput,
+        ?   productTags?: ProductTagUpdateManyWithoutProductNestedInput
+          },
+          include: {
+            sellerStatus: true,
+            evaluation: true,
+            productTags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        })
+
+Unknown argument `notes`. Available options are marked with ?.
+    at wn (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async updateNotes (C:\Dev\asin-manager\backend\src\controllers\products.controller.ts:43:23)

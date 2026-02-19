@@ -29,6 +29,10 @@ export const productsApi = {
   getOne: (asin: string) =>
     api.get<Product>(`/products/${asin}`).then((r) => r.data),
 
+  updateNotes: (asin: string, notes: string | null) =>
+    api.patch<Product>(`/products/${asin}/notes`, { notes }).then((r) => r.data),
+
+
   deleteMany: (asins: string[]) =>
     api.delete<{ deleted: number }>("/products", { data: { asins } }).then((r) => r.data),
 };

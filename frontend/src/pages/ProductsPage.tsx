@@ -6,8 +6,13 @@ import { productsApi, importApi, tagsApi } from "../api";
 import type { Product, Tag } from "../types";
 import { ScoreEditor } from "../components/ScoreEditor";
 import { TagChips } from "../components/TagChips";
+import { NotesEditor } from "../components/NotesEditor";
 import { ImportSummaryModal } from "../components/ImportSummaryModal";
 import { useImportToast } from "../components/ImportToastProvider";
+
+import { ResizableThead } from "../components/ResizableThead";
+
+
 
 const STATUS_OPTIONS = [
   { value: "", label: "All Statuses" },
@@ -79,9 +84,10 @@ export function ProductsPage() {
   const [importJobId, setImportJobId] = useState<string | null>(null);
   const [importResult, setImportResult] = useState<null | { message: string; summary: { importFileId: number; total_rows: number; inserted_rows: number; updated_rows: number; failed_rows: number; hasErrors: boolean; errors: Array<{ row: number; reason: string }> } }>(null);
 
+
   const activeFilterCount = [brand, status, checkedAt].filter(Boolean).length;
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["products", { page, pageSize, search, brand, status, checkedAt, sortBy, sortOrder }],
     queryFn: () => productsApi.list({ page, limit: pageSize, search, brand, status, checkedAt: checkedAt || undefined, sortBy, sortOrder }),
   });
@@ -90,6 +96,9 @@ export function ProductsPage() {
     queryKey: ["tags"],
     queryFn: tagsApi.list,
   });
+
+
+ 
 
   // 🔥 Refetch products when entering the page (e.g., coming back from Processing)
   useEffect(() => {
@@ -342,27 +351,29 @@ export function ProductsPage() {
       )}
 
       {/* Table */}
-      <div className="table-wrapper">
+      <div className="table-wrapper products-table-wrapper">
         <table>
-          <thead>
-            <tr>
-              <th><input type="checkbox" className="checkbox" onChange={toggleSelectAll} checked={!!data && selected.size === data.items.length && data.items.length > 0} /></th>
-              <th className="image-column">Img</th>
-              <th className="asin-column" onClick={() => handleSort("asin")}>ASIN{sortIcon("asin")}</th>
-              <th onClick={() => handleSort("brand")}>Brand{sortIcon("brand")}</th>
-              <th onClick={() => handleSort("sales_rank_current")}>Sales Rank{sortIcon("sales_rank_current")}</th>
-              <th onClick={() => handleSort("buybox_price")}>Buy Box{sortIcon("buybox_price")}</th>
-              <th onClick={() => handleSort("rating")}>Rating{sortIcon("rating")}</th>
-              <th onClick={() => handleSort("seller_status")}>Status{sortIcon("seller_status")}</th>
-              <th className="score-column">Score</th>
-              <th className="tags-column">Tags</th>
-              <th onClick={() => handleSort("checked_at")}>Checked At{sortIcon("checked_at")}</th>
-            </tr>
-          </thead>
+        <ResizableThead
+  onSort={handleSort}
+  sortIcon={sortIcon}
+  toggleSelectAll={toggleSelectAll}
+  allSelected={!!data && selected.size === data.items.length && data.items.length > 0}
+/>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={11} style={{ textAlign: "center", padding: 40 }}><span className="spinner" /></td></tr>
-            )}
+               <tr><td colSpan={12} style={{ textAlign: "center", padding: 40 }}><span className="spinner" /></td></tr>
+              )}
+              {isError && (
+                <tr>
+                  <td colSpan={12} style={{ textAlign: "center", padding: 40, color: "#ef4444" }}>
+                    Failed to load products. {error instanceof Error ? error.message : "Please try again."}
+                    <div style={{ marginTop: 10 }}>
+                      <button className="btn btn-secondary" onClick={() => refetch()}>Retry</button>
+                    </div>
+                  </td>
+                </tr>
+              
+              )}
             {data?.items.map((product: Product) => (
               <tr key={product.asin} className={selected.has(product.asin) ? "tr-selected" : ""}>
                 <td><input type="checkbox" className="checkbox" checked={selected.has(product.asin)} onChange={() => toggleSelect(product.asin)} /></td>
@@ -406,12 +417,16 @@ export function ProductsPage() {
                     allTags={allTags}
                   />
                 </td>
+                <td className="notes-column">
+                  <NotesEditor asin={product.asin} currentNotes={product.notes} />
+                </td>
+                
                 <td>{product.sellerStatus?.checked_at ? new Date(product.sellerStatus.checked_at).toLocaleString() : <span className="text-muted">—</span>}</td>
               </tr>
             ))}
-            {data && data.items.length === 0 && (
-              <tr><td colSpan={11} style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>No products found</td></tr>
-            )}
+            {data && data.items.length === 0 && !isError && (
+              <tr><td colSpan={12} style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>No products found</td></tr>
+              )}
           </tbody>
         </table>
       </div>

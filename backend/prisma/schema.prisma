@@ -52,7 +52,7 @@ model Product {
   is_heat_sensitive       Boolean?
   amazon_url              String?
   image_url               String?
-
+  notes                   String?
   // שדות טכניים
   created_at              DateTime  @default(now())
   updated_at              DateTime  @updatedAt

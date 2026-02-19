@@ -110,7 +110,7 @@ tr:hover td { background: #f8fafc; }
 .tag-chip button:hover { opacity: 1; }
 
 
-.tags-column { width: 220px; min-width: 220px; max-width: 220px; }
+.tags-column { width: 160px; min-width: 160px; max-width: 160px; }
 .tag-chips-row { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; }
 .tag-chips-row.compact { flex-wrap: nowrap; white-space: nowrap; overflow: hidden; }
 .tag-chips-row.compact .tag-chip { max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
@@ -235,6 +235,26 @@ tr:hover td { background: #f8fafc; }
 .score-save-indicator { display: inline-flex; width: 12px; justify-content: center; color: #22c55e; font-size: 11px; visibility: hidden; }
 .score-save-indicator.visible { visibility: visible; }
 
+.notes-column { width: 200px; min-width: 200px; }
+.notes-editor-wrap { display: flex; align-items: center; width: 100%; }
+.notes-input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  background: #fff;
+}
+.notes-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+.notes-input.is-saving {
+  background: #f8fafc;
+}
+
 
 /* ── Misc ──────────────────────────────────────────────────────────────────── */
 .text-muted { color: #94a3b8; }
@@ -334,3 +354,47 @@ tr:hover td { background: #f8fafc; }
 }
 .btn-stop:hover { background: #fee2e2; border-color: #f87171; }
 .btn-stop:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.products-table-wrapper {
+  min-height: calc(200vh - 220px);
+  background: white;
+}
+
+table { table-layout: fixed; width: 100%; }
+
+
+/* ── Resizable columns ─────────────────────────────────────────────────────── */
+.col-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 1;
+  border-right: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+.col-resize-handle:hover,
+.col-resize-handle:active {
+  border-right: 2px solid #3b82f6;
+}
+
+
+
+
+.col-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 1;
+  border-right: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+.col-resize-handle:hover,
+.col-resize-handle:active {
+  border-right: 2px solid #3b82f6;
+}

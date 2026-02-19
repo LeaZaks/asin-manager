@@ -124,6 +124,19 @@ export const productsRepository = {
     });
   },
 
+
+  async updateNotes(asin: string, notes: string | null) {
+    return prisma.product.update({
+      where: { asin },
+      data: { notes },
+      include: {
+        sellerStatus: true,
+        evaluation: true,
+        productTags: { include: { tag: true } },
+      },
+    });
+  },
+
   async upsertMany(records: UpsertProductData[]) {
     if (records.length === 0) return;
 

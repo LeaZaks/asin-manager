@@ -9,6 +9,10 @@ router.get("/", productsController.list);
 // GET /api/products/:asin
 router.get("/:asin", productsController.getOne);
 
+// PATCH /api/products/:asin/notes
+router.patch("/:asin/notes", productsController.updateNotes);
+
+
 // DELETE /api/products (body: { asins: string[] })
 router.delete("/", productsController.deleteMany);
 

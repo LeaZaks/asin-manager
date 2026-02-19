@@ -28,6 +28,28 @@ export const productsController = {
     res.json(product);
   },
 
+  
+  async updateNotes(req: Request, res: Response) {
+    const { asin } = req.params;
+    const { notes } = req.body as { notes?: string | null };
+
+    if (notes !== null && notes !== undefined && typeof notes !== "string") {
+      throw new AppError(400, "notes must be a string or null");
+    }
+
+    const normalizedNotes = notes == null ? null : notes.trim() || null;
+
+    try {
+      const product = await productsRepository.updateNotes(asin.toUpperCase(), normalizedNotes);
+      res.json(product);
+    } catch (error) {
+      if ((error as { code?: string }).code === "P2025") {
+        throw new AppError(404, `ASIN ${asin} not found`);
+      }
+      throw error;
+    }
+  },
+
   async deleteMany(req: Request, res: Response) {
     const { asins } = req.body as { asins: string[] };
     if (!Array.isArray(asins) || asins.length === 0) {
