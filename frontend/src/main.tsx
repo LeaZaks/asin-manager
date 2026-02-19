@@ -6,6 +6,7 @@ import { ProductsPage } from "./pages/ProductsPage";
 import { ProcessingPage } from "./pages/ProcessingPage";
 import { TagsPage } from "./pages/TagsPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { AllSourcesPage } from "./pages/AllSourcesPage";
 import { ImportToastProvider } from "./components/ImportToastProvider";
 import { ProcessingSoundProvider } from "./components/ProcessingSoundMonitor";
 import "./styles.css";
@@ -33,6 +34,9 @@ function Layout({ children }: { children: React.ReactNode }) {
         <NavLink to="/tags" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
           🏷️ Tags
         </NavLink>
+        <NavLink to="/sources" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
+          🔍 Sources
+        </NavLink>
       </nav>
       <main className="main-content">{children}</main>
     </div>
@@ -52,6 +56,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/products/:asin" element={<ProductDetailPage />} />
               <Route path="/processing" element={<ProcessingPage />} />
               <Route path="/tags" element={<TagsPage />} />
+              <Route path="/sources" element={<AllSourcesPage />} />
             </Routes>
           </Layout>
         </ImportToastProvider>

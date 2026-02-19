@@ -130,8 +130,8 @@ export const ResizableThead = React.memo(function ResizableThead({
           Status{sortIcon("seller_status")}
           {rh("status")}
         </th>
-        <th style={w("score")}>
-          Score
+        <th style={w("score")} onClick={() => onSort("score")}>
+          Score{sortIcon("score")}
           {rh("score")}
         </th>
         <th style={w("tags")}>

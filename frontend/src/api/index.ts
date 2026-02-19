@@ -6,6 +6,7 @@ import type {
   ProcessingStatus,
   Tag,
   ProductEvaluation,
+  ProductSource,
 } from "../types";
 
 const api = axios.create({ baseURL: "/api" });
@@ -108,4 +109,22 @@ export const tagsApi = {
 export const evaluationsApi = {
   upsert: (asin: string, score: number | null, note?: string) =>
     api.put<ProductEvaluation>(`/evaluations/${asin}`, { score, note }).then((r) => r.data),
+};
+
+// ── Sources ───────────────────────────────────────────────────────────────────
+export const sourcesApi = {
+  list: (asin: string) =>
+    api.get<ProductSource[]>(`/products/${asin}/sources`).then((r) => r.data),
+
+  listAll: () =>
+    api.get<ProductSource[]>("/sources").then((r) => r.data),
+
+  create: (asin: string, payload: { supplier_name: string; url?: string | null; purchase_price?: number | null; notes?: string | null }) =>
+    api.post<ProductSource>(`/products/${asin}/sources`, payload).then((r) => r.data),
+
+  update: (asin: string, id: number, payload: Partial<{ supplier_name: string; url: string | null; purchase_price: number | null; notes: string | null }>) =>
+    api.patch<ProductSource>(`/products/${asin}/sources/${id}`, payload).then((r) => r.data),
+
+  delete: (asin: string, id: number) =>
+    api.delete<{ deleted: boolean }>(`/products/${asin}/sources/${id}`).then((r) => r.data),
 };

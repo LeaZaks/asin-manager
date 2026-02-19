@@ -4374,3 +4374,98 @@ Unknown argument `notes`. Available options are marked with ?.
     at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
     at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
     at async updateNotes (C:\Dev\asin-manager\backend\src\controllers\products.controller.ts:43:23)
+2026-02-19 00:51:31 [[31merror[39m]: Prisma error: 
+Invalid `prisma.productTag.delete()` invocation in
+C:\Dev\asin-manager\backend\src\controllers\tags.controller.ts:81:29
+
+  78 async removeTagFromProduct(req: Request, res: Response) {
+  79   const { asin, tagId } = req.params;
+  80 
+→ 81   await prisma.productTag.delete(
+An operation failed because it depends on one or more records that were required but not found. Record to delete does not exist.
+2026-02-19 00:51:31 [[31merror[39m]: PrismaClientKnownRequestError: 
+Invalid `prisma.productTag.delete()` invocation in
+C:\Dev\asin-manager\backend\src\controllers\tags.controller.ts:81:29
+
+  78 async removeTagFromProduct(req: Request, res: Response) {
+  79   const { asin, tagId } = req.params;
+  80 
+→ 81   await prisma.productTag.delete(
+An operation failed because it depends on one or more records that were required but not found. Record to delete does not exist.
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async removeTagFromProduct (C:\Dev\asin-manager\backend\src\controllers\tags.controller.ts:81:5)
+2026-02-19 06:50:41 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 06:50:41 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 06:50:42 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 06:50:42 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 06:50:42 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 06:54:31 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 06:54:32 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 10:41:27 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.findMany()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:99:22
+
+  96 }
+  97 
+  98 const [items, total] = await prisma.$transaction([
+→ 99   prisma.product.findMany(
+Can't reach database server at `aws-0-us-west-2.pooler.supabase.com:6543`
+
+Please make sure your database server is running at `aws-0-us-west-2.pooler.supabase.com:6543`.
+2026-02-19 10:41:28 [[31merror[39m]: Prisma error: 
+Invalid `prisma.product.count()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:110:22
+
+  107     productTags: { include: { tag: true } },
+  108   },
+  109 }),
+→ 110 prisma.product.count(
+Can't reach database server at `aws-0-us-west-2.pooler.supabase.com:6543`
+
+Please make sure your database server is running at `aws-0-us-west-2.pooler.supabase.com:6543`.
+2026-02-19 10:41:28 [[31merror[39m]: PrismaClientKnownRequestError: 
+Invalid `prisma.product.findMany()` invocation in
+C:\Dev\asin-manager\backend\src\repositories\products.repository.ts:99:22
+
+  96 }
+  97 
+  98 const [items, total] = await prisma.$transaction([
+→ 99   prisma.product.findMany(
+Can't reach database server at `aws-0-us-west-2.pooler.supabase.com:6543`
+
+Please make sure your database server is running at `aws-0-us-west-2.pooler.supabase.com:6543`.
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+2026-02-19 10:49:02 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 10:49:03 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 10:49:03 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 13:22:57 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 13:55:10 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 13:55:11 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 13:55:11 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 13:55:11 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 14:45:37 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 14:45:37 [[31merror[39m]: Prisma error: Error in PostgreSQL connection: Error { kind: Io, cause: Some(Os { code: 10054, kind: ConnectionReset, message: "An existing connection was forcibly closed by the remote host." }) }
+2026-02-19 15:54:04 [[31merror[39m]: Prisma error: 
+Invalid `prisma.$queryRaw()` invocation:
+
+
+Raw query failed. Code: `42883`. Message: `ERROR: operator does not exist: "SellerStatusEnum" = text
+HINT: No operator matches the given name and argument types. You might need to add explicit type casts.`
+2026-02-19 15:54:04 [[31merror[39m]: Prisma error: Raw query failed. Code: `42883`. Message: `ERROR: operator does not exist: "SellerStatusEnum" = text
+HINT: No operator matches the given name and argument types. You might need to add explicit type casts.`
+2026-02-19 15:54:04 [[31merror[39m]: PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRaw()` invocation:
+
+
+Raw query failed. Code: `42883`. Message: `ERROR: operator does not exist: "SellerStatusEnum" = text
+HINT: No operator matches the given name and argument types. You might need to add explicit type casts.`
+    at $n.handleRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Dev\asin-manager\backend\node_modules\@prisma\client\runtime\library.js:130:9633)

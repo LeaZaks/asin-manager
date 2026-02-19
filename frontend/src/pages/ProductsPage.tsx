@@ -31,6 +31,7 @@ const SORT_FIELDS = [
   { value: "buybox_price", label: "Buy Box Price" },
   { value: "rating", label: "Rating" },
   { value: "seller_status", label: "Status" },
+  { value: "score", label: "Score" },
   { value: "checked_at", label: "Checked At" },
 ];
 
@@ -77,6 +78,7 @@ export function ProductsPage() {
 
   // Selection
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const lastSelectedIndexRef = useRef<number>(-1);
   const [clickedAmazonAsins, setClickedAmazonAsins] = useState<Set<string>>(() => new Set(getSessionClickedAsins()));
 
   // Import state
@@ -104,6 +106,32 @@ export function ProductsPage() {
   useEffect(() => {
     qc.invalidateQueries({ queryKey: ["products"] });
   }, []); // Only run once when component mounts
+
+  // ⌨️ Keyboard shortcuts
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      const tag = (e.target as HTMLElement).tagName;
+      const isTyping = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+
+      // Shift+A → select all / deselect all
+      if (e.shiftKey && e.key === "A" && !isTyping) {
+        e.preventDefault();
+        toggleSelectAll();
+      }
+
+      // Delete / Backspace → delete selected (when not typing)
+      if ((e.key === "Delete" || e.key === "Backspace") && !isTyping) {
+        if (selected.size > 0) {
+          e.preventDefault();
+          if (confirm(`Delete ${selected.size} selected ASINs?`)) {
+            deleteMutation.mutate(Array.from(selected));
+          }
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selected, data]);
 
   const deleteMutation = useMutation({
     mutationFn: (asins: string[]) => productsApi.deleteMany(asins),
@@ -173,16 +201,34 @@ export function ProductsPage() {
     }
   }, [importProgress?.status]);
 
-  function toggleSelect(asin: string) {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(asin)) next.delete(asin); else next.add(asin);
-      return next;
-    });
+  function toggleSelect(asin: string, shiftKey = false) {
+    if (!data) return;
+    const items = data.items;
+    const currentIndex = items.findIndex((p) => p.asin === asin);
+
+    if (shiftKey && lastSelectedIndexRef.current !== -1) {
+      const from = Math.min(lastSelectedIndexRef.current, currentIndex);
+      const to = Math.max(lastSelectedIndexRef.current, currentIndex);
+      setSelected((prev) => {
+        const next = new Set(prev);
+        for (let i = from; i <= to; i++) {
+          next.add(items[i].asin);
+        }
+        return next;
+      });
+    } else {
+      setSelected((prev) => {
+        const next = new Set(prev);
+        if (next.has(asin)) next.delete(asin); else next.add(asin);
+        return next;
+      });
+      lastSelectedIndexRef.current = currentIndex;
+    }
   }
 
   function toggleSelectAll() {
     if (!data) return;
+    lastSelectedIndexRef.current = -1;
     if (selected.size === data.items.length) {
       setSelected(new Set());
     } else {
@@ -374,9 +420,13 @@ export function ProductsPage() {
                 </tr>
               
               )}
-            {data?.items.map((product: Product) => (
-              <tr key={product.asin} className={selected.has(product.asin) ? "tr-selected" : ""}>
-                <td><input type="checkbox" className="checkbox" checked={selected.has(product.asin)} onChange={() => toggleSelect(product.asin)} /></td>
+            {data?.items.map((product: Product) => {
+              const score = product.evaluation?.score ?? null;
+              const scoreClass = score ? `tr-score-${score}` : "";
+              const selectedClass = selected.has(product.asin) ? "tr-selected" : "";
+              return (
+              <tr key={product.asin} className={[scoreClass, selectedClass].filter(Boolean).join(" ")}>
+                <td><input type="checkbox" className="checkbox" checked={selected.has(product.asin)} onChange={(e) => toggleSelect(product.asin, (e.nativeEvent as PointerEvent)?.shiftKey ?? false)} /></td>
                 <td className="image-column">
                   {product.image_url ? (
                     <img src={product.image_url} alt="" className="product-thumb" />
@@ -400,6 +450,14 @@ export function ProductsPage() {
                       ↗
                       <ExternalLink size={11} strokeWidth={2.25} />
                     </a>
+                    <Link
+                      to={`/sources?asin=${product.asin}`}
+                      className="sources-link-icon"
+                      title="View sources for this ASIN"
+                      aria-label={`Sources for ${product.asin}`}
+                    >
+                      🔍
+                    </Link>
                   </span>
                 </td>
                 <td>{product.brand ?? <span className="text-muted">—</span>}</td>
@@ -423,7 +481,8 @@ export function ProductsPage() {
                 
                 <td>{product.sellerStatus?.checked_at ? new Date(product.sellerStatus.checked_at).toLocaleString() : <span className="text-muted">—</span>}</td>
               </tr>
-            ))}
+            );
+            })}
             {data && data.items.length === 0 && !isError && (
               <tr><td colSpan={12} style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>No products found</td></tr>
               )}
@@ -476,6 +535,7 @@ export function ProductsPage() {
           }}
         />
       )}
+
 
     </div>
   );

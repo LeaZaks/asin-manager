@@ -17,6 +17,8 @@ import importRouter from "./routes/import.routes";
 import processingRouter from "./routes/processing.routes";
 import tagsRouter from "./routes/tags.routes";
 import evaluationsRouter from "./routes/evaluations.routes";
+import sourcesRouter from "./routes/sources.routes";
+import { sourcesController } from "./controllers/sources.controller";
 
 dotenv.config();
 
@@ -43,6 +45,8 @@ app.use("/api/import", importRouter);
 app.use("/api/processing", processingRouter);
 app.use("/api/tags", tagsRouter);
 app.use("/api/evaluations", evaluationsRouter);
+app.use("/api/products/:asin/sources", sourcesRouter);
+app.get("/api/sources", sourcesController.listAll);
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get("/health", async (_req, res) => {

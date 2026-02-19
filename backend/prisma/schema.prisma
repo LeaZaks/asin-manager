@@ -61,6 +61,7 @@ model Product {
   sellerStatus            SellerStatus?
   evaluation              ProductEvaluation?
   productTags             ProductTag[]
+  productSources          ProductSource[]
 
   @@map("products")
 }
@@ -170,4 +171,22 @@ model ProductTag {
 
 model Test {
   id Int @id @default(autoincrement())
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ProductSources – מקורות פוטנציאליים לרכישת המוצר
+// ─────────────────────────────────────────────────────────────────────────────
+model ProductSource {
+  id             Int       @id @default(autoincrement())
+  asin           String    @db.VarChar(10)
+  supplier_name  String
+  url            String?
+  purchase_price Decimal?  @db.Decimal(10, 2)
+  notes          String?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+
+  product        Product   @relation(fields: [asin], references: [asin], onDelete: Cascade)
+
+  @@map("product_sources")
 }

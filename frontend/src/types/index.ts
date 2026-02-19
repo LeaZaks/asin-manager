@@ -115,3 +115,17 @@ export interface ProcessingStatus {
     unknown: number;
   };
 }
+
+
+// Add this to your types.ts file
+
+export interface ProductSource {
+  id: number;
+  asin: string;
+  supplier_name: string;
+  url: string | null;
+  purchase_price: number | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
