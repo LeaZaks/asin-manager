@@ -21,7 +21,7 @@ export const sourcesRepository = {
     return prisma.productSource.create({
       data: {
         asin,
-        supplier_name: data.supplier_name,
+        supplier_name: (data.supplier_name ?? "").slice(0, 255) || "—",
         url: data.url ?? null,
         purchase_price: data.purchase_price ?? null,
         notes: data.notes ?? null,

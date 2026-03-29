@@ -11,6 +11,7 @@ export interface ProductListParams {
   checkedAt?: "null" | "not_null";
   sortBy?: string;
   sortOrder?: "asc" | "desc";
+  score?: number;
 }
 
 export type UpsertProductData = Omit<
@@ -51,7 +52,7 @@ const UPDATE_SET = UPSERT_COLUMNS
 // ── Repository ────────────────────────────────────────────────────────────────
 export const productsRepository = {
   async findMany(params: ProductListParams) {
-    const { page, limit, search, brand, status, checkedAt, sortBy = "created_at", sortOrder = "desc" } = params;
+    const { page, limit, search, brand, status, checkedAt, sortBy = "created_at", sortOrder = "desc", score } = params;
     const skip = (page - 1) * limit;
 
     const where: Prisma.ProductWhereInput = {
@@ -72,6 +73,11 @@ export const productsRepository = {
           ? { sellerStatus: { checked_at: null } }
           : checkedAt === "not_null"
           ? { sellerStatus: { checked_at: { not: null } } }
+          : {},
+        score != null
+          ? score === 0
+            ? { evaluation: { is: null } }
+            : { evaluation: { score } }
           : {},
       ],
     };
@@ -108,13 +114,26 @@ export const productsRepository = {
         conditions.push(Prisma.sql`p.brand ILIKE ${"%" + brand + "%"}`);
       }
       if (status) {
-        conditions.push(Prisma.sql`ss.status = ${status}`);
+        conditions.push(Prisma.sql`ss.status::text = ${status}`);
       }
       if (checkedAt === "null") {
         conditions.push(Prisma.sql`ss.checked_at IS NULL`);
       } else if (checkedAt === "not_null") {
         conditions.push(Prisma.sql`ss.checked_at IS NOT NULL`);
       }
+      if (score != null) {
+        if (score === 0) {
+          conditions.push(Prisma.sql`e.score IS NULL`);
+        } else {
+          conditions.push(Prisma.sql`e.score = ${score}`);
+        }
+      }
+
+      // Use INNER JOIN for seller_status when filtering by status or checkedAt
+      const needsInnerJoin = !!status || !!checkedAt;
+      const ssJoin = needsInnerJoin
+        ? Prisma.sql`INNER JOIN seller_status ss ON ss.asin = p.asin`
+        : Prisma.sql`LEFT JOIN seller_status ss ON ss.asin = p.asin`;
 
       const whereClause = conditions.length > 0
         ? Prisma.sql`WHERE ${Prisma.join(conditions, " AND ")}`
@@ -124,14 +143,14 @@ export const productsRepository = {
         prisma.$queryRaw<[{ count: bigint }]>`
           SELECT COUNT(*) as count
           FROM products p
-          LEFT JOIN seller_status ss ON ss.asin = p.asin
+          ${ssJoin}
           LEFT JOIN product_evaluations e ON e.asin = p.asin
           ${whereClause}
         `,
         prisma.$queryRaw<{ asin: string }[]>`
           SELECT p.asin
           FROM products p
-          LEFT JOIN seller_status ss ON ss.asin = p.asin
+          ${ssJoin}
           LEFT JOIN product_evaluations e ON e.asin = p.asin
           ${whereClause}
           ORDER BY e.score ${dir} NULLS LAST

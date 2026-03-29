@@ -7,6 +7,7 @@ import { ProcessingPage } from "./pages/ProcessingPage";
 import { TagsPage } from "./pages/TagsPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { AllSourcesPage } from "./pages/AllSourcesPage";
+import { PurchasesPage } from "./pages/PurchasesPage";
 import { ImportToastProvider } from "./components/ImportToastProvider";
 import { ProcessingSoundProvider } from "./components/ProcessingSoundMonitor";
 import "./styles.css";
@@ -37,6 +38,9 @@ function Layout({ children }: { children: React.ReactNode }) {
         <NavLink to="/sources" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
           🔍 Sources
         </NavLink>
+        <NavLink to="/purchases" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
+          🛒 Purchases
+        </NavLink>
       </nav>
       <main className="main-content">{children}</main>
     </div>
@@ -48,18 +52,19 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ProcessingSoundProvider>
-        <ImportToastProvider>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Navigate to="/products" replace />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/products/:asin" element={<ProductDetailPage />} />
-              <Route path="/processing" element={<ProcessingPage />} />
-              <Route path="/tags" element={<TagsPage />} />
-              <Route path="/sources" element={<AllSourcesPage />} />
-            </Routes>
-          </Layout>
-        </ImportToastProvider>
+          <ImportToastProvider>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Navigate to="/products" replace />} />
+                <Route path="/products" element={<ProductsPage />} />
+                <Route path="/products/:asin" element={<ProductDetailPage />} />
+                <Route path="/processing" element={<ProcessingPage />} />
+                <Route path="/tags" element={<TagsPage />} />
+                <Route path="/sources" element={<AllSourcesPage />} />
+                <Route path="/purchases" element={<PurchasesPage />} />
+              </Routes>
+            </Layout>
+          </ImportToastProvider>
         </ProcessingSoundProvider>
       </BrowserRouter>
     </QueryClientProvider>

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { sourcesRepository } from "../repositories/sources.repository";
 import { AppError } from "../middleware/errorHandler";
+import { prisma } from "../lib/prisma";
 
 export const sourcesController = {
   async list(req: Request, res: Response) {
@@ -27,7 +28,14 @@ export const sourcesController = {
       throw new AppError(400, "supplier_name is required");
     }
 
-    const source = await sourcesRepository.create(asin.toUpperCase(), {
+    const upperAsin = asin.toUpperCase();
+
+    const product = await prisma.product.findUnique({ where: { asin: upperAsin }, select: { asin: true } });
+    if (!product) {
+      throw new AppError(404, `Product ${upperAsin} does not exist in the system. Please import it first before adding a source.`);
+    }
+
+    const source = await sourcesRepository.create(upperAsin, {
       supplier_name: supplier_name.trim(),
       url: url?.trim() || null,
       purchase_price: purchase_price ?? null,

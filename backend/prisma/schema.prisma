@@ -1,26 +1,22 @@
 // This is your Prisma schema file.
 // DB: Supabase (PostgreSQL)
-// Schema derived strictly from: "אפיון מודול ניהול ועיבוד ASINs – V1"
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Products – מאגר המוצרים הראשי, שדות מ-Keepa CSV
-// שדות טכניים: created_at, updated_at (נדרשים לתפעול)
+// Products
 // ─────────────────────────────────────────────────────────────────────────────
 model Product {
   asin                    String    @id @db.VarChar(10)
 
-  // Keepa fields
   sales_rank_current      Int?
   sales_rank_avg_90d      Int?
   sales_rank_drop_90d     Float?
@@ -53,21 +49,21 @@ model Product {
   amazon_url              String?
   image_url               String?
   notes                   String?
-  // שדות טכניים
+
   created_at              DateTime  @default(now())
   updated_at              DateTime  @updatedAt
 
-  // Relations
   sellerStatus            SellerStatus?
   evaluation              ProductEvaluation?
   productTags             ProductTag[]
   productSources          ProductSource[]
+  purchases               Purchase[]
 
   @@map("products")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SellerStatus – תוצאת בדיקת הרשאת מכירה מ-Amazon API
+// SellerStatus
 // ─────────────────────────────────────────────────────────────────────────────
 model SellerStatus {
   asin        String           @id @db.VarChar(10)
@@ -88,18 +84,18 @@ enum SellerStatusEnum {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ImportFiles – היסטוריית קבצי ייבוא
+// ImportFiles
 // ─────────────────────────────────────────────────────────────────────────────
 model ImportFile {
-  id                Int       @id @default(autoincrement())
+  id                Int          @id @default(autoincrement())
   file_name         String
   source            ImportSource
-  file              Bytes?    // הקובץ עצמו כערך בינארי
-  uploaded_at       DateTime  @default(now())
-  total_rows        Int       @default(0)
-  inserted_rows     Int       @default(0)
-  updated_rows      Int       @default(0)
-  failed_rows       Int       @default(0)
+  file              Bytes?
+  uploaded_at       DateTime     @default(now())
+  total_rows        Int          @default(0)
+  inserted_rows     Int          @default(0)
+  updated_rows      Int          @default(0)
+  failed_rows       Int          @default(0)
   error_file_path   String?
 
   @@map("import_files")
@@ -111,14 +107,12 @@ enum ImportSource {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ProductEvaluations – דירוג פוטנציאל מוצר (ידני-אנליטי)
+// ProductEvaluations
 // ─────────────────────────────────────────────────────────────────────────────
 model ProductEvaluation {
   asin        String  @id @db.VarChar(10)
-  score       Int     // 1-5 (דירוג פוטנציאל)
-  note        String? // הערה חופשית
-
-  // שדה טכני
+  score       Int
+  note        String?
   updated_at  DateTime @updatedAt
 
   product     Product @relation(fields: [asin], references: [asin], onDelete: Cascade)
@@ -127,16 +121,13 @@ model ProductEvaluation {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Tags – רשימת תגיות מרכזית
-// שדה טכני: created_at
+// Tags
 // ─────────────────────────────────────────────────────────────────────────────
 model Tag {
   id          Int      @id @default(autoincrement())
   name        String   @unique
   type        TagType
-  color       String?  // צבע תצוגה ב-UI (אופציונלי)
-
-  // שדה טכני
+  color       String?
   created_at  DateTime @default(now())
 
   productTags ProductTag[]
@@ -150,15 +141,12 @@ enum TagType {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ProductTags – קשר רבים-לרבים בין Products ל-Tags
-// שדה טכני: created_at
+// ProductTags
 // ─────────────────────────────────────────────────────────────────────────────
 model ProductTag {
   id         Int      @id @default(autoincrement())
   asin       String   @db.VarChar(10)
   tag_id     Int
-
-  // שדה טכני
   created_at DateTime @default(now())
 
   product    Product @relation(fields: [asin], references: [asin], onDelete: Cascade)
@@ -168,13 +156,12 @@ model ProductTag {
   @@map("product_tags")
 }
 
-
 model Test {
   id Int @id @default(autoincrement())
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ProductSources – מקורות פוטנציאליים לרכישת המוצר
+// ProductSources
 // ─────────────────────────────────────────────────────────────────────────────
 model ProductSource {
   id             Int       @id @default(autoincrement())
@@ -189,4 +176,48 @@ model ProductSource {
   product        Product   @relation(fields: [asin], references: [asin], onDelete: Cascade)
 
   @@map("product_sources")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CreditCards – טבלת עזר לכרטיסי אשראי
+// ─────────────────────────────────────────────────────────────────────────────
+model CreditCard {
+  id            Int        @id @default(autoincrement())
+  last4         String     @db.VarChar(4)   // 4 ספרות אחרונות
+  nickname      String                       // כינוי
+
+  created_at    DateTime   @default(now())
+
+  purchases     Purchase[]
+
+  @@map("credit_cards")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Purchases – רכישות
+// ─────────────────────────────────────────────────────────────────────────────
+model Purchase {
+  id               Int        @id @default(autoincrement())
+  asin             String     @db.VarChar(10)
+
+  source_url       String?                      // קישור למוצר באתר מקור
+  order_number     String?                      // מספר הזמנה
+  order_date       DateTime?                    // תאריך הזמנה
+  quantity         Int?                         // כמות יחידות
+  total_amount     Decimal?   @db.Decimal(10, 2) // סכום כולל
+  tax_amount       Decimal?   @db.Decimal(10, 2) // TAX
+  shipping_cost    Decimal?   @db.Decimal(10, 2) // עלות שילוח
+  delivery_date    DateTime?                    // תאריך מסירה
+  receipt_file     String?                      // נתיב/URL לקובץ קבלה
+  credit_card_id   Int?                         // מקושר לטבלת אשראי
+  coupons_used     String?                      // קופונים שבאו לידי שימוש
+  notes            String?                      // הערות
+
+  created_at       DateTime   @default(now())
+  updated_at       DateTime   @updatedAt
+
+  product          Product    @relation(fields: [asin], references: [asin], onDelete: Cascade)
+  creditCard       CreditCard? @relation(fields: [credit_card_id], references: [id], onDelete: SetNull)
+
+  @@map("purchases")
 }

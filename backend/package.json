@@ -16,6 +16,7 @@
     "@bull-board/api": "^5.16.4",
     "@bull-board/express": "^5.16.4",
     "@prisma/client": "^5.10.2",
+    "@supabase/supabase-js": "^2.97.0",
     "aws4": "^1.13.2",
     "axios": "^1.13.5",
     "bullmq": "^5.4.2",

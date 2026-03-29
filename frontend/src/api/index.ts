@@ -21,6 +21,7 @@ export interface ProductListParams {
   checkedAt?: string;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
+  score?: number;
 }
 
 export const productsApi = {

@@ -57,10 +57,12 @@ export function AllSourcesPage() {
     }
   }, [location.search]);
 
+  const [createError, setCreateError] = useState<string | null>(null);
+
   const createMutation = useMutation({
     mutationFn: () =>
       sourcesApi.create(formAsin.trim().toUpperCase(), {
-        supplier_name: formSupplier.trim() || formUrl,
+        supplier_name: (formSupplier.trim() || formUrl).slice(0, 255) || "—",
         url: formUrl.trim() || null,
         purchase_price: formPrice ? parseFloat(formPrice) : null,
         notes: formNotes.trim() || null,
@@ -68,10 +70,15 @@ export function AllSourcesPage() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["sources-all"] });
       setShowAdd(false);
+      setCreateError(null);
       setFormUrl("");
       setFormSupplier("");
       setFormPrice("");
       setFormNotes("");
+    },
+    onError: (err: unknown) => {
+      const msg = (err as { response?: { data?: { error?: string } }; message?: string })?.response?.data?.error ?? (err as { message?: string })?.message ?? "Failed to save source";
+      setCreateError(msg);
     },
   });
 
@@ -81,7 +88,7 @@ export function AllSourcesPage() {
         sources.find((s) => s.id === editingId)!.asin,
         editingId!,
         {
-          supplier_name: editSupplier.trim() || editUrl,
+          supplier_name: (editSupplier.trim() || editUrl).slice(0, 255) || "—",
           url: editUrl.trim() || null,
           purchase_price: editPrice ? parseFloat(editPrice) : null,
           notes: editNotes.trim() || null,
@@ -157,6 +164,11 @@ export function AllSourcesPage() {
           <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 14, color: "#0f172a" }}>
             Add Source {formAsin && <span style={{ color: "#64748b", fontWeight: 400 }}>· {formAsin}</span>}
           </div>
+          {createError && (
+            <div style={{ background: "#fee2e2", color: "#991b1b", border: "1px solid #fecaca", borderRadius: 7, padding: "10px 14px", marginBottom: 12, fontSize: 13 }}>
+              ⚠️ {createError}
+            </div>
+          )}
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 10 }}>
               <div>

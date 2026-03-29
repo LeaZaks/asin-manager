@@ -16,6 +16,7 @@ export const productsController = {
       checkedAt: req.query.checkedAt as "null" | "not_null" | undefined,
       sortBy: req.query.sortBy as string | undefined,
       sortOrder: (req.query.sortOrder as "asc" | "desc" | undefined) ?? "desc",
+      score: req.query.score !== undefined ? parseInt(String(req.query.score), 10) : undefined,
     });
 
     res.json(result);

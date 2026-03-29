@@ -75,6 +75,7 @@ export function ProductsPage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<(typeof PAGE_SIZE_OPTIONS)[number]>(100);
   const [showFilters, setShowFilters] = useState(false);
+  const [scoreFilter, setScoreFilter] = useState<number | "">("");
 
   // Selection
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -87,11 +88,11 @@ export function ProductsPage() {
   const [importResult, setImportResult] = useState<null | { message: string; summary: { importFileId: number; total_rows: number; inserted_rows: number; updated_rows: number; failed_rows: number; hasErrors: boolean; errors: Array<{ row: number; reason: string }> } }>(null);
 
 
-  const activeFilterCount = [brand, status, checkedAt].filter(Boolean).length;
+  const activeFilterCount = [brand, status, checkedAt, scoreFilter !== "" ? String(scoreFilter) : ""].filter(Boolean).length;
 
   const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["products", { page, pageSize, search, brand, status, checkedAt, sortBy, sortOrder }],
-    queryFn: () => productsApi.list({ page, limit: pageSize, search, brand, status, checkedAt: checkedAt || undefined, sortBy, sortOrder }),
+    queryKey: ["products", { page, pageSize, search, brand, status, checkedAt, sortBy, sortOrder, scoreFilter }],
+    queryFn: () => productsApi.list({ page, limit: pageSize, search, brand, status, checkedAt: checkedAt || undefined, sortBy, sortOrder, ...(scoreFilter !== "" ? { score: scoreFilter } : {}) }),
   });
 
   const { data: allTags = [] } = useQuery<Tag[]>({
@@ -261,6 +262,7 @@ export function ProductsPage() {
     setBrand("");
     setStatus("");
     setCheckedAt("");
+    setScoreFilter("");
     setSortBy("created_at");
     setSortOrder("desc");
     setPage(1);
@@ -379,6 +381,34 @@ export function ProductsPage() {
                   {o.label}
                 </button>
               ))}
+            </div>
+          </div>
+          <div className="filter-group">
+            <label className="filter-label">Score</label>
+            <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+              {([{ value: "" as const, label: "All" }, { value: 0, label: "0" }, { value: 1, label: "1★" }, { value: 2, label: "2★" }, { value: 3, label: "3★" }, { value: 4, label: "4★" }, { value: 5, label: "5★" }]).map(({ value, label }) => {
+                const isActive = scoreFilter === value;
+                const color = value === "" ? "#6366f1" : value === 0 ? "#94a3b8" : value === 1 ? "#ef4444" : value <= 3 ? "#f59e0b" : "#22c55e";
+                return (
+                  <button
+                    key={String(value)}
+                    onClick={() => { setScoreFilter(value); setPage(1); }}
+                    style={{
+                      padding: "4px 10px",
+                      borderRadius: 6,
+                      border: isActive ? `1.5px solid ${color}` : "1.5px solid #e2e8f0",
+                      background: isActive ? `${color}18` : "white",
+                      color: isActive ? color : "#64748b",
+                      fontWeight: isActive ? 600 : 400,
+                      fontSize: 13,
+                      cursor: "pointer",
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
           </div>
           {activeFilterCount > 0 && (

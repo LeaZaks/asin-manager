@@ -93,7 +93,7 @@ async function processCSVImport(
   const importFile = await importRepository.create({
     file_name: fileName,
     source,
-    file: buffer,
+    
     total_rows: totalRows,
   });
 

@@ -2,6 +2,7 @@ import "express-async-errors";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { ExpressAdapter } from "@bull-board/express";
@@ -18,6 +19,8 @@ import processingRouter from "./routes/processing.routes";
 import tagsRouter from "./routes/tags.routes";
 import evaluationsRouter from "./routes/evaluations.routes";
 import sourcesRouter from "./routes/sources.routes";
+import purchasesRouter from "./routes/purchases.routes";
+import creditCardsRouter from "./routes/creditCards.routes";
 import { sourcesController } from "./controllers/sources.controller";
 
 dotenv.config();
@@ -29,6 +32,9 @@ const PORT = process.env.PORT ?? 3001;
 app.use(cors({ origin: process.env.FRONTEND_URL ?? "http://localhost:5173" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ── Serve uploaded files ──────────────────────────────────────────────────────
+app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));
 
 // ── Bull Board (queue dashboard) ──────────────────────────────────────────────
 const serverAdapter = new ExpressAdapter();
@@ -47,6 +53,8 @@ app.use("/api/tags", tagsRouter);
 app.use("/api/evaluations", evaluationsRouter);
 app.use("/api/products/:asin/sources", sourcesRouter);
 app.get("/api/sources", sourcesController.listAll);
+app.use("/api/purchases", purchasesRouter);
+app.use("/api/credit-cards", creditCardsRouter);
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get("/health", async (_req, res) => {
