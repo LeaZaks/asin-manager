@@ -15,7 +15,7 @@ import { logger } from "../lib/logger";
 
 // Process ASINs in parallel batches for speed
 const BATCH_SIZE = 5; // Process 5 ASINs concurrently
-const BATCH_DELAY_MS = 200; // Small delay between batches
+const BATCH_DELAY_MS = 1000; // 1s delay between batches (respects Amazon SP-API rate limits)
 
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

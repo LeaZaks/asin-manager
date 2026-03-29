@@ -70,6 +70,7 @@ export function ProcessingSoundProvider({ children }: { children: React.ReactNod
       const s = query.state.data;
       return s?.status === "running" && s.total > 0 ? 2000 : false;
     },
+    refetchOnWindowFocus: false,
   });
 
   const playSound = useCallback(() => {

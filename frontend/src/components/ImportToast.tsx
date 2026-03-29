@@ -26,7 +26,7 @@ export function ImportToast() {
     queryKey: ["import-progress", currentJobId],
     queryFn: () => fetchProgress(currentJobId!),
     enabled: !!currentJobId && !showSummary,
-    refetchInterval: 500, // Poll every 500ms
+    refetchInterval: 2000, // Poll every 2s
   });
 
   // When import completes, show summary for 3 seconds then auto-dismiss
